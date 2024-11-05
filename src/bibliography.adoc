@@ -2,5 +2,7 @@
 == Bibliography
 
 [1]RISC-V “V” Vector Extension (Version 1.0)
+
 [2]https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html
+
 [3]The RISC-V Instruction Set Manual Volume I: Unprivileged ISA Document Version 20191213
