@@ -1,8 +1,8 @@
-= RISC-V Example Specification Document (Zexmpl)
-Authors: Author 1, Author 2
+= RISC-V Vector Extension for Wireless (Zvw)
+Authors: Li Gaoshan
 include::../docs-resources/global-config.adoc[]
 :docgroup: RISC-V Task Group
-:description: RISC-V Example Specification Document (Zexmpl)
+:description: RISC-V Zvw Specification Document (Zvw)
 :revdate: 1/2023
 :revnumber: 1.0
 :revremark: This document is under development. Expect potential changes. Visit http://riscv.org/spec-state for further details.
