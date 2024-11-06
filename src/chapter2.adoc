@@ -39,6 +39,6 @@ This register is a 32-bit control register configured through the Zicsr extended
 [cols="3*", options="header"]
 |==============================
 | Bitfield  | Name  | Description       
-| 31:16 | SegGruCnt | segments num. of non-linear function
-| 15:0  | funcId    | non-linear function ID 
+| 31:16 | SegGruCnt | segments num. of non-linear function. 0：reciprocal; 1: square root; 2: reciprocal of square root; 3: log2; 4: arctan
+| 15:0  | funcId    | non-linear function ID. 0: 4 segments; 1：8 segments; 2：12 segments; 3：16 segments
 |==============================
