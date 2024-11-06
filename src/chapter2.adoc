@@ -1,4 +1,4 @@
-[[chapter3]]
+[[chapter2]]
 == Registers
 
 . *VCSR* (Vector Control and Status Register)
