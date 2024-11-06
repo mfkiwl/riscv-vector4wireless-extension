@@ -1,23 +1,30 @@
 [[chapter1]]
 == Basic operations definition
 
+. int8: 8 bit signed char 
+. int16: 16 bit signed half word
+. int32: 32 bit word
+. sc16: signed complex with 16bits image and 16bits real part, real part in low 16bit.
 . get_e: Get the exponent part in the complex compressed format
 . get_i: Get the imaginary part in the complex compressed format
 . get_r: Get the real part in the complex compressed format
 . zp16: Add 0 to 16 bits at the end
 . zp32: Add 0 to 32 bits at the end
+. sx16: sign extension to 16 bits
+. sx32: sign extension to 32 bits
 . min: Find the minimum
 . max: Find the maximum
 . max_i: Find the element position in the vector register where the maximum value is located
 . lsb: The number of bits of the high-order sign bit minus 1
 . cfp_pack: Put e, i and r into the compressed complex format according to the complex compressed format
+. vcpack: extract the high 16 bits of 32-bit real numbers and 32-bit imaginary numbers to form a complex number in SC16 format
 . sum: Sum
 . conj: Convert to the conjugate complex number of a negative number
-. alg_round_shift_right: Arithmetic right shift with rounding to nearest
+. alg_round_shift_right: Arithmetic right shift with vxrm mode rounding
 . alg_shift_left: Arithmetic left shift
 . shift_left: Logical left shift
 . clip_low_SEW: Clip the lowest SEW width bit number
-. round_clip_high_SEW: Saturate clip the high SEW width bit number with rounding to nearest
+. round_clip_high_SEW: Saturate clip the high SEW width bit number with vxrm mode rounding
 . MIN_SEW: The minimum value of the signed number corresponding to the element of SEW bit width
 . MAX_SEW: The maximum value of the signed number corresponding to the element of SEW bit width
 . ACCREG[i]: The i-th accumulation register inside the MAC ALU, 80 bits, a total of 32 elements
