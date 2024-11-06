@@ -71,6 +71,7 @@ Copyright 2024 by RISC-V International.
 include::contributors.adoc[]
 
 include::intro.adoc[]
+include::chapter1.adoc[]
 include::chapter2.adoc[]
 
 // The index must precede the bibliography
