@@ -4,14 +4,14 @@
 . VCSR Register
 
 Add new fields to the vector control and status register (vcsr) to control the fixed-point multiplication with shift, fixed-point accumulation with shift, and funnel shift related instructions. 
-mulsft (multiply shift) controls the right shift operation after the multiplier operation. The right shift operation is round shift, and the round mode is controlled by vxrm. 
-accsft (accumulated shift) controls the right shift operation of the accumulation operation. The shift operation is round shift, and the round mode is controlled by vxrm. 
-fsft configures the shift length of the funnel shift, so that the operation can realize flexible funnel shift function without increasing the source operand.
 
+* _mulsft_ (multiply shift) controls the right shift operation after the multiplier operation. The right shift operation is round shift, and the round mode is controlled by vxrm. 
 
-=== An example table
+* _accsft_ (accumulated shift) controls the right shift operation of the accumulation operation. The shift operation is round shift, and the round mode is controlled by vxrm. 
 
-.Nonsensical table
+* _fsft_ configures the shift length of the funnel shift, so that the operation can realize flexible funnel shift function without increasing the source operand.
+
+.VCSR bit fields table
 [cols="^1,^1,^1,^1,^3,^3",stripes=even,options="header"]
 |===
 4+|Letters _and_ bits {set:cellbgcolor:green} 2+|A much longer area
