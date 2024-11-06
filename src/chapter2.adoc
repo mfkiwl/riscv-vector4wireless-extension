@@ -14,12 +14,12 @@ Add new fields to the vector control and status register (vcsr) to control the f
 .VCSR bit fields table
 [cols="3*", options="header"]
 |====================================
-| 比特位置  | 变量名          | 描述          
-| 31:18 | rsv          | 暂时保留        
-| 17:13 | fsft         | 漏斗移位的元素长度   
-| 12:8  | accsft[12:8] | 累加移位，0 ~ 31 
-| 7:3   | mulsft[7:3]  | 乘法移位，0 ~ 31 
-| 2:1   | vxrm[1:0]    | 定点round模式   
+| Bitfield  | Name  | Description          
+| 31:18 | rsv          | reserve        
+| 17:13 | fsft         | elements num. of funnel shift   
+| 12:8  | accsft[12:8] | accumulation shift，0 ~ 31 
+| 7:3   | mulsft[7:3]  | multiply shift，0 ~ 31 
+| 2:1   | vxrm[1:0]    | rounding mode  
 | 0     | vxsat        |             
 |====================================
 
@@ -38,7 +38,7 @@ This register is a 32-bit control register configured through the Zicsr extended
 .VNLCR bit fields table
 [cols="3*", options="header"]
 |==============================
-| 比特位置  | 变量名       | 描述       
-| 31:16 | SegGruCnt | 非线性函数分段个数
-| 15:0  | funcId    | 非线性函数ID  
+| Bitfield  | Name  | Description       
+| 31:16 | SegGruCnt | segments num. of non-linear function
+| 15:0  | funcId    | non-linear function ID 
 |==============================
