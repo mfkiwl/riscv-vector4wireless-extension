@@ -43,9 +43,55 @@ vd[i] = loadFormatConvert(void *rs1, A2B) {
       I = zp32( i )
       R = zp32( r )
       return vcpack(sra(I, e), sra(R, e))
+    case 'pb2c'
+      // support in future
 }
 ----
-. Yet another item.
 
-. Again, an item.
+. *vsfcB2A(vector store and format convert from format B to format A)*
++
+.. *Grammar*
++
+vsfch2b.v  vs3, rs1, vm +
+vsfcw2b.v  vs3, rs1, vm +
+vsfcw2h.v  vs3, rs1, vm +
+vsfcc2pa.v  vs3, rs1, vm +
+vsfcc2pb.v  vs3, rs1, vm +
 
+.. *Purpose*
++
+Convert format of each element from the vector register and store it into vector memory. When mask is 0 with vm is enabled, the address of vector memroy and register element index need to increased at the same time.
+
+.. *Description*
++
+rs1 stores the base address, and vs3 is the source register. The total number of elements does not exceed VLEN/SEW*LMUL. SEW is the target format width. The formats of B2A include:
++
+- ‘h2b’ is 16bit->8bit signed number conversion; 
+- ‘w2b’ is 32bit->8bit signed number conversion; 
+- ‘w2h’ is 32bit->16bit signed number conversion; 
+- ‘c2pa’ is SC16->CFL(6/6/4) format conversion； 
+- ‘c2pb’ is SC16->CFL(7/7/2) format conversion.
+
+.. *Operation*
++
+----
+void storeFormatConvert(void *rs1, vs3[i], B2A) {
+  switch(B2A)
+    case ‘h2b’
+      vmem(clip_low_8(int16 vs3[i]), (int8*)rs1[i])
+    case ‘w2b’
+      vmem(clip_low_8(int32 vs3[i]), (int8*)rs1[i])
+    case ‘w2h’
+      vmem(clip_low_16(int32 vs3[i]), (int16*)rs1[i])
+    case ‘c2pa’
+      I = vs3[i].i
+      R = vs3[i].r
+      num = max(abs(I), abs(R))
+      exp = lsb(num)
+      img = round_clip_high_6bit(I << exp)
+      real = round_clip_high_6bit(R << exp)
+      vmem(cfp_pack(exp, img, real), (int16*)rs1[i])
+   case 'c2pb'
+      // support in future
+}
+----
