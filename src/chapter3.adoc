@@ -1,4 +1,4 @@
-[[chapter3]]
+[[chapter4]]
 == Vector Load and Store
 
 . *vlfcA2B(vector load and format convert from format A to format B)*
