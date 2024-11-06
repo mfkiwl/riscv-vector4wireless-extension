@@ -1,1 +1,51 @@
+[[chapter3]]
+== Vector Load and Store
+
+. vlfcA2B(vector load and format convert from format A to format B).
++
+.. *Grammar*
++
+vlfcb2h.v  vd, rs1, vm +
+vlfcb2w.v  vd, rs1, vm +
+vlfch2w.v  vd, rs1, vm +
+vlfcpa2c.v  vd, rs1, vm +
+vlfcpb2c.v  vd, rs1, vm +
+
+.. *Purpose*
++
+Load elements from vector memory to vector registers, performing format conversion operations at the same time. When mask is 0 when vm is enabled, the address and register element index need to be increased at the same time.
+
+.. *Description*
++
+rs1 stores the base address, and vd is the target register. The total number of elements does not exceed VLEN/SEW*LMUL. SEW is the target format width. The formats of A2B include:
++
+- ‘b2h’ is 8bit->16bit signed number conversion; 
+- ‘b2w’ is 8bit->32bit signed number conversion; 
+- ‘h2w’ is 16bit->32bit signed number conversion; 
+- ‘pa2c’ is CFL(6/6/4)->SC16 format conversion； 
+- ‘pb2c’ is CFL(7/7/2)->SC16 format conversion.
+
+.. *Operation*
++
+----
+vd[i] = loadFormatConvert(void *rs1, A2B) {
+  switch(A2B)
+    case ‘b2h’
+      return sx16(int8 rs1[i])
+    case ‘b2w’
+      return sx32(int8 rs1[i])
+    case ‘h2w’
+      return sx32(int16 rs1[i])
+    case ‘pa2c’
+      i = get_i(sc16 rs1[i])
+      r = get_r(sc16 rs1[i])
+      e = get_e(sc16 rs1[i])
+      I = zp32( i )
+      R = zp32( r )
+      return vcpack(sra(I, e), sra(R, e))
+}
+----
+. Yet another item.
+
+. Again, an item.
 
