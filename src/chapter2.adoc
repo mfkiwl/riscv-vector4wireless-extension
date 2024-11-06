@@ -1,30 +1,13 @@
 [[chapter2]]
-== The Second Chapter
+== Registers
 
-. The first item.
+. VCSR Register
 
-. The second item.
-+
-.. The first sub item.
+Add new fields to the vector control and status register (vcsr) to control the fixed-point multiplication with shift, fixed-point accumulation with shift, and funnel shift related instructions. 
+mulsft (multiply shift) controls the right shift operation after the multiplier operation. The right shift operation is round shift, and the round mode is controlled by vxrm. 
+accsft (accumulated shift) controls the right shift operation of the accumulation operation. The shift operation is round shift, and the round mode is controlled by vxrm. 
+fsft configures the shift length of the funnel shift, so that the operation can realize flexible funnel shift function without increasing the source operand.
 
-.. The second sub item.
-+
-[CAUTION]
-====
-A moment of caution is required for this block of text must be read and apreciated for its importance.
-====
-
-. Yet another item.
-
-. Again, an item.
-
-.. A multi-line item.
-+
-This item has multiple lines.
-+
-By multiple lines, this is what we mean.
-+
-Seriously, multiple.
 
 === An example table
 
@@ -39,10 +22,4 @@ Seriously, multiple.
 |1|1|1|1 2+|Span Thing 1 and 2
 |===
 
-=== Sub section
 
-Diam donec adipiscing tristique risus indexterm:[risus]. Nisl rhoncus mattis rhoncus urna. Egestas egestas fringilla phasellus faucibus scelerisque eleifend donec pretium vulputate. Porta non pulvinar neque laoreet suspendisse interdum consectetur libero id. Massa vitae tortor condimentum lacinia quis vel. Donec ac odio tempor orci. Mi sit amet mauris commodo quis imperdiet massa tincidunt. Quis enim lobortis scelerisque fermentum dui. Lacus viverra vitae congue eu. Sed faucibus turpis in eu mi bibendum neque. Sit amet porttitor eget dolor. Aliquet eget sit amet tellus cras adipiscing enim. Id cursus metus aliquam eleifend mi. Vestibulum lorem sed risus ultricies tristique nulla aliquet.
-
-=== Yet another subsection
-
-Quam lacus suspendisse faucibus interdum posuere lorem ipsum. Nulla aliquet enim tortor at auctor urna nunc id cursus. Massa massa ultricies mi quis hendrerit dolor magna. Integer enim neque volutpat ac tincidunt. Dolor magna eget est lorem ipsum dolor. Urna neque viverra justo nec. Neque gravida in fermentum et. Fringilla ut morbi tincidunt augue interdum velit euismod. Dolor sit amet consectetur adipiscing elit. Eu facilisis sed odio morbi. In cursus turpis massa tincidunt dui. Orci indexterm:[orci] phasellus egestas tellus rutrum tellus. Semper eget duis at tellus at urna condimentum. Orci porta non pulvinar neque laoreet suspendisse interdum consectetur.
