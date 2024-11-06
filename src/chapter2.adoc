@@ -12,14 +12,13 @@ Add new fields to the vector control and status register (vcsr) to control the f
 * _fsft_ configures the shift length of the funnel shift, so that the operation can realize flexible funnel shift function without increasing the source operand.
 
 .VCSR bit fields table
-[cols="^1,^1,^1,^1,^3,^3",stripes=even,options="header"]
-|===
-4+|Letters _and_ bits {set:cellbgcolor:green} 2+|A much longer area
-|L|R|W|X|Quarter 1|Quarter 2
-|{set:cellbgcolor:!} 0|0|0|0 2+|Rows alternate colors
-|0|0|0|1|Thing 1|Thing 2
-|1|0|0|0|Thing 3|Thing 4
-|1|1|1|1 2+|Span Thing 1 and 2
-|===
-
-
+[cols="3*", options="header"]
+|====================================
+| 比特位置  | 变量名          | 描述          
+| 31:18 | rsv          | 暂时保留        
+| 17:13 | fsft         | 漏斗移位的元素长度   
+| 12:8  | accsft[12:8] | 累加移位，0 ~ 31 
+| 7:3   | mulsft[7:3]  | 乘法移位，0 ~ 31 
+| 2:1   | vxrm[1:0]    | 定点round模式   
+| 0     | vxsat        |             
+|====================================
