@@ -1,7 +1,7 @@
 [[chapter2]]
 == Registers
 
-. VCSR Register
+. VCSR (Vector Control and Status Register)
 
 Add new fields to the vector control and status register (vcsr) to control the fixed-point multiplication with shift, fixed-point accumulation with shift, and funnel shift related instructions. 
 
@@ -22,3 +22,17 @@ Add new fields to the vector control and status register (vcsr) to control the f
 | 2:1   | vxrm[1:0]    | 定点round模式   
 | 0     | vxsat        |             
 |====================================
+
+
+
+. VNLCR (Vector non-linear Control Register)
+
+This register is used to configure the function type and segmentation information of the nonlinear function. The register width is 32 bits. FuncId configures the type of the current nonlinear function; SegGruCnt configures the number of segments of the nonlinear function. The maximum number of segments of the nonlinear function is 16. This register is a 32-bit control register configured through the Zicsr extended instruction, address _0x00E_.
+
+.VNLCR bit fields table
+[cols="3*", options="header"]
+|==============================
+| 比特位置  | 变量名       | 描述       
+| 31:16 | SegGruCnt | 非线性函数分段个数
+| 15:0  | funcId    | 非线性函数ID  
+|==============================
