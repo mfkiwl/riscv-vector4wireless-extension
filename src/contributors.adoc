@@ -4,3 +4,6 @@ This RISC-V specification has been contributed to directly or indirectly by:
 
 [%hardbreaks]
 * Li Gaoshan <ligaoshan@cmiot.chinamobile.com>
+* Liang Shengdun <liangshengdun@cmiot.chinamobile.com>
+* Li Ri <liri@cmiot.chinamobile.com>
+* cai yuehong <caiyuehong@cmiot.chinamobile.com>
