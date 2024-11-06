@@ -29,9 +29,9 @@ Add new fields to the vector control and status register (vcsr) to control the f
 
 This register is used to configure the function type and segmentation information of the nonlinear function. The register width is 32 bits, configured through the Zicsr extended instruction, address _0x00E_.
 
-* FuncId configures the type of the current nonlinear function; 
+* _FuncId_ configures the type of the current nonlinear function; 
 
-* SegGruCnt configures the number of segments of the nonlinear function. The maximum number of segments of the nonlinear function is 16. 
+* _SegGruCnt_ configures the number of segments of the nonlinear function. The maximum number of segments of the nonlinear function is 16. 
 +
 .VNLCR bit fields table
 [cols="3*", options="header"]
