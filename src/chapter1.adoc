@@ -1,4 +1,4 @@
-[[chapter1]]
+[[chapter2]]
 == Basic operations definition
 
 . int8: 8 bit signed char 
