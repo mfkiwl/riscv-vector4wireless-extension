@@ -27,14 +27,12 @@ Add new fields to the vector control and status register (vcsr) to control the f
 
 === VNLCR (Vector non-linear Control Register)
 
-This register is used to configure the function type and segmentation information of the nonlinear function. The register width is 32 bits. 
+This register is used to configure the function type and segmentation information of the nonlinear function. The register width is 32 bits, configured through the Zicsr extended instruction, address _0x00E_.
 
 * FuncId configures the type of the current nonlinear function; 
 
 * SegGruCnt configures the number of segments of the nonlinear function. The maximum number of segments of the nonlinear function is 16. 
-
-This register is a 32-bit control register configured through the Zicsr extended instruction, address _0x00E_.
-
++
 .VNLCR bit fields table
 [cols="3*", options="header"]
 |==============================
@@ -42,3 +40,4 @@ This register is a 32-bit control register configured through the Zicsr extended
 | 31:16 | SegGruCnt | segments num. of non-linear function. 0：reciprocal; 1: square root; 2: reciprocal of square root; 3: log2; 4: arctan
 | 15:0  | funcId    | non-linear function ID. 0: 4 segments; 1：8 segments; 2：12 segments; 3：16 segments
 |==============================
+
