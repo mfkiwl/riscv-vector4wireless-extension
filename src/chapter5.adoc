@@ -1,4 +1,4 @@
-[[chapter4]]
+[[chapter5]]
 == Fix point dynamic scaling operations
 
 . *vdsmul(vector dynamic scaling multiply)*
