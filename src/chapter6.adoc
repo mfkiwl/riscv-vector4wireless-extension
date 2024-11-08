@@ -1,1 +1,147 @@
+[[chapter6]]
+== Complex dynamic scaling operations
+
+. *vconj(vector complex conjugate)*
++
+.. *Grammar*
++
+vconj.v vd, vs2, vm +
+
+.. *Purpose*
++
+Perform a conjugate transformation on a set of complex numbers.
+
+.. *Description*
++
+vs2 stores a set of signed fixed-point complex numbers, performs conjugate transformation on them, and stores the result in vd.
+
+.. *Operation*
++
+----
+vd[i] = conj(vs2[i])
+----
+
+. *vdscmul (vector dynamic scaling complex multiply)*
++
+.. *Grammar*
++
+vdscmul.vv vd, vs2, vs1, vm +
+vdscmul.vs vd, vs2, vs1, vm +
+
+.. *Purpose*
++
+Bit-width-preserving dynamically scaled multiplication of two fixed-point complex numbers.
+
+.. *Description*
++
+The signed fixed-point complex numbers in vs1 or rs1 and vs2 are multiplied. The intermediate result after the multiplication retains 2 times the bit width. After performing an arithmetic right shift according to the scaling requirements, the lower half bit width is retained and output to vd.
+
+.. *Operation*
++
+----
+VV version
+Tmp.r = vs1[i].r * vs2[i].r - vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.i = vs1[i].r * vs2[i].i + vs1[i].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+vd[i].r = clip_low_SEW(alg_round_shift_right(Tmp.r, mulsft)) //SEW/2=SEW
+vd[i].i = clip_low_SEW(alg_round_shift_right(Tmp.i, mulsft)) //SEW/2=SEW
+
+VS version
+Tmp.r = vs1[0].r * vs2[i].r - vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.i = vs1[0].r * vs2[i].i + vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+vd[i].r = clip_low_SEW(alg_round_shift_right(Tmp.r, mulsft)) //SEW/2=SEW
+vd[i].i = clip_low_SEW(alg_round_shift_right(Tmp.i, mulsft)) //SEW/2=SEW
+----
+
+
+. *vdscmulj (vector dynamic scaling complex conjugate multiply)*
++
+.. *Grammar*
++
+vdscmulj.vv vd, vs2, vs1, vm +
+vdscmulj.vs vd, vs2, vs1, vm +
+
+.. *Purpose*
++
+Bitwidth-constant complex dynamically scaled conjugate multiplication.
+
+.. *Description*
++
+vs2 and the conjugate fixed-point complex numbers of vs1 are multiplied. The intermediate result retains 2 times the bit width. After performing an arithmetic right shift according to the scaling requirements, the lower half bit width is retained and output to vd.
+
+.. *Operation*
++
+----
+VV version
+Tmp.r = vs1[i].r * vs2[i].r + vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = vs1[i].r * vs2[i].i - vs1[i].i * vs2[i].r  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+vd[i].r = clip_low_SEW(alg_round_shift_right(Tmp.r, mulsft)) //SEW/2=SEW
+vd[i].i = clip_low_SEW(alg_round_shift_right(Tmp.i, mulsft)) //SEW/2=SEW
+
+VS version
+Tmp.r = vs1[0].r * vs2[i].r + vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = vs1[0].r * vs2[i].i - vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+vd[i].r = clip_low_SEW(alg_round_shift_right(Tmp.r, mulsft)) //SEW/2 = SEW
+vd[i].i = clip_low_SEW(alg_round_shift_right(Tmp.i, mulsft)) //SEW/2 = SEW
+----
+
+. *vdscredsum(vector dynamic scaling complex reduced sum)*
++
+.. *Grammar*
++
+vdscredsum.v vd, vs2, vm +
+
+.. *Purpose*
++
+The real and imaginary parts of each complex element in the vector register are accumulated and shifted to obtain an output with constant width.
+
+.. *Description*
++
+The real and imaginary parts of the complex elements in vs2 are accumulated separately and the accumulated value is shifted and the low SEW bit is intercepted and output to vd[0]. When SEW is configured as 32bit, SC16 complex addition is performed.
+
+.. *Operation*
++
+----
+Tmp.r = 0；
+Tmp.i = 0；
+For each i in vs2 
+Tmp.r += v0.b[i] == 0 ? 0 : vs2[i].r
+Tmp.i += v0.b[i] == 0 ? 0 : vs2[i].i
+Vd[0].r = clip_low_SEW(alg_round_shift_right(Tmp.r, accsft)) // SEW
+Vd[0].i = clip_low_SEW(alg_round_shift_right(Tmp.i, accsft)) // SEW
+----
+
+. *vdscmac(vector dynamic scaling complex MAC)*
++
+.. *Grammar*
++
+vdscmac.vv vs2, vs1, vm +
+vdscmac.vs vs2, vs1, vm +
+
+.. *Purpose*
++
+Fixed-point complex dynamic scaling multiply-accumulate.
+
+.. *Description*
++
+The signed fixed-point complex numbers of vs2 and vs1 and vs1[0] are multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs arithmetic shifting, and the result is accumulated with the value in the accumulation register. The first operand supports coming from vector register vs1 or general register rs1. General register rs1 stores a complex element, which is multiplied by the complex element in vector register vs2 respectively. When SEW is 32bit, SC16 complex multiplication operation is performed.
+
+.. *Operation*
++
+----
+VV version
+Tmp.r = vs1[i].r * vs2[i].r - vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
+Tmp.i = vs1[i].r * vs2[i].i + vs1[i].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+ACCREG[i].r += Tmp.r;
+ACCREG[i].i += Tmp.i;
+
+VS version
+Tmp.r = vs1[0].r * vs2[i].r - vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
+Tmp.i = vs1[0].r * vs2[i].i + vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+ACCREG[i].r += Tmp.r;
+ACCREG[i].i += Tmp.i;
+----
 
