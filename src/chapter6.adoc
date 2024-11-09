@@ -145,3 +145,359 @@ ACCREG[i].r += Tmp.r;
 ACCREG[i].i += Tmp.i;
 ----
 
+. *vdscmacj(vector dynamic scaling complex conjugate MAC)*
++
+.. *Grammar*
++
+vdscmacj.vv vs2, vs1, vm +
+vdscmacj.vs vs2, vs1, vm +
+
+.. *Purpose*
++
+Fixed-point complex dynamically scaled conjugate multiplication with constant bit width.
+
+.. *Description*
++
+The conjugate multiplication of vs2 and vs1, vs1[0], the intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. When SEW is 32bit, SC16 complex multiplication operation is performed.
+
+.. *Operation*
++
+----
+VV version
+Tmp.r = vs1[i].r * vs2[i].r + vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
+Tmp.i = vs1[i].r * vs2[i].i - vs1[i].i * vs2[i].r  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+ACCREG[i].r += Tmp.r;
+ACCREG[i].i += Tmp.i;
+
+VS version
+Tmp.r = vs1[0].r * vs2[i].r + vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
+Tmp.i = vs1[0].r * vs2[i].i - vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+ACCREG[i].r += Tmp.r;
+ACCREG[i].i += Tmp.i;
+----
+
+. *vdscmaco(vector dynamic scaling complex MAC final result output)*
++
+.. *Grammar*
++
+vdscmaco.vv vd, vs2, vs1, vm +
+vdscmaco.vs vd, vs2, vs1, vm +
+
+.. *Purpose*
++
+Dynamic scaling of fixed-point complex numbers with constant bit width multiply and accumulate and output the final accumulation result.
+
+.. *Description*
++
+The complex numbers of vs2 and vs1 and vs1[0] are multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Arithmetically shift the real part and imaginary part of the value in the accumulation register, truncate and output them to vd, and clear the accumulation register. When SEW is 32bit, the complex number of SC16 is output.
+
+.. *Operation*
++
+----
+VV version
+Tmp.r = vs1[i].r * vs2[i].r - vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
+Tmp.i = vs1[i].r * vs2[i].i + vs1[i].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+ACCREG[i].r += Tmp.r;
+ACCREG[i].i += Tmp.i;
+vd[i].r = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
+vd[i].i = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW
+ACCREG[i] = 0；
+
+VS version
+Tmp.r = vs1[0].r * vs2[i].r - vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
+Tmp.i = vs1[0].r * vs2[i].i + vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+ACCREG[i].r += Tmp.r;
+ACCREG[i].i += Tmp.i;
+vd[i].r = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
+vd[i].i = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW
+ACCREG[i] = 0；
+----
+
+. *vdscmacjo(vector dynamic scaling complex conjugate MAC with output)*
++
+.. *Grammar*
++
+vdscmacjo.vv vd, vs2, vs1, vm +
+vdscmacjo.vs vd, vs2, vs1, vm +
+
+.. *Purpose*
++
+Fixed-point complex number dynamic scaling conjugate multiply and accumulate with constant bit width and output the final accumulation result.
+
+.. *Description*
++
+The complex conjugate of vs1/vs1[0] and vs2 is multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Arithmetically shift the real part and imaginary part of the value in the accumulation register, truncate and output them to vd, and clear the accumulation register. When SEW is 32bit, the complex number of SC16 is output.
+
+.. *Operation*
++
+----
+VV version
+Tmp.r = vs1[i].r * vs2[i].r + vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
+Tmp.i = vs1[i].r * vs2[i].i - vs1[i].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+ACCREG[i].r += Tmp.r;
+ACCREG[i].i += Tmp.i;
+vd[i].r = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
+vd[i].i = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW
+ACCREG[i] = 0；
+
+VS version
+Tmp.r = vs1[0].r * vs2[i].r + vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
+Tmp.i = vs1[0].r * vs2[i].i - vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+ACCREG[i].r += Tmp.r;
+ACCREG[i].i += Tmp.i;
+vd[i].r = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
+vd[i].i = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW
+ACCREG[i] = 0；
+----
+
+. *vdscmacor(vector dynamic scaling complex MAC with widen output of real part)*
++
+.. *Grammar*
++
+vdscmacor.vv vd, vs2, vs1, vm +
+vdscmacor.vs vd, vs2, vs1, vm +
+
+.. *Purpose*
++
+Dynamically scale complex multiplication and accumulation and output the real part with twice the bit width.
+
+.. *Description*
++
+The complex numbers of vs2 and vs1 and vs1[0] are multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Perform arithmetic shifts on the real part in the accumulation register, intercept the low bits of the real part, and output them to vd, and clear the real part to zero. When SEW is configured as 32bit, the real part of the output is 32bit. This command is invalid when SEW is configured as other values.
+
+.. *Operation*
++
+----
+VV version
+Tmp.r = vs1[i].r * vs2[i].r - vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
+ACCREG[i].r += Tmp.r;
+vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
+ACCREG[i].r = 0；
+
+VS version
+Tmp.r = vs1[0].r * vs2[i].r - vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
+ACCREG[i].r += Tmp.r;
+vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
+ACCREG[i].r = 0；
+----
+
+. *vdscmacoi(vector dynamic scaling complex MAC with widen output of image part)*
++
+.. *Grammar*
++
+vdscmacoi.vv vd, vs2, vs1, vm +
+vdscmacoi.vs vd, vs2, vs1, vm +
+
+.. *Purpose*
++
+Dynamically scale complex multiplication and accumulation and output the imaginary part with twice the bit width.
+
+.. *Description*
++
+Multiply the complex numbers of vs2 and vs1 and vs1[0], perform an arithmetic shift on the imaginary part in the accumulation register, intercept the low bits of the imaginary part and output it to vd, and clear the imaginary part to zero. When SEW is configured for 32bit, the imaginary part of the output is 32bit. This command is invalid when SEW is configured to other values.
+
+.. *Operation*
++
+----
+VV version
+Tmp.i = vs1[i].r * vs2[i].i + vs1[i].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+ACCREG[i].i += Tmp.i;
+vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW
+ACCREG[i].i = 0；
+
+VS version
+Tmp.i = vs1[0].r * vs2[i].i + vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+ACCREG[i].i += Tmp.i;
+vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW
+ACCREG[i].i = 0；
+----
+
+. *vdscmacjor(vector dynamic scaling complex conjugate MAC with widen output of real part)*
++
+.. *Grammar*
++
+vdscmacjor.vv vd, vs2, vs1, vm +
+vdscmacjor.vs vd, vs2, vs1, vm +
+
+.. *Purpose*
++
+Dynamically scale complex conjugate multiply and accumulate and output the real part with twice the bit width.
+
+.. *Description*
++
+The complex conjugate of vs1/vs1[0] and vs2 is multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Perform arithmetic shifts on the real part in the accumulation register, intercept the low bits of the real part, and output them to vd, and clear the real part to zero. When SEW is configured as 32bit, the real part of the output is 32bit. This command is invalid when SEW is configured as other values.
+
+.. *Operation*
++
+----
+VV version
+Tmp.r = vs1[i].r * vs2[i].r + vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
+ACCREG[i].r += Tmp.r;
+vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
+ACCREG[i].r = 0；
+
+VS version
+Tmp.r = vs1[0].r * vs2[i].r + vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
+ACCREG[i].r += Tmp.r;
+vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
+ACCREG[i].r = 0；
+----
+
+. *vdscmacjoi(vector dynamic scaling complex conjugate MAC with with widen output of image part)*
++
+.. *Grammar*
++
+vdscmacjoi.vv vd, vs2, vs1, vm +
+vdscmacjoi.vs vd, vs2, vs1, vm +
+
+.. *Purpose*
++
+Dynamically scale complex conjugate multiply and accumulate and output the imaginary part with twice the bit width.
+
+.. *Description*
++
+Multiply the complex conjugate of vs1/vs1[0] and vs2, perform an arithmetic shift on the imaginary part in the accumulation register, intercept the low bits of the imaginary part and output it to vd, and clear the imaginary part to zero. When SEW is configured for 32bit, the imaginary part of the output is 32bit. This command is invalid when SEW is configured to other values.
+
+.. *Operation*
++
+----
+VV version
+Tmp.i = vs1[i].r * vs2[i].i - vs1[i].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+ACCREG[i].i += Tmp.i;
+vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW
+ACCREG[i].i = 0；
+
+VS version
+Tmp.i = vs1[0].r * vs2[i].i - vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+ACCREG[i].i += Tmp.i;
+vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW
+ACCREG[i].i = 0；
+----
+
+. *vdscmulr(vector dynamic scaling complex multiply real part)*
++
+.. *Grammar*
++
+vdscmulr.vv vd, vs2, vs1, vm +
+vdscmulr.vs vd, vs2, vs1, vm +
+
+.. *Purpose*
++
+Fixed-point complex dynamically scaled multiplication, outputting twice the bit-width real part.
+
+.. *Description*
++
+vs2 multiply the conjugate of vs1/vs1[0]. The real part of the multiplied result retains 2 times the bit width. It performs an arithmetic right shift according to the scaling requirements and then outputs it to vd. When SEW is configured as 32bit, the SC16 complex multiplication operation is performed and the 32bit real part is output.
+
+.. *Operation*
++
+----
+VV version
+Tmp.r = vs1[i].r * vs2[i].r - vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+vd[i] = clip_low_SEW(alg_round_shift_right(Tmp.r, mulsft)) //SEW
+
+VS version
+Tmp.r = vs1[0].r * vs2[i].r - vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+vd[i] = clip_low_SEW(alg_round_shift_right(Tmp.r, mulsft)) //SEW
+----
+
+. *vdscmuli(vector dynamic scaling complex multiply image part)*
++
+.. *Grammar*
++
+vdscmuli.vv vd, vs2, vs1, vm +
+vdscmuli.vs vd, vs2, vs1, vm +
+
+.. *Purpose*
++
+Fixed-point complex number dynamic scaling multiplication, output twice the bit width imaginary part.
+
+.. *Description*
++
+vs2 multiply the conjugate of vs1/vs1[0]. The imaginary part of the multiplied result retains 2 times the bit width. It performs an arithmetic right shift according to the scaling requirements and then outputs it to vd. When SEW is configured as 32bit, the SC16 complex multiplication operation is performed and the 32bit imaginary part is output.
+
+.. *Operation*
++
+----
+VV version
+Tmp.i = vs1[i].r * vs2[i].i + vs1[i].i * vs2[i].r  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+vd[i] = clip_low_SEW(alg_round_shift_right(Tmp.i, mulsft)) //SEW
+
+VS version
+Tmp.i = vs1[0].r * vs2[i].i + vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+vd[i] = clip_low_SEW(alg_round_shift_right(Tmp.i, mulsft)) //SEW
+----
+
+. *vdscmuljr(vector dynamic scaling complex conjugate multiply real part)*
++
+.. *Grammar*
++
+vdscmuljr.vv vd, vs2, vs1, vm +
+vdscmuljr.vs vd, vs2, vs1, vm +
+
+.. *Purpose*
++
+Dynamically scaled conjugate multiplication of fixed-point complex numbers, outputting twice the bit-width real part.
+
+.. *Description*
++
+vs2 multiply the conjugate of vs1/vs1[0]. The real part of the conjugate multiplication result retains 2 times the bit width, and is output to vd after performing an arithmetic right shift according to the scaling requirements. When SEW is configured as 32bit, the complex conjugate multiplication operation of SC16 is performed, and the real part of 32bit is output.
+
+.. *Operation*
++
+----
+VV version
+Tmp.r = vs1[i].r * vs2[i].r + vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+vd[i] = clip_low_SEW(alg_round_shift_right(Tmp.r, mulsft)) //SEW
+
+VS version
+Tmp.r = vs1[0].r * vs2[i].r + vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+vd[i] = clip_low_SEW(alg_round_shift_right(Tmp.r, mulsft)) //SEW
+----
+
+. *vdscmulji(vector dynamic scaling complex conjugate multiply image part)*
++
+.. *Grammar*
++
+vdscmulji.vv vd, vs2, vs1, vm +
+vdscmulji.vs vd, vs2, vs1, vm +
+
+.. *Purpose*
++
+Dynamically scaled conjugate multiplication of fixed-point complex numbers, outputting twice the bit width of the imaginary part.
+
+.. *Description*
++
+vs2 multiply the conjugate of vs1/vs1[0]. The imaginary part of the conjugate multiplication result retains 2 times the bit width, and is output to vd after performing an arithmetic right shift according to the scaling requirements. When SEW is configured as 32bit, the complex conjugate multiplication operation of SC16 is performed and the 32bit imaginary part is output.
+
+.. *Operation*
++
+----
+VV version
+Tmp.i = vs1[i].i * vs2[i].r - vs1[i].r * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+vd[i] = clip_low_SEW(alg_round_shift_right(Tmp.i, mulsft)) //SEW
+
+VS version
+Tmp.i = vs1[0].i * vs2[i].r - vs1[0].r * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+vd[i] = clip_low_SEW(alg_round_shift_right(Tmp.i, mulsft)) //SEW
+----
