@@ -1,1 +1,100 @@
+[[chapter7]]
+== Dynamic scaling Reduced operation
+
+. *vdsredsum(vector dynamic scaling reduced sum)*
++
+.. *Grammar*
++
+vdsredsum.v vd, vs2, vm +
+
+.. *Purpose*
++
+Each element in the vector register is accumulated and then shifted to the right dynamically, and the output width remains unchanged.
+
+.. *Description*
++
+The elements in vs2 are accumulated and the accumulated value is dynamically shifted to the right by round arithmetic and then the low SEW bit is intercepted and output to vd[0].
+
+.. *Operation*
++
+----
+Tmp = 0；
+For each i in vs2 
+Tmp += v0.b[i] == 0 ? 0 : vs2[i]
+Vd[0] = clip_low_SEW(alg_round_shift_right(tmp, accsft)) // SEW
+----
+
+. *vdsredsumn(vector dynamic scaling reduced sum for each n element)*
++
+.. *Grammar*
++
+vdsredsumn.vs vd, vs2, rs1, vm +
+vdsredsumn.vi vd, vs2, uimm, vm +
+
+.. *Purpose*
++
+Every n elements in the vector register are accumulated and then round shifted before output, where n is the power of an integer of 2.
+
+.. *Description*
++
+Every 2^rs1 elements in vs2 are accumulated and then do algorithm round right shift before output to vd.
+
+.. *Operation*
++
+----
+VS version
+vd[j] = clip_low_SEW(alg_round_shift_right(sum(vs2[j * 2^rs1 .... j * 2^rs1 + 2^rs1 - 1]), accsft))
+
+VI version
+vd[j] = clip_low_SEW(alg_round_shift_right(sum(vs2[j * 2^uimm .... j * 2^uimm + 2^uimm - 1]), accsft))
+----
+
+
+. *vredmaxi(vector reduced max with index)*
++
+.. *Grammar*
++
+vredmaxi.vv vd, vs2, vs1, vm +
+
+.. *Purpose*
++
+Find the maximum value in the vector register and its corresponding index value and output it to the first and second elements in the target register.
+
+.. *Description*
++
+vs2 saves the input value, vs1 saves the index value corresponding to each input value, finds the maximum value in vs2 and writes it into vd[0], and its corresponding index value is written into vd[1]. If the maximum value appears in multiple locations, follow The first maximum value from low to high index position is written into vd, and the value in vs2 and the index value in vs1 are set to the signed minimum value corresponding to SEW.
+
+.. *Operation*
++
+----
+vd[0] = max[vs2]; 
+i = max_i[vs2]; // First maximum value searched from lowest element
+vd[1] = vs1[i];
+vs1[i] = MIN_SEW;
+vs2[i] = MIN_SEW;
+----
+
+. *vredmini(vector reduced min with index)*
++
+.. *Grammar*
++
+vredmini.vv vd, vs2, vs1, vm +
+
+.. *Purpose*
++
+Find the minimum value in the vector register and its corresponding index value and output it to the first and second elements in the target register.
+
+.. *Description*
++
+vs2 saves the input value, vs1 saves the index value corresponding to each input value, finds the minimum value in vs2 and writes it into vd[0], and its corresponding index value is written into vd[1]. If the minimum value appears in multiple locations, follow The first minimum value of the element index position from low to high is written into vd, and the value in vs2 and the index value in vs1 are set to the signed maximum value corresponding to SEW.
+
+.. *Operation*
++
+----
+vd[0] = min[vs2];
+i = min_i[vs2]; //First minimum value searched from lowest element
+vd[1] = vs1[i];
+vs1[i] = MAX_SEW;
+vs2[i] = MAX_SEW;
+----
 
