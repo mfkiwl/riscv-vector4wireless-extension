@@ -1,7 +1,7 @@
 [[chapter10]]
 == Fast non-linear operations
 === Introduction
-In the fast nonlinear instructions vs2 store the fixed-point value in Q32.n format，vs1 store the scaling value n of the fix point format, n belongs to [0, 31]. vd stores the scaling shift value or the mantissa value of the fix point nonlinear output. +
+In the fast nonlinear instructions vs2 store the fixed-point value in Q32.n format，vs1 store the fix point value n of the fix point format, n belongs to [0, 31]. vd stores the scaling shift value or the mantissa value of the fix point nonlinear output. +
 
 The segmentation of the nonlinear function is represented by five parameters A, B, S, SE and T. A represents the slope of the straight line, B represents the bias of the straight line, S represents the mantissa value of the starting position of the straight line on X-axis, SE is the exponent value value of the starting position of the straight line on X-axis, T is the nonlinear function type. +
 
@@ -31,30 +31,94 @@ R_NL_A[16]: 16 nonlinear function segement slope registers +
 R_NL_B[16]: 16 nonlinear function segement offset registers +
 
 === Instructions
-. *vpharot(vector phase rotate)*
+. *vlnlp(vector load nonlinear parameter)*
 +
 .. *Grammar*
 +
-vpharot.s vd, rs1 +
-vpharot.v vd, vs2 +
+vlnlp.s rs1 +
 
 .. *Purpose*
 +
-Generates a sequence of unit complex numbers with a specified phase.
+Load nonlinear function parameter configuration from vector memory to nonlinear function parameter registers vnlpr0 and vnlpr1
 
 .. *Description*
 +
-The low 16 bits of rs1 specify the initial phase value of the rotation sequence, the high 16 bits of rs1 specify the step size of the phase rotation, and the SC16 phase rotation sequence is generated and output to vd. Or each element phase input value of vs2 generates the corresponding complex number output to vd. The real and imaginary parts are the fixed-point values ​​of Q16.15.
+Load configuration from vector memory address rs1 to vnlpr0 and vnlpr1, a total of 2048bits.
 
 .. *Operation*
 +
 ----
-S version
-vd[i].i = sin(rs1_l + i * rs1_h) // SEW
-vd[i].r = cos(rs1_l + i * rs1_h) // SEW
+vnlpr0 = *rs1;
+vnlpr1 = *(rs1 + 128);
+----
 
-V version
-vd[i].i = sin(vs2[i]) // SEW
-vd[i].r = cos(vs2[i]) // SEW
+. *vnle(vector non-linear exponent calculation instruction)*
++
+.. *Grammar*
++
+vnle.vv vd, vs2, vs1, vm +
+vnle.vs vd, vs2, vs1, vm +
+
+.. *Purpose*
++
+Computes the exponential part of the output value of a nonlinear function of an input vector.
+
+.. *Description*
++
+vs2 stores the fixed-point value, vs1 or vs1[0] stores the fixed-point value n. According to the function type configured in the nonlinear control register, the corresponding exponential result E is calculated, and the result is placed in vd.
+
+.. *Operation*
++
+----
+VV version
+x[i], E[i] = NORM(R_NL_TYPE, vs2[i], vs1[i])
+x[i], s[i], E[i] = preproc(R_NL_TYPE, x[i], E[i])
+vd[i] = ExpAdjust(R_NL_TYPE, E[i])
+
+VS version
+x[i], E[i] = NORM(R_NL_TYPE, vs2[i], vs1[0])
+x[i], s[i], E[i] = preproc(R_NL_TYPE, x[i], E[i])
+vd[i] = ExpAdjust(R_NL_TYPE, E[i])
+----
+
+. *vnlm(vector non-linear mantissa calculation instruction)*
++
+.. *Grammar*
++
+vnlm.vv vd, vs2, vs1, vm +
+vnlm.vs vd, vs2, vs1, vm +
+
+.. *Purpose*
++
+Computes the linear portion of the output of a nonlinear function of the input vector.
+
+.. *Description*
++
+vs2 stores the fixed-point value, vs1 or vs1[0] stores the fixed-point value n. According to the function type configured in the nonlinear control register and the segmented parameter configuration, the segmented nonlinear result is calculated. Finally, the results are put into vd after fix point format conversion.
+
+.. *Operation*
++
+----
+VV version
+x[i], E[i] = NORM(R_NL_TYPE, vs2[i], vs1[i])
+x[i], s[i], E[i] = preproc(R_NL_TYPE, x[i], E[i])
+segIdx[i] = findSeg(x[i], R_SEG[N])  // N is segment group ID
+If (segIdx[i] is valid)
+{ 
+tmp = alg_round_shift_right((A[segIdx[i]] * x[i]), n) + B[segIdx[i]];
+Vd[i] = postproc(R_NL_TYPE, tmp)
+}
+N =(N+1) mod K;  //K is the max segments group number
+
+VS version
+x[i], E[i] = NORM(R_NL_TYPE, vs2[i], vs1[0])
+x[i], s[i], E[i] = preproc(R_NL_TYPE, x[i], E[i])
+segIdx[i] = findSeg(x[i], R_SEG[N]) // N is segment group ID
+If (segIdx[i] is valid)
+{ 
+tmp = alg_round_shift_right((A[segIdx[i]] * x[i]), n) + B[segIdx[i]];
+Vd[i] = postproc(R_NL_TYPE, tmp)
+}
+N =(N+1) mod K; //K is the max segments group number
 ----
 
