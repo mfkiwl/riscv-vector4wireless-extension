@@ -1,1 +1,60 @@
+[[chapter10]]
+== Fast non-linear operations
+=== Introduction
+In the fast nonlinear instructions vs2 store the fixed-point value in Q32.n format，vs1 store the scaling value n of the fix point format, n belongs to [0, 31]. vd stores the scaling shift value or the mantissa value of the fix point nonlinear output. +
+
+The segmentation of the nonlinear function is represented by five parameters A, B, S, SE and T. A represents the slope of the straight line, B represents the bias of the straight line, S represents the mantissa value of the starting position of the straight line on X-axis, SE is the exponent value value of the starting position of the straight line on X-axis, T is the nonlinear function type. +
+
+4 segments form a segment group. The vector nonlinear function needs to perform a segmented search for each element in the vector. If each element is searched for all segments at the same time, it consumes too much hardware resources, and the number of segments can change in scenarios with different accuracy requirements.
+In order to reduce hardware resources and make linear segmentation settings more flexible, linear segments need to be grouped into K segment groups, each group has 4 segments. Each instruction only scans one segment group at a time. More accuracy needs more segment groups, with more segment groups it needs to call the instruction multiple times, each call only scans one of the segment group. +
+
+The starting index of the segment group is random. Each time when vnlm instruction is called, the segment group index is incremented by one. After calling K times, the entire segment range is covered.
+
+=== Vector nonlinear parameter register
+The segmentation information of the nonlinear function is stored through the parameter configuration registers vnlcr0 and vnlcr1. The length of vnlcr0 and vnlcr1 is 1024bits. This register is configured through the vlnlp instruction. +
+
+- *vnlpr0 1024bits (vector non-linear paramter register 0)*
+[cols="2*", options="header"]
+|========================
+| R_NL_A[16] | R_NL_B[16]
+|========================
+
+- *vnlpr1 1024bits (vector non-linear paramter register 1)*
+[cols="2*", options="header"]
+|================================
+| R_NL_SEG_EXP[16] | R_NL_SEG[16]
+|================================
+
+R_NL_SEG[16]: 16 nonlinear function segment points registers +
+R_NL_SEG_EXP[16]: 16 nonlinear function segment points exponent registers (required for some nonlinear functions) +
+R_NL_A[16]: 16 nonlinear function segement slope registers +
+R_NL_B[16]: 16 nonlinear function segement offset registers +
+
+=== Instructions
+. *vpharot(vector phase rotate)*
++
+.. *Grammar*
++
+vpharot.s vd, rs1 +
+vpharot.v vd, vs2 +
+
+.. *Purpose*
++
+Generates a sequence of unit complex numbers with a specified phase.
+
+.. *Description*
++
+The low 16 bits of rs1 specify the initial phase value of the rotation sequence, the high 16 bits of rs1 specify the step size of the phase rotation, and the SC16 phase rotation sequence is generated and output to vd. Or each element phase input value of vs2 generates the corresponding complex number output to vd. The real and imaginary parts are the fixed-point values ​​of Q16.15.
+
+.. *Operation*
++
+----
+S version
+vd[i].i = sin(rs1_l + i * rs1_h) // SEW
+vd[i].r = cos(rs1_l + i * rs1_h) // SEW
+
+V version
+vd[i].i = sin(vs2[i]) // SEW
+vd[i].r = cos(vs2[i]) // SEW
+----
 
