@@ -1,66 +1,62 @@
 [[chapter4]]
 == Complex number format convert
 
-. *vcpack(vector complex packing instruction)*
-+
-.. *Grammar*
+=== vcpack(vector complex packing instruction)
+. *Grammar*
 +
 vcpack.vv vd, vs2, vs1, vm +
 
-.. *Purpose*
+. *Purpose*
 +
 When SEW is 32bit, two 32-bit elements are saturated and truncated to the high 16 bits to form a complex number in SC16 format.
 
-.. *Description*
+. *Description*
 +
 The elements of vs2 are used as real parts, and the elements of vs1 are used as imaginary parts. The elements in vs2 and vs1 are saturated and intercepted with the high 16 bits to form a complex number in SC16 format:
 
-.. *Operation*
+. *Operation*
 +
 ----
 vd[i].r = round_clip_high_16(vs2[i]);
 vd[i].i = round_clip_high_16(vs1[i]); 
 ----
 
-. *vcunpackr(vector complex real unpacking instruction)*
-+
-.. *Grammar*
+=== vcunpackr(vector complex real unpacking instruction)
+. *Grammar*
 +
 vcunpackr.v vd, vs2, vm +
 
-.. *Purpose*
+. *Purpose*
 +
 When SEW is 32bit, the 16bit imaginary part of the SC16 complex number is converted into 32bit output.
 
-.. *Description*
+. *Description*
 +
 The elements of vs2 are SC16 complex numbers. The 16-bit imaginary part is extracted and placed in the high 16 bits of vd, and the low 16 bits are padded with zeros.
 
-.. *Operation*
+. *Operation*
 +
 ----
 vd[i] = ZP32(vs2[i].r); 
 ----
 
 
-. *vcunpacki(vector complex image unpacking instruction)*
-+
-.. *Grammar*
+=== vcunpacki(vector complex image unpacking instruction)
+. *Grammar*
 +
 vcunpacki.v vd, vs2, vm +
 
-.. *Purpose*
+. *Purpose*
 +
 When SEW is 32bit, the 16bit imaginary part of the SC16 complex number is converted into 32bit output.
 
-.. *Description*
+. *Description*
 +
 The elements of vs2 are SC16 complex numbers. The 16-bit imaginary part is extracted and placed in the high 16 bits of vd, and the low 16 bits are padded with zeros.
 
-.. *Operation*
+. *Operation*
 +
 ----
 vd[i] = ZP32(vs2[i].i); 
 ----
 
-. 
