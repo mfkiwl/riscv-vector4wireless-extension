@@ -1,6 +1,7 @@
 [[chapter11]]
 == Apendix A
 
+=== RVV & Zvw Encoding space
 * *Zvw reuses the extension space of RVV (Func7 encoding space 1010111)*
 +
 .RVV overall table
@@ -122,10 +123,10 @@
 | 111101 | V |   |  | *_vconj_*      | 111101 | V | X | vwmacc   | 111101 | V | F | vfwnmacc  
 | 111110 | V | X |  | *_vdscmacjor_* | 111110 |   | X | vwmaccus | 111110 | V | F | vfwmsac   
 | 111111 | V | X |  | *_vdscmacjo_*  | 111111 | V | X | vwmaccsu | 111111 | V | F | vfwnmsac  
-|==========================================================================================
+|===========================================================================================
 
-== Apendix B
-* *Zvw Instruction encoding*
+=== Zvw Instruction encoding
+- *Zvw Instruction encoding*
 +
 .Zvw encoding table
 [cols="8*", options="header"]
@@ -189,4 +190,22 @@
 | vnlm.vv vd, vs2, vs1, vm        | 101110 | vm | vs2   | vs1         | 010   | vd     | 1010111
 | vnlm.vs vd, vs2, vs1, vm        | 101110 | vm | vs2   | vs1         | 110   | vd     | 1010111
 |===============================================================================================
-
++
+- *Zvw Load & Store Instruction encoding*
++
+.Zvw load & store instruction encoding table
+[cols="8*", options="header"]
+|=========================================================================================
+| Inst. format            | nf-mew-mop | vm | lumop/sumop | rs1 | width | vd/vs3 | Func7  
+| vlfcb2h.v vd, rs1, vm   | 000000     | vm | 10001       | rs1 | 101   | vd     | 0000111
+| vlfcb2w.v vd, rs1, vm   | 000000     | vm | 10010       | rs1 | 110   | vd     | 0000111
+| vlfch2w.v vd, rs1, vm   | 000000     | vm | 10011       | rs1 | 110   | vd     | 0000111
+| vlfcpa2c.v vd, rs1, vm  | 000000     | vm | 10100       | rs1 | 110   | vd     | 0000111
+| vlfcpb2c.v vd, rs1, vm  | 000000     | vm | 10101       | rs1 | 110   | vd     | 0000111
+| vsfch2b.v vs3, rs1, vm  | 000000     | vm | 10001       | rs1 | 101   | vs3    | 0100111
+| vsfcw2b.v vs3, rs1, vm  | 000000     | vm | 10010       | rs1 | 110   | vs3    | 0100111
+| vsfcw2h.v vs3, rs1, vm  | 000000     | vm | 10011       | rs1 | 110   | vs3    | 0100111
+| vsfcc2pa.v vs3, rs1, vm | 000000     | vm | 10100       | rs1 | 110   | vs3    | 0100111
+| vsfcc2pb.v vs3, rs1, vm | 000000     | vm | 10101       | rs1 | 110   | vs3    | 0100111
+| vlnlp.s rs1             | 000000     | 1  | 11000       | rs1 | 110   | 00000  | 0000111
+|=========================================================================================
