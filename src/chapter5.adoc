@@ -1,22 +1,21 @@
 [[chapter5]]
 == Fix point dynamic scaling operations
 
-. *vdsmul(vector dynamic scaling multiply)*
-+
-.. *Grammar*
+=== vdsmul(vector dynamic scaling multiply)
+. *Grammar*
 +
 vdsmul.vv vd, vs2, vs1, vm +
 vdsmul.vs vd, vs2, vs1, vm +
 
-.. *Purpose*
+. *Purpose*
 +
 Two fixed-point numbers are multiplied, and the multiplied result is shifted according to the mulsft shift value for scaling, and the result bit width remains unchanged.
 
-.. *Description*
+. *Description*
 +
 The signed fixed-point number of vs1 or vs1[0] and vs2 is multiplied. The intermediate result after the multiplication retains 2 times the bit width. After performing an arithmetic right shift according to the scaling requirements, the lower half bit width is retained and output to vd.
 
-.. *Operation*
+. *Operation*
 +
 ----
 VV version
@@ -30,23 +29,22 @@ Tmp = alg_round_shift_right(tmp, mulsft);
 vd[i] = clip_low_SEW(tmp); // SEW = 2*SEW
 ----
 
-. *vdsmacini(vector dynamic scaling MAC initialization)*
-+
-.. *Grammar*
+=== vdsmacini(vector dynamic scaling MAC initialization)
+. *Grammar*
 +
 vdsmacini.v vs1, vm +
 vdsmacini.s rs1，vm +
 vdsmacini.i uimm, vm +
 
-.. *Purpose*
+. *Purpose*
 +
 Initializes the shift register value for each element of the multiply accumulator.
 
-.. *Description*
+. *Description*
 +
 vs1, rs1 or uimm are stored as the shift value before the accumulator accumulates, and the multiplication shift value in the multiplication and accumulation is configured through this instruction.
 
-.. *Operation*
+. *Operation*
 +
 ----
 V version
@@ -59,23 +57,21 @@ I version
 MULSFT[i] = uimm;
 ----
 
-
-. *vdsmac(vector dynamic scaling MAC)*
-+
-.. *Grammar*
+=== vdsmac(vector dynamic scaling MAC)
+. *Grammar*
 +
 vdsmac.vv vs2, vs1, vm +
 vdsmac.vs vs2, vs1, vm +
 
-.. *Purpose*
+. *Purpose*
 +
 Calculate the multiplication and accumulation of two fixed-point numbers. The intermediate result of the multiplication and the final accumulation result can be dynamically shifted.
 
-.. *Description*
+. *Description*
 +
 The signed fixed-point number of vs1 or vs1[0] and vs2 is multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs arithmetic right shifting, and the result is accumulated with the value in the accumulation register.
 
-.. *Operation*
+. *Operation*
 +
 ----
 VV version
@@ -89,22 +85,21 @@ Tmp = alg_round_shift_right(tmp, MULSFT[i]);
 ACCREG[i] += tmp;
 ----
 
-. *vdsmaco(vector dynamic scaling MAC with final result output)*
-+
-.. *Grammar*
+=== vdsmaco(vector dynamic scaling MAC with final result output)
+. *Grammar*
 +
 vdsmaco.vv vd, vs2, vs1, vm +
 vdsmaco.vs vd, vs2, vs1,vm +
 
-.. *Purpose*
+. *Purpose*
 +
 The two fixed-point numbers perform a dynamic scaling accumulation operation, and then the accumulation result is output according to the final fixed-point shift configuration.
 
-.. *Description*
+. *Description*
 +
 The signed fixed-point number of vs1 or vs1[0] and vs2 is multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs arithmetic shifting. The result is accumulated with the value in the accumulation register. After the accumulation, the value in the accumulation register is The value is arithmetic shifted and then truncated and output to vd, and the accumulation register is cleared. This instruction is not controlled by LMUL.
 
-.. *Operation*
+. *Operation*
 +
 ----
 VV version
@@ -122,21 +117,20 @@ vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i], accsft)) // SEW
 ACCREG[i] = 0；
 ----
 
-. *vlsb(vector leading sign bits instruction)*
-+
-.. *Grammar*
+=== vlsb(vector leading sign bits instruction)
+. *Grammar*
 +
 vlsb.v vd, vs2, vm +
 
-.. *Purpose*
+. *Purpose*
 +
 Calculate the value of the number of leading sign bits minus 1, which is used for normalization operations of fixed-point numbers.
 
-.. *Description*
+. *Description*
 +
 vs2 stores fixed-point values, calculates the number of leading sign bits of each fixed-point value minus one, and outputs this value to vd.
 
-.. *Operation*
+. *Operation*
 +
 ----
 vd[i] = lsb(vs2[i]);
