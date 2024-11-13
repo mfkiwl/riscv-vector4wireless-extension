@@ -13,7 +13,7 @@
 # the Doc Template for RISC-V Extensions.
 
 DOCS := \
-	RISC-V Vector Extension for Wireless.adoc
+	RISCV-Vector-Extension-for-Wireless.adoc
 
 DATE ?= $(shell date +%Y-%m-%d)
 VERSION ?= v0.0.0
