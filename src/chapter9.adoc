@@ -1,17 +1,17 @@
 [[chapter9]]
 == Inter-element operation instructions
 
-. *vperm(vector permutation)*
+=== *vperm(vector permutation)*
 +
-.. *Grammar*
+. *Grammar*
 +
 vperm.vi vd, vs2, uimm +
 
-.. *Purpose*
+. *Purpose*
 +
 According to the element sorting mode predefined by the customer, some elements are taken out from the elements of the source vector register, the elements are reordered according to a certain defined sorting mode and output to the destination vector register.
 
-.. *Description*
+. *Description*
 +
 The original data is stored in vs2. uimm selects a predefined sorting mode and takes out elements from vs2 according to the new element sorting mode and places them in new positions in vd. The values ​​at the X index position are filled with 0. The pattern index starts counting from 0.
 +
@@ -27,51 +27,50 @@ P6: 0123 -> 0123012301230123XXXXXXXXXXXXXXXX +
 P7: 0123 -> 0000111122223333XXXXXXXXXXXXXXXX +
 P8: 0123 ... 31 -> 31 .... 3210 +
 +
-.. *Operation*
+. *Operation*
 +
 ----
 vd[i] = vs2[PATTEN[uimm][i]]
 ----
 
-. *vfsl(vector funnel shift left)*
+=== *vfsl(vector funnel shift left)*
 +
-.. *Grammar*
+. *Grammar*
 +
 vfsl.vv vd, vs2, vs1 +
 
-.. *Purpose*
+. *Purpose*
 +
 The elements of two vector registers are funnel shifted left.
 
-.. *Description*
+. *Description*
 +
 vs2 and vs1 form a new vector with twice the length from left to right. All elements are sequentially shifted left by fsht bits, left shifted out and discarded. Finally, the left half of the elements are intercepted to form a new vector and output to vd.
 
-.. *Operation*
+. *Operation*
 +
 ----
 vd = vs2[(31- fsft) ... 0] : vs1[31 ... (31 - fsft + 1)]
 ----
 
 
-. *vfsr(vector funnel shift right)*
+=== *vfsr(vector funnel shift right)*
 +
-.. *Grammar*
+. *Grammar*
 +
 vfsr.vv vd, vs2, vs1 +
 
-.. *Purpose*
+. *Purpose*
 +
 The elements of two vector registers are funnel shifted right.
 
-.. *Description*
+. *Description*
 +
 vs2 and vs1 form a new vector with twice the length from left to right. All elements are shifted to the right by fsht bits in order, and the right side is shifted out and discarded. Finally, the right half of the elements are intercepted to form a new vector and output to vd.
 
-.. *Operation*
+. *Operation*
 +
 ----
 vd = vs2[(fsft - 1) ... 0] : vs1[31 ... fsft]
 ----
 
-. 
