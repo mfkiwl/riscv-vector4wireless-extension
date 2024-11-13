@@ -27,7 +27,7 @@
 .Zvw Func6 encoding table part 1
 [cols="13*", options="header"]
 |=================================================================================================
-| funct6 |   |   |   |              | funct6 |   |   |             | funct6 |   |   |             
+5+| funct6 4+| funct6 4+| funct6            
 | 000000 | V | X | I | vadd         | 000000 | V |   | vredsum     | 000000 | V | F | vfadd       
 | 000001 | V | X |   | vdsmac       | 000001 | V |   | vredand     | 000001 | V |   | vfredusum   
 | 000010 | V | X |   | vsub         | 000010 | V |   | vredor      | 000010 | V | F | vfsub       
@@ -50,7 +50,7 @@
 .Zvw Func6 encoding table part 2
 [cols="13*", options="header"]
 |==============================================================================================
-| funct6 |   |   |   |            | funct6 |   |   |             | funct6 |   |   |             
+5+| funct6 4+| funct6 4+| funct6               
 | 010000 | V | X | I | vadc       | 010000 | V |   | VWXUNARYO   | 010000 | V |   | VWFUNARYO   
 |        |   |   |   |            | 010000 |   | X | VRXUNARYO   | 010000 |   | F | VRFUNARYO   
 | 010001 | V | X | I | vmadc      | 010001 | V |   | vcunpackr/i | 010001 |   |   |             
@@ -73,7 +73,7 @@
 .Zvw Func6 encoding table part 3
 [cols="13*", options="header"]
 |========================================================================================
-| funct6 |   |   |   |          | funct6 |   |   |         | funct6  |   |   |        
+5+| funct6 4+| funct6 4+| funct6          
 | 100000 | V | X | I | vsaddu   | 100000 | V | X | vdivu   | 10000 0 | V | F | vfdiv  
 | 100001 | V | X | I | vsadd    | 100001 | V | X | vdiv    | 100001  |   | F | vfrdiv 
 | 100010 | V | X |   | vssubu   | 100010 | V | X | vremu   | 100010  |   |   |        
@@ -92,3 +92,26 @@
 | 101110 | V | X | I | vnclipu  | 101110 | V |   | vnlm    | 101110  | V | F | vfmsac 
 | 101111 | V | X | I | vnclip   | 101111 | V | X | vnmsac  | 101111  | V | F | vfnmsac
 |========================================================================================
+
+.Zvw Func6 encoding table part 4
+[cols="13*", options="header"]
+|===========================================================================================
+5+| funct6 4+| funct6 4+| funct6         
+| 110000 | V |   |  | vwredsumu  | 110000 | V | X | vwaddu   | 110000 | V | F | vfwadd     
+| 110001 | V |   |  | vwredsum   | 110001 | V | X | vwadd    | 110001 | V |   | vfwredusum
+| 110010 | V | X |  | vdscmul    | 110010 | V | X | vwsubu   | 110010 | V | F | vfwsub     
+| 110011 | V | X |  | vdscmulj   | 110011 | V | X | vwsub    | 110011 | V |   | vfwredosum 
+| 110100 | V | X |  | vdscmac(j) | 110100 | V | X | vwaddu.w | 110100 | V | F | vfwadd.w  
+| 110101 | V | X |  | vdscmacjoi | 110101 | V | X | vwadd.w  | 110101 |   |   |           
+| 110110 | V | X |  | vdscmaco   | 110110 | V | X | vwsubu.w | 110110 | V | F | vfwsub.w  
+| 110111 | V | X |  | vdscmacor  | 110111 | V | X | vwsub.w  | 110111 |   |   |            
+| 111000 | V | X |  | vdscmacoi  | 111000 | V | X | vwmulu   | 111000 | V | F | vfwmul    
+| 111001 | V | X |  | vdscmulr   | 111001 | V | X | vdsmul   | 111001 |   |   |           
+| 111010 | V | X |  | vdscmuli   | 111010 | V | X | vwmulsu  | 111010 |   |   |           
+| 111011 | V | X |  | vdscmuljr  | 111011 | V | X | vwmul    | 111011 |   |   |           
+| 111100 | V | X |  | vdscmulji  | 111100 | V | X | vwmaccu  | 111100 | V | F | vfwmacc   
+| 111101 | V |   |  | vconj      | 111101 | V | X | vwmacc   | 111101 | V | F | vfwnmacc  
+| 111110 | V | X |  | vdscmacjor | 111110 |   | X | vwmaccus | 111110 | V | F | vfwmsac   
+| 111111 | V | X |  | vdscmacjo  | 111111 | V | X | vwmaccsu | 111111 | V | F | vfwnmsac  
+|==========================================================================================
+
