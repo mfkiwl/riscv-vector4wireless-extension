@@ -27,3 +27,5 @@ V version
 vd[i].i = sin(vs2[i]) // SEW
 vd[i].r = cos(vs2[i]) // SEW
 ----
+
+. 
