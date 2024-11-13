@@ -2,7 +2,6 @@
 == Inter-element operation instructions
 
 === *vperm(vector permutation)*
-+
 . *Grammar*
 +
 vperm.vi vd, vs2, uimm +
@@ -34,7 +33,6 @@ vd[i] = vs2[PATTEN[uimm][i]]
 ----
 
 === *vfsl(vector funnel shift left)*
-+
 . *Grammar*
 +
 vfsl.vv vd, vs2, vs1 +
@@ -55,7 +53,6 @@ vd = vs2[(31- fsft) ... 0] : vs1[31 ... (31 - fsft + 1)]
 
 
 === *vfsr(vector funnel shift right)*
-+
 . *Grammar*
 +
 vfsr.vv vd, vs2, vs1 +
