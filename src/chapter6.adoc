@@ -349,7 +349,7 @@ vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
 ACCREG[i].r = 0；
 ----
 
-=== vdscmacjoi(vector dynamic scaling complex conjugate MAC with with widen output of image part)
+=== vdscmacjoi(vector dynamic scaling complex conjugate MAC with widen output of image part)
 . *Grammar*
 +
 vdscmacjoi.vv vd, vs2, vs1, vm +
