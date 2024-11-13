@@ -1,9 +1,8 @@
 [[chapter3]]
 == Vector Load and Store
 
-. *vlfcA2B(vector load and format convert from format A to format B)*
-+
-.. *Grammar*
+=== vlfcA2B(vector load and format convert from format A to format B)
+. *Grammar*
 +
 vlfcb2h.v  vd, rs1, vm +
 vlfcb2w.v  vd, rs1, vm +
@@ -11,11 +10,11 @@ vlfch2w.v  vd, rs1, vm +
 vlfcpa2c.v  vd, rs1, vm +
 vlfcpb2c.v  vd, rs1, vm +
 
-.. *Purpose*
+. *Purpose*
 +
 Load elements from vector memory to vector registers, performing format conversion operations at the same time. When mask is 0 when vm is enabled, the address and register element index need to be increased at the same time.
 
-.. *Description*
+. *Description*
 +
 rs1 stores the base address, and vd is the target register. The total number of elements does not exceed VLEN/SEW*LMUL. SEW is the target format width. The formats of A2B include:
 +
@@ -25,7 +24,7 @@ rs1 stores the base address, and vd is the target register. The total number of 
 - ‘pa2c’ is CFL(6/6/4)->SC16 format conversion； 
 - ‘pb2c’ is CFL(7/7/2)->SC16 format conversion.
 
-.. *Operation*
+. *Operation*
 +
 ----
 vd[i] = loadFormatConvert(void *rs1, A2B) {
@@ -48,9 +47,8 @@ vd[i] = loadFormatConvert(void *rs1, A2B) {
 }
 ----
 
-. *vsfcB2A(vector store and format convert from format B to format A)*
-+
-.. *Grammar*
+=== vsfcB2A(vector store and format convert from format B to format A)
+. *Grammar*
 +
 vsfch2b.v  vs3, rs1, vm +
 vsfcw2b.v  vs3, rs1, vm +
@@ -58,11 +56,11 @@ vsfcw2h.v  vs3, rs1, vm +
 vsfcc2pa.v  vs3, rs1, vm +
 vsfcc2pb.v  vs3, rs1, vm +
 
-.. *Purpose*
+. *Purpose*
 +
 Convert format of each element from the vector register and store it into vector memory. When mask is 0 with vm is enabled, the address of vector memroy and register element index need to increased at the same time.
 
-.. *Description*
+. *Description*
 +
 rs1 stores the base address, and vs3 is the source register. The total number of elements does not exceed VLEN/SEW*LMUL. SEW is the target format width. The formats of B2A include:
 +
@@ -72,7 +70,7 @@ rs1 stores the base address, and vs3 is the source register. The total number of
 - ‘c2pa’ is SC16->CFL(6/6/4) format conversion； 
 - ‘c2pb’ is SC16->CFL(7/7/2) format conversion.
 
-.. *Operation*
+. *Operation*
 +
 ----
 void storeFormatConvert(void *rs1, vs3[i], B2A) {
@@ -96,4 +94,3 @@ void storeFormatConvert(void *rs1, vs3[i], B2A) {
 }
 ----
 
-. 
