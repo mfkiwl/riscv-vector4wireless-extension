@@ -73,3 +73,5 @@ vs2 and vs1 form a new vector with twice the length from left to right. All elem
 ----
 vd = vs2[(fsft - 1) ... 0] : vs1[31 ... fsft]
 ----
+
+. 
