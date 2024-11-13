@@ -31,43 +31,41 @@ R_NL_A[16]: 16 nonlinear function segement slope registers +
 R_NL_B[16]: 16 nonlinear function segement offset registers +
 
 === Instructions
-. *vlnlp(vector load nonlinear parameter)*
-+
-.. *Grammar*
+==== vlnlp(vector load nonlinear parameter)
+. *Grammar*
 +
 vlnlp.s rs1 +
 
-.. *Purpose*
+. *Purpose*
 +
 Load nonlinear function parameter configuration from vector memory to nonlinear function parameter registers vnlpr0 and vnlpr1
 
-.. *Description*
+. *Description*
 +
 Load configuration from vector memory address rs1 to vnlpr0 and vnlpr1, a total of 2048bits.
 
-.. *Operation*
+. *Operation*
 +
 ----
 vnlpr0 = *rs1;
 vnlpr1 = *(rs1 + 128);
 ----
 
-. *vnle(vector non-linear exponent calculation instruction)*
-+
-.. *Grammar*
+==== vnle(vector non-linear exponent calculation instruction)
+. *Grammar*
 +
 vnle.vv vd, vs2, vs1, vm +
 vnle.vs vd, vs2, vs1, vm +
 
-.. *Purpose*
+. *Purpose*
 +
 Computes the exponential part of the output value of a nonlinear function of an input vector.
 
-.. *Description*
+. *Description*
 +
 vs2 stores the fixed-point value, vs1 or vs1[0] stores the fixed-point value n. According to the function type configured in the nonlinear control register, the corresponding exponential result E is calculated, and the result is placed in vd.
 
-.. *Operation*
+. *Operation*
 +
 ----
 VV version
@@ -81,22 +79,21 @@ x[i], s[i], E[i] = preproc(R_NL_TYPE, x[i], E[i])
 vd[i] = ExpAdjust(R_NL_TYPE, E[i])
 ----
 
-. *vnlm(vector non-linear mantissa calculation instruction)*
-+
-.. *Grammar*
+==== vnlm(vector non-linear mantissa calculation instruction)
+. *Grammar*
 +
 vnlm.vv vd, vs2, vs1, vm +
 vnlm.vs vd, vs2, vs1, vm +
 
-.. *Purpose*
+. *Purpose*
 +
 Computes the linear portion of the output of a nonlinear function of the input vector.
 
-.. *Description*
+. *Description*
 +
 vs2 stores the fixed-point value, vs1 or vs1[0] stores the fixed-point value n. According to the function type configured in the nonlinear control register and the segmented parameter configuration, the segmented nonlinear result is calculated. Finally, the results are put into vd after fix point format conversion.
 
-.. *Operation*
+. *Operation*
 +
 ----
 VV version
@@ -122,4 +119,3 @@ Vd[i] = postproc(R_NL_TYPE, tmp)
 N =(N+1) mod K; //K is the max segments group number
 ----
 
-. 
