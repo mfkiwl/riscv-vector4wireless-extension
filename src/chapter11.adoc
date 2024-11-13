@@ -24,7 +24,7 @@
 | 1           | 1 | 1 | OPCFG    | scalars-imms  | GPR x register rs1 & rs2/imm
 |==============================================================================
 
-.RVV Func6 encoding table part 1
+.Zvw Func6 encoding table part 1
 [cols="13*", options="header"]
 |=================================================================================================
 | funct6 |   |   |   |              | funct6 |   |   |             | funct6 |   |   |             
@@ -46,3 +46,26 @@
 | 001110 | V |   |   | vrgatherei16 |        |   |   |             |        |   |   |             
 | 001111 |   | X | I | vslidedown   | 001111 |   | X | vslide1down | 001111 |   | F | vfslide1down
 |=================================================================================================
+
+.Zvw Func6 encoding table part 2
+[cols="13*", options="header"]
+|==============================================================================================
+| funct6 |   |   |   |            | funct6 |   |   |             | funct6 |   |   |             
+| 010000 | V | X | I | vadc       | 010000 | V |   | VWXUNARYO   | 010000 | V |   | VWFUNARYO   
+|        |   |   |   |            | 010000 |   | X | VRXUNARYO   | 010000 |   | F | VRFUNARYO   
+| 010001 | V | X | I | vmadc      | 010001 | V |   | vcunpackr/i | 010001 |   |   |             
+| 010010 | V | X |   | vsbc       | 010010 | V |   | VXUNARYO    | 010010 | V |   | VFUNARYO    
+| 010011 | V | X |   | vmsbc      | 010011 | V |   | vredmaxi    | 010011 | V |   | VFUNARY1    
+| 010100 | V | X |   | vdsmul     | 010100 | V |   | VMUNARYO    | 010100 |   |   |             
+| 010101 | V | X | I | vdsmacini  | 010101 | V |   | vdsredsum   | 010101 |   |   |             
+| 010110 |   |   |   | vperm      | 010110 | V |   | vredmini    | 010110 |   |   |             
+| 010111 | V | X | I | vmerge/vmv | 010111 | V |   | vcompress   | 010111 |   | F | vfmerge/vfmv
+| 011000 | V | X | I | vmseq      | 011000 | V |   | vmandnot    | 011000 | V | F | vmfeq       
+| 011001 | V | X | I | vmsne      | 011001 | V |   | vmand       | 011001 | V | F | vmfle       
+| 011010 | V | X |   | vmsltu     | 011010 | V |   | vmor        | 011010 |   |   |             
+| 011011 | V | X |   | vmslt      | 011011 | V |   | vmxor       | 011011 | V | F | vmflt       
+| 011100 | V | X | I | vmsleu     | 011100 | V |   | vmornot     | 011100 | V | F | vmfne       
+| 011101 | V | X | I | vmsle      | 011101 | V |   | vmnand      | 011101 |   | F | vmfgt       
+| 011110 |   | X | I | vmsgtu     | 011110 | V |   | vmnor       | 011110 |   |   |             
+| 011111 |   | X | I | vmsgt      | 011111 | V |   | vmxnor      | 011111 |   | F | vmfge       
+|==============================================================================================
