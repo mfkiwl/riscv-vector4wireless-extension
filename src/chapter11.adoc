@@ -20,7 +20,7 @@
 .RVV Func3 encoding table
 [cols="6*", options="header"]
 |==============================================================================
-| funct3[2:0] |   |   | Category | Operands      | Type of scalar operand      
+3+| funct3[2:0] | Category | Operands      | Type of scalar operand      
 | 0           | 0 | 0 | OPIVV    | vector-vector | N/A                         
 | 0           | 0 | 1 | OPFVV    | vector-vector | N/A                         
 | 0           | 1 | 0 | OPMVV    | vector-vector | N/A                         
