@@ -6,8 +6,13 @@
 │   ├── wap.c: Wideband Average Power comparison operator; Op_testzvwWap function is implemented by the zvw instruction; Op_testrvvWap function is implemented by the rvv instruction
 │   ├── main.c: Compare the running results and output them;
 ```
-Compile：run “make” in the current directory
-Execute：spike --isa=rv32imcv_zicsr_zicntr_zvw -l --log-commits --varch=vlen:1024,elen:32 --log="test_trace.log" ./demo.riscv
+
+#Compile：
+    To build the demo, after configuring the compiler environment PATH, execute make in the current directory
+#Execute
+```
+    spike --isa=rv32imcv_zicsr_zicntr_zvw -l --log-commits --varch=vlen:1024,elen:32 --log="test_trace.log" ./demo.riscv
+```
 
 
 
