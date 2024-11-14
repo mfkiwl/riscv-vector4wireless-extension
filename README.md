@@ -46,6 +46,7 @@ The following directories are used to organize the contents of this repo:
 * `docs-resources/`: resources for all specifications sourced from link:.gitmodules[git submodule]
 * `src/`: source files for the specification
 * `build/`: default directory where the build artifacts are generated
+* `demo/`: Example of complex operations for zvw instruction and rvv1.0 instruction
 
 ### Prerequisites
 
