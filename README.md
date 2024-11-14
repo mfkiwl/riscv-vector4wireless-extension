@@ -57,15 +57,16 @@ To build the document, you'll need the following tools installed on your system:
 * Docker
 
 ### Cloning the Repository
+After initial clone from gitee:
 
 ```shell
-git clone --recurse-submodules https://github.com/gaoshanlee193/riscv-vector4wireless-extension.git
+git clone --recurse-submodules https://gitee.com/ligaoshan/riscv-vector4wireless-extension.git 
 ```
 
 All in one single line:
 
 ```shell
-git clone --recurse-submodules https://github.com/gaoshanlee193/riscv-vector4wireless-extension.git && cd riscv-vector4wireless-extension && git submodule update --init --recursive
+git clone --recurse-submodules https://gitee.com/ligaoshan/riscv-vector4wireless-extension.git && cd riscv-vector4wireless-extension && git submodule update --init --recursive
 
 ```
 
