@@ -1,3 +1,4 @@
+# Directory Structure
 ```
 .
 ├── demo
@@ -10,12 +11,12 @@
 │   ├── main.c: Compare the running results and output them;
 ```
 
-#Compile：
+# Compile：
     To build the demo, after configuring the compiler environment PATH,run:
 ```
 make 
 ```
-#Execute
+# Execute
 ```
     spike --isa=rv32imcv_zicsr_zicntr_zvw -l --log-commits --varch=vlen:1024,elen:32 --log="test_trace.log" ./demo.riscv
 ```
