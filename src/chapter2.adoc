@@ -36,7 +36,7 @@ This register is used to configure the function type and segmentation informatio
 [cols="3*", options="header"]
 |==============================
 | Bitfield  | Name  | Description       
-| 31:16 | SegGruCnt | segments num. of non-linear function. 0：reciprocal; 1: square root; 2: reciprocal of square root; 3: log2; 4: arctan
-| 15:0  | funcId    | non-linear function ID. 0: 4 segments; 1：8 segments; 2：12 segments; 3：16 segments
+| 31:16 | SegCnt |segments num. of non-linear function.  0: 4 segments; 1：8 segments; 2：12 segments; 3：16 segments 
+| 15:0  | funcId    | non-linear function ID. 0：reciprocal; 1: square root; 2: reciprocal of square root; 3: log2; 4: arctan
 |==============================
 
