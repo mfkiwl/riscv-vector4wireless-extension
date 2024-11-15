@@ -28,11 +28,11 @@ vcunpackr.v vd, vs2, vm +
 
 . *Purpose*
 +
-When SEW is 32bit, the 16bit imaginary part of the SC16 complex number is converted into 32bit output.
+When SEW is 32bit, the 16bit real part of the SC16 complex number is converted into 32bit output.
 
 . *Description*
 +
-The elements of vs2 are SC16 complex numbers. The 16-bit imaginary part is extracted and placed in the high 16 bits of vd, and the low 16 bits are padded with zeros.
+The elements of vs2 are SC16 complex numbers. The 16-bit real part is extracted and placed in the high 16 bits of vd, and the low 16 bits are padded with zeros.
 
 . *Operation*
 +
