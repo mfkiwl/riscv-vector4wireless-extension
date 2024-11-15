@@ -24,7 +24,7 @@ make
 ```
 # Execute
 ```shell
-spike --isa=rv32imcv_zicsr_zicntr_zvw -l --log-commits --varch=vlen:1024,elen:32 --log="test_trace.log" ./demo.riscv
+spike --isa=rv32imcv_zicsr_zicntr_zvw -l --log-commits --varch=vlen:1024,elen:32 --log="test_trace.log" ./calc.riscv
 ```
 
 
