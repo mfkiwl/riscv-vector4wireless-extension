@@ -30,7 +30,7 @@ This register is used to configure the function type and segmentation informatio
 
 * _FuncId_ configures the type of the current nonlinear function; 
 
-* _SegGruCnt_ configures the number of segments of the nonlinear function. The maximum number of segments of the nonlinear function is 16. 
+* _SegCnt_ configures the number of segments of the nonlinear function. The maximum number of segments of the nonlinear function is 16. 
 +
 .VNLCR bit fields table
 [cols="3*", options="header"]
