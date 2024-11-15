@@ -8,7 +8,8 @@ XLEN ?= 32
 
 default: all
 
-src_dir = .
+src_dir = ../riscv-tool-chain/benchmark/
+code_dir = .
 temp_dir = ./wing-temps
 
 instname = riscv-bmarks
@@ -18,9 +19,7 @@ instbasedir = $(UCB_VLSI_HOME)/install
 # Sources
 #--------------------------------------------------------------------
 
-bmarks = dhrystone \
-	helloworld \
-	coremark 
+bmarks = calc 
 
 #--------------------------------------------------------------------
 # Build rules
@@ -47,12 +46,12 @@ RISCV_OBJDUMP ?= $(RISCV_PREFIX)objdump --disassemble-all #--section=.text --sec
 
 RISCV_SIM ?= spike --isa=$(MARCH_CFG) 
 
-incs  += -I$(src_dir)/env -I$(src_dir)/common $(addprefix -I$(src_dir)/, $(bmarks))
+incs  += -I$(src_dir)/env -I$(src_dir)/common $(addprefix -I$(code_dir)/, $(bmarks))
 objs  :=
 
 define compile_template
 $(1).riscv: $(wildcard $(src_dir)/$(1)/*) $(wildcard $(src_dir)/common/*)
-	$$(RISCV_GCC) $$(incs) $$(RISCV_GCC_OPTS) -o $$@ $(wildcard $(src_dir)/$(1)/*.c) $(wildcard $(src_dir)/$(1)/*.S) $(wildcard $(src_dir)/common/*.c) $(wildcard $(src_dir)/common/*.S) $$(RISCV_LINK_OPTS) -save-temps -dumpdir $(temp_dir)/$(1)/
+	$$(RISCV_GCC) $$(incs) $$(RISCV_GCC_OPTS) -o $$@ $(wildcard $(code_dir)/$(1)/*.c) $(wildcard $(code_dir)/$(1)/*.S) $(wildcard $(src_dir)/common/*.c) $(wildcard $(src_dir)/common/*.S) $$(RISCV_LINK_OPTS) -save-temps -dumpdir $(temp_dir)/$(1)/
 endef
 
 define mkdir_bmark
