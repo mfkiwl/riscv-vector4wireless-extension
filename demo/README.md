@@ -2,7 +2,7 @@
 ```
 .
 ├── demo
-│   └── cacl
+│   └── calc
 │   │    ├── ccm.c：Conjugate Complex Multiply comparison operator.
 │   │    │          op_testzvwCcm() is implemented by the zvw instruction;
 │   │    │          op_testrvvCCM() is implemented by the rvv instruction
