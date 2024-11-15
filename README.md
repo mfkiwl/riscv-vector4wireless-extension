@@ -18,21 +18,21 @@ The "operation" part of instructions in this document refers to the operation of
 
 ## License
 
-This work is licensed under a Creative Commons Attribution 4.0 International License (CC-BY-4.0). For details, see the link:LICENSE[LICENSE] file.
+This work is licensed under a Creative Commons Attribution 4.0 International License (CC-BY-4.0). For details, see the [LICENSE](./LICENSE.md) file.
 
 ## Maintainers
 
-The list of maintainers of this specification is maintained in the link:MAINTAINERS.md[MAINTAINERS] file.
+The list of maintainers of this specification is maintained in the [MAINTAINERS](./MAINTAINERS.md) file.
 
 ## Contributors
 
-The list of contributors to this specification is maintained in the link:src/contributors.adoc[contributors] file.
+The list of contributors to this specification is maintained in the [contributors](./src/contributors.adoc) file.
 
-For guidelines on how to contribute, refer to the link:CONTRIBUTING.md[CONTRIBUTING] file.
+For guidelines on how to contribute, refer to the [CONTRIBUTING](./CONTRIBUTING.md) file.
 
 ## Governance
 
-The governance for this project is defined in the link:GOVERNANCE.md[GOVERNANCE] file.
+The governance for this project is defined in the [GOVERNANCE](./GOVERNANCE.md) file.
 
 Community information, including meeting (if held) and mailing lists are detailed in this file.
 
@@ -43,7 +43,7 @@ Community information, including meeting (if held) and mailing lists are detaile
 The following directories are used to organize the contents of this repo:
 
 * `dependencies/`: software dependencies needed to build the specification
-* `docs-resources/`: resources for all specifications sourced from link:.gitmodules[git submodule]
+* `docs-resources/`: resources for all specifications sourced from [git submodule](./.gitmodules)
 * `src/`: source files for the specification
 * `build/`: default directory where the build artifacts are generated
 * `demo/`: example of complex operations for zvw instruction and rvv1.0 instruction
