@@ -16,7 +16,7 @@
 │   │    │
 │   ├── Makefile   
 ```
-# SSet PATH
+# Set PATH
 
 ```shell
 export PATH=$PATH:"your dir"/toolchain/gcc/bin/
