@@ -16,7 +16,8 @@
 │   │    │
 │   ├── Makefile   
 ```
-#set PATH
+# SSet PATH
+
 ```shell
 export PATH=$PATH:"your dir"/toolchain/gcc/bin/
 export PATH=$PATH:"your dir"/toolchain/spike/
