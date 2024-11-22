@@ -16,8 +16,13 @@
 │   │    │
 │   ├── Makefile   
 ```
-
+#set PATH
+```shell
+export PATH=$PATH:"your dir"/toolchain/gcc/bin/
+export PATH=$PATH:"your dir"/toolchain/spike/
+```
 # Compile：
+
 To build the demo run:
 ```shell
 make 

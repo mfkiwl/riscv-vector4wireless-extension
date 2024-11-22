@@ -8,7 +8,7 @@ XLEN ?= 32
 
 default: all
 
-src_dir = ../riscv-tool-chain/benchmark/
+src_dir = ../toolchain/benchmark/
 code_dir = .
 temp_dir = ./wing-temps
 
