@@ -25,7 +25,7 @@
 - alg_round_shift_right: Arithmetic right shift with vxrm mode rounding
 - alg_shift_left: Arithmetic left shift
 - shift_left: Logical left shift
-- clip_low_SEW: Clip the lowest SEW width bit number
+- clip_low_SEW:  Saturate and clip the lowest SEW width bit number
 - round_clip_high_SEW: Saturate clip the high SEW width bit number with vxrm mode rounding
 - MIN_SEW: The minimum value of the signed number corresponding to the element of SEW bit width
 - MAX_SEW: The maximum value of the signed number corresponding to the element of SEW bit width
