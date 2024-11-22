@@ -1,0 +1,42 @@
+######################调试可执行文件##########################
+## 当前仿真器等采用我们配置好的内存布局，为了减少开发测试复杂度，建议在benchmark中的helloworld中开发
+## 建议编译时选项加上-g3，以提供更多的debug信息
+
+## 将硬件调试器OpenOCD、仿真器spike、编译器gcc的路径添加至环境变量
+  export PATH="$PATH:/your/openocd/dir"
+  export PATH="$PATH:/your/gcc/dir/bin"
+  export PATH="$PATH:/your/spike/dir"
+
+## 调试方式为spike+openocd+gdb，建议三个进程每个进程一个窗口，或者使用tmux分屏
+## 窗口一为spike启动界面，9828为bit bang端口号，需要和spike.cfg中remote_bitbang port相同
+## ./a.out为benchmark中编译生成的可执行文件
+  spike --isa=rv32imcv_zicsr_zicntr_zvw -H --rbb-port=9828 ./a.out
+
+## 窗口二为openocd启动界面
+  openocd -f spike.cfg -f zvw.cfg
+
+## 窗口三gdb启动界面
+  riscv32-wing-elf-gdb ./a.out
+
+## gdb启动后，输入gdb的端口号，需要和spike.cfg中gdb_port相同
+  target remote:3338
+
+## 当前gdb配合openocd调试时，默认已经开始运行程序，会停在第一条将要执行的指令，常用命令如下
+  ## break 设置断点，如break main 在main函数入口处设置断点
+  ## continue, 继续运行程序，遇到断点时停止
+  ## step 单步调试
+  ## finish 运行程序，直到当前函数完成返回
+  ## quit 退出gdb
+  ## print 打印变量，如print vd，可以把当前变量vd打印出来
+  ## list 列出程序的源代码
+  ## backtrace 从main函数开始打印程序调用栈
+  ## 打印寄存器
+    ## info all-registers 打印所有寄存器的值，包括pc、ra、csr等所有的寄存器
+    ## info registers v 打印所有v寄存器的值
+    ## info reg v0  打印单个寄存器的值，这里是v0
+  ## 更多可参考gdb官方手册 https://www.sourceware.org/gdb/documentation/
+
+## 以benchmark里的helloworld为例子调试，在启动gdb之后
+  break test_vdsmac_vs_i8m1 ## 在test_vdsmac_vs_i8m1函数入口处设置断点
+  continue ## 让程序在断点处停下
+  info register v ## 打印所有矢量寄存器的值，其中v8为"{b = {0x48, 0x65, 0x6c, 0x6c, ..."，也是其ASCII码值
