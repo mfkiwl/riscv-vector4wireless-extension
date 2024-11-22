@@ -1,0 +1,23 @@
+%rename link                nano_link
+%rename link_gcc_c_sequence                nano_link_gcc_c_sequence
+%rename cpp		nano_cpp
+
+*cpp:
+-isystem =/include/newlib-nano %(nano_cpp)
+
+*nano_libc:
+-lc_nano%{mbig-endian:_be}
+
+*nano_libgloss:
+%{specs=nosys.specs:-lnosys%{mbig-endian:_be}} %{!specs=nosys.specs:-lgloss_nano%{mbig-endian:_be}}
+
+*link_gcc_c_sequence:
+%(nano_link_gcc_c_sequence) --start-group %G %(nano_libc) %(nano_libgloss) --end-group
+
+*link:
+%(nano_link) %:replace-outfile(-lc%{mbig-endian:_be} -lc_nano%{mbig-endian:_be}) %:replace-outfile(-lg%{mbig-endian:_be} -lg_nano%{mbig-endian:_be}) %:replace-outfile(-lm%{mbig-endian:_be} -lm_nano%{mbig-endian:_be})
+
+*lib:
+%{!shared:%{g*:-lg_nano%{mbig-endian:_be}} %{!p:%{!pg:-lc_nano%{mbig-endian:_be}}}%{p:-lc_p}%{pg:-lc_p}}
+
+# ??? Maybe put --gc-sections option in here?

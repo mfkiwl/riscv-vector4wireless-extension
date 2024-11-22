@@ -1,0 +1,11 @@
+%rename link_gcc_c_sequence                nosys_link_gcc_c_sequence
+
+*nosys_libgloss:
+-lnosys%{mbig-endian:_be}
+
+*nosys_libc:
+%{!specs=nano.specs:-lc%{mbig-endian:_be}} %{specs=nano.specs:-lc_nano%{mbig-endian:_be}}
+
+*link_gcc_c_sequence:
+%(nosys_link_gcc_c_sequence) --start-group %G %(nosys_libc) %(nosys_libgloss) --end-group
+

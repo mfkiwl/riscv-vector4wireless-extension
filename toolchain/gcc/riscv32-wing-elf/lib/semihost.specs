@@ -1,0 +1,10 @@
+# Spec file for semihosting syscalls.
+
+%rename lib	semihost_lib
+%rename link	semihost_link
+
+*lib:
+--start-group -lc%{mbig-endian:_be} -lsemihost%{mbig-endian:_be} --end-group
+
+*link:
+%(semihost_link) %:replace-outfile(-lgloss%{mbig-endian:_be} -lsemihost%{mbig-endian:_be})
