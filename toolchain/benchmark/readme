@@ -1,0 +1,15 @@
+######################编译benchmark##########################
+## 0、将编译器路径和仿真器路径添加至环境变量
+  export PATH="$PATH:/your/gcc/dir/bin"
+  export PATH="$PATH:/your/spike/dir"
+
+## 1、编译benchmark
+  ## 主目录为benchmark目录，env和common目录存放编译需要的头文件，一般不修改
+  ## 当前提供coremark、dhrystone、helloworld三个benchmark，可修改Makefile中bmarks变量来控制构建哪些benchmark
+  ## coremark、dhrystone、helloworld三个目录中存放的是各自源码
+  ## 用户可修改Makefile中RISCV_GCC_OPTS变量来控制编译选项
+  ## 编译成功后会生成.riscv后缀的可执行文件和.riscv.dump反汇编文件，并且将编译中间文件保存在wing-temps目录中
+  make
+
+## 2、删除编译benchmark生成的文件
+  make clean
