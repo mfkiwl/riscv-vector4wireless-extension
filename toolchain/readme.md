@@ -1,3 +1,12 @@
+# Declaration
+本工具由隼瞻科技开发，授权给Zvw项目开源使用。
+
+This tool is developed by Wingsemitech Co.ltd, licensed for open source "Zvw" project.
+
+如需咨询工具相关信息，请联系：contact@wingsemitech.com。
+
+For inquiries about the tool, please contact: contact@wingsemitech.com.
+
 # Directory Description
 
 * The gcc directory is the compiler directory, with its binary files located in ./gcc/bin
