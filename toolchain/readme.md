@@ -105,7 +105,7 @@ binutils, other tools related to binary file processing apart from the assembler
 
 ├── lib
 
-│ ├── bfd-plugins
+│ ├── bod-plugins
 
 │ ├── gcc
 
@@ -187,13 +187,11 @@ Note that there is no vint16mf8
 - vint16m2_t __riscv_vdsmul_vs_i16m2(vint16m2_t vs2, vint16m2_t vs1, size_t vl);
 - vint16m4_t __riscv_vdsmul_vs_i16m4(vint16m4_t vs2, vint16m4_t vs1, size_t vl);
 - vint16m8_t __riscv_vdsmul_vs_i16m8(vint16m8_t vs2, vint16m8_t vs1, size_t vl);
-
 - vint32mf2_t __riscv_vdsmul_vs_i32mf2(vint32mf2_t vs2, vint32mf2_t vs1, size_t vl);
 - vint32m1_t __riscv_vdsmul_vs_i32m1(vint32m1_t vs2, vint32m1_t vs1, size_t vl);
 - vint32m2_t __riscv_vdsmul_vs_i32m2(vint32m2_t vs2, vint32m2_t vs1, size_t vl);
 - vint32m4_t __riscv_vdsmul_vs_i32m4(vint32m4_t vs2, vint32m4_t vs1, size_t vl);
 - vint32m8_t __riscv_vdsmul_vs_i32m8(vint32m8_t vs2, vint32m8_t vs1, size_t vl);
-
 - vint64m1_t __riscv_vdsmul_vs_i64m1(vint64m1_t vs2, vint64m1_t vs1, size_t vl);
 - vint64m2_t __riscv_vdsmul_vs_i64m2(vint64m2_t vs2, vint64m2_t vs1, size_t vl);
 - vint64m4_t __riscv_vdsmul_vs_i64m4(vint64m4_t vs2, vint64m4_t vs1, size_t vl);
@@ -206,47 +204,23 @@ Note that there is no vint16mf8
 - vuint32mf2_t __riscv_vdsmul_vs_u32mf2(vuint32mf2_t vs2, vuint32mf2_t vs1, size_t vl);
 - vuint64m1_t __riscv_vdsmul_vs_u64m1(vuint64m1_t vs2, vuint64m1_t vs1, size_t vl);
 
-## Intrinsic Support for Different Predications, i.e., different combinations of vm, vta, and vma:
+## Intrinsic Support for Different Predications vm/vta/vma
 
-Please refer to the riscv official intrinsic documentation v-intrinsic-spec section 6.1
+Please refer to the riscv official intrinsic documentation v-intrinsic-spec section 6.1. The following examples use EEW=8 and EMUL=1 for the vdsmul instruction intrinsic. Other EEW and EMUL combinations are omitted. No suffix, i.e., vm=1, vta=1
 
-The following examples use EEW=8 and EMUL=1 for the vdsmul instruction intrinsic. Other EEW and EMUL combinations are omitted.
+- vint8m1_t __riscv_vdsmul_vs_i8m1(vint8m1_t vs2, vint8m1_t vs1, size_t vl); tu suffix, i.e., vm=1, vta=0
+- vint8m1_t __riscv_vdsmul_vv_i8m1_tu(vint8m1_t vd, vint8m1_t vs2, vint8m1_t vs1, size_t vl); m suffix, i.e., vm=0, vta=1, vma=1
+- vint8m1_t __riscv_vdsmul_vv_i8m1_m(vbool8_t vm, vint8m1_t vs2, vint8m1_t vs1, size_t vl); tum suffix, i.e., vm=0, vta=0, vma=1
 
-No suffix, i.e., vm=1, vta=1
+When the mask has tu or mu, the intrinsic will add a vd parameter to describe the register vd needed by the instruction during computation Please refer to the riscv official intrinsic documentation v-intrinsic-spec section 9.3
 
-- vint8m1_t __riscv_vdsmul_vs_i8m1(vint8m1_t vs2, vint8m1_t vs1, size_t vl);
-
-tu suffix, i.e., vm=1, vta=0
-
-- vint8m1_t __riscv_vdsmul_vv_i8m1_tu(vint8m1_t vd, vint8m1_t vs2, vint8m1_t vs1, size_t vl);
-
-m suffix, i.e., vm=0, vta=1, vma=1
-
-- vint8m1_t __riscv_vdsmul_vv_i8m1_m(vbool8_t vm, vint8m1_t vs2, vint8m1_t vs1, size_t vl);
-
-tum suffix, i.e., vm=0, vta=0, vma=1
-
-When the mask has tu or mu, the intrinsic will add a vd parameter to describe the register vd needed by the instruction during computation
-
-Please refer to the riscv official intrinsic documentation v-intrinsic-spec section 9.3
-
-vint8m1_t __riscv_vdsmul_vv_i8m1_tum(vbool8_t vm, vint8m1_t vd, vint8m1_t vs2, vint8m1_t vs1, size_t vl);
-
-mu suffix, i.e., vm=0, vta=1, vma=0
-
-vint8m1_t __riscv_vdsmul_vv_i8m1_mu(vbool8_t vm, vint8m1_t vd, vint8m1_t vs2, vint8m1_t vs1, size_t vl);
-
-tumu suffix, i.e., vm=0, vta=0, vma=0
-
-vint8m1_t __riscv_vdsmul_vv_i8m1_tumu(vbool8_t vm, vint8m1_t vd, vint8m1_t vs2, vint8m1_t vs1, size_t vl);
+- vint8m1_t __riscv_vdsmul_vv_i8m1_tum(vbool8_t vm, vint8m1_t vd, vint8m1_t vs2, vint8m1_t vs1, size_t vl); mu suffix, i.e., vm=0, vta=1, vma=0
+- vint8m1_t __riscv_vdsmul_vv_i8m1_mu(vbool8_t vm, vint8m1_t vd, vint8m1_t vs2, vint8m1_t vs1, size_t vl); tumu suffix, i.e., vm=0, vta=0, vma=0
+- vint8m1_t __riscv_vdsmul_vv_i8m1_tumu(vbool8_t vm, vint8m1_t vd, vint8m1_t vs2, vint8m1_t vs1, size_t vl);
 
 # Implemented Instruction Intrinsic Description
 
-Each instruction, depending on the suffix, may have hundreds of related intrinsic functions
-
-Unless otherwise specified, the default instruction intrinsic supports all predications, supports int and uint, and supports different EEW and EMUL
-
-Taking the load instruction vlfcb2w.v as an example, it supports all predications, supports int and uint, and supports different EEW and EMUL, i.e., by default
+Each instruction, depending on the suffix, may have hundreds of related intrinsic functions. Unless otherwise specified, the default instruction intrinsic supports all predications, supports int and uint, and supports different EEW and EMUL. Taking the load instruction vlfcb2w.v as an example, it supports all predications, supports int and uint, and supports different EEW and EMUL, i.e., by default
 
 - vuint32m4_t __riscv_vlfcb2w_v_u32m4(const uint8_t *rs1, size_t vl);
 - vuint32mf2_t __riscv_vlfcb2w_v_u32mf2(const uint8_t *rs1, size_t vl);
@@ -258,108 +232,56 @@ Taking the load instruction vlfcb2w.v as an example, it supports all predication
 
 Taking the store instruction vsfcw2b.v as an example, the store instruction only has no suffix and m suffix, and has no return value
 
-void __riscv_vsfcw2b_v_u32m4(uint8_t *rs1, vuint32m4_t vs3, size_t vl);
-void __riscv_vsfcw2b_v_u32mf2(uint8_t *rs1, vuint32mf2_t vs3, size_t vl);
-void __riscv_vsfcw2b_v_u32mf2_m(vbool64_t vm, uint8_t *rs1, vuint32mf2_t vs3, size_t vl);
+- void __riscv_vsfcw2b_v_u32m4(uint8_t *rs1, vuint32m4_t vs3, size_t vl);
+- void __riscv_vsfcw2b_v_u32mf2(uint8_t *rs1, vuint32mf2_t vs3, size_t vl);
+- void __riscv_vsfcw2b_v_u32mf2_m(vbool64_t vm, uint8_t *rs1, vuint32mf2_t vs3, size_t vl);
 
-For instructions that have both .i and .x, the intrinsic only implements the _x suffix to indicate it is a scalar
+For instructions that have both .i and .x, the intrinsic only implements the _x suffix to indicate it is a scalar. Immediate numbers or variables can be passed. When the immediate number is out of range, the compiler will automatically select the .x instruction
 
-Immediate numbers or variables can be passed. When the immediate number is out of range, the compiler will automatically select the .x instruction
-
-__riscv_vdsmacini_x_i8m1(10, vl); // Selects vdsmacini.i 10
-
-__riscv_vdsmacini_x_i8m1(32, vl); // Selects li a5, 32; vdsmacini.x a5
-
-vcpack default
-
-vdsmul default
-
-vdsmacini no vd parameter, only supports no suffix and m suffix
-
-vdsmac intrinsic function adds a return value, no vd parameter, only supports no suffix and m suffix
-
-i.e., originally void __riscv_vdsmac_i8m1(vint8m1_t vs2, vint8m1_t vs1, size_t vl);
-
-becomes vint8m1_t __riscv_vdsmac_i8m1(vint8m1_t vs2, vint8m1_t vs1, size_t vl);
-
-vdsmaco default
-
-vlsb default
-
-vconj default
-
-vcunpackr default
-
-vcunpacki default
-
-vdscmul default
-
-vdscmulj default
-
-vdscredsum default
-
-vdscmac intrinsic function adds a return value, no vd parameter, only supports no suffix and m suffix
-
-vdscmacj intrinsic function adds a return value, no vd parameter, only supports no suffix and m suffix
-
-vdscmacjo default
-
-vdscmaco default
-
-vdscmacor default
-
-vdscmacoi default
-
-vdscmacjor default
-
-vdscmacjoi default
-
-vdscmulr default
-
-vdscmuli default
-
-vdscmuljr default
-
-vdscmulji default
-
-vdsredsum default
-
-vdsredsumn default
-
-vlfcb2h default
-
-vlfcb2w default
-
-vlfch2w default
-
-vlfcpa2c default
-
-vlfcpb2c default
-
-vsfch2b store instruction only supports no suffix and m suffix
-
-vsfcw2b store instruction only supports no suffix and m suffix
-
-vsfcw2h store instruction only supports no suffix and m suffix
-
-vsfcc2pa store instruction only supports no suffix and m suffix
-
-vsfcc2pb store instruction only supports no suffix and m suffix
-
-vredmaxi default
-
-vredmini default
-
-vpharot no vm bit, only supports no suffix and tu suffix
-
-vperm no vm bit, only supports no suffix and tu suffix
-
-vfsl no vm bit, only supports no suffix and tu suffix
-
-vfsr no vm bit, only supports no suffix and tu suffix
-
-vlnlp no vm bit, no vd parameter, only supports no suffix
-
-vnle default
-
-vnlm default
+- __riscv_vdsmacini_x_i8m1(10, vl); // Selects vdsmacini.i 10
+- __riscv_vdsmacini_x_i8m1(32, vl); // Selects li a5, 32; vdsmacini.x a5
+- vcpack: default
+- vdsmul: default
+- vdsmacini: no vd parameter, only supports no suffix and m suffix
+- vdsmac: intrinsic function adds a return value, no vd parameter, only supports no suffix and m suffix
+- vdsmaco: default
+- vlsb: default
+- vconj: default
+- vcunpackr: default
+- vcunpacki: default
+- vdscmul: default
+- vdscmulj: default
+- vdscredsum: default
+- vdscmac: intrinsic function adds a return value, no vd parameter, only supports no suffix and m suffix
+- vdscmacj: intrinsic function adds a return value, no vd parameter, only supports no suffix and m suffix
+- vdscmacjo: default
+- vdscmaco: default
+- vdscmacor: default
+- vdscmacoi: default
+- vdscmacjor: default
+- vdscmacjoi: default
+- vdscmulr: default
+- vdscmuli: default
+- vdscmuljr: default
+- vdscmulji: default
+- vdsredsum: default
+- vdsredsumn: default
+- vlfcb2h: default
+- vlfcb2w: default
+- vlfch2w: default
+- vlfcpa2c: default
+- vlfcpb2c: default
+- vsfch2b store instruction only supports no suffix and m suffix
+- vsfcw2b store instruction only supports no suffix and m suffix
+- vsfcw2h store instruction only supports no suffix and m suffix
+- vsfcc2pa store instruction only supports no suffix and m suffix
+- vsfcc2pb store instruction only supports no suffix and m suffix
+- vredmaxi default
+- vredmini default
+- vpharot no vm bit, only supports no suffix and tu suffix
+- vperm no vm bit, only supports no suffix and tu suffix
+- vfsl no vm bit, only supports no suffix and tu suffix
+- vfsr no vm bit, only supports no suffix and tu suffix
+- vlnlp no vm bit, no vd parameter, only supports no suffix
+- vnle default
+- vnlm default
