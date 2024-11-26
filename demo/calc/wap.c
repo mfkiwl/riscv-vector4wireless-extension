@@ -47,17 +47,12 @@ int32_t op_testzvwWap()
     int32_t *a1Addr = aWapAddr[1];
     asm volatile("vsetvl %[vl], %[avl], %[vtype]": [vl] "=r" (vl) : [avl] "r" (avl), [vtype] "r" (vtypeE));
                              
-#if 1    
-    uint32_t shift = 0;
-    asm volatile("vdsmacini.s %[shift];" 
-                  :
-                  :[shift]"r"(shift));    
-#else
+
     asm volatile("vle32.v %[vGainShift], (%[gainShiftAdrrZvw]);\
                   vdsmacini.v %[vGainShift];" 
                   :[vGainShift]"+&vr"(vGainShift)
                   :[gainShiftAdrrZvw]"r"(gainShiftAdrrZvw));                                 
-#endif
+
                        
     asm ("vle32.v %[vA0], (%[a0Addr]);\
                   vdscmacj.vv %[vA0],%[vA0];\
