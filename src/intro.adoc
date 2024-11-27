@@ -19,4 +19,10 @@ Currently, RISC-V Vector Working Group developed the RVV 1.0 vector extension, w
 
 The wireless signal processing extension instruction built on the RVV extension can accelerate advancements in 4G and 5G signal processing and facilitate the adoption of RISC-V in the wireless signal processing domain. The instruction set extends the RVV 1.0 specification to support high-bandwidth wireless communication signal processing. Termed the vector wireless broadband extension instruction set and represented by 'Zvw', it integrates into the basic 'v' extension. The Zvw extension adapts RVV instructions to better suit the high bandwidth, high-order modulation, and large throughput demands of wireless signal processing, particularly in 4G and 5G communications. 
 
-Currently, Zvw supports only RV32, with SEW variations limited to 8/16/32, where SEW=32 supports SC16. In SC16, real and imaginary parts are stored in adjacent vector register units (real in lower bits, imaginary in upper bits). For SC32, real and imaginary parts are stored in indexed units of different vector registers.  The operational section addresses procedures on each vector processor element, adhering to LMUL and VL standards from the RVV specification. Operand objects are governed by SEW, execution on elements is controlled by vm, and default values for unprocessed elements by RVV-defined mask agnostic and tail agnostic rules.
+Currently, there are some limitations for Zvw. 
+
+* It only supports RV32 and SEW=32bits, when SEW=32 SC16 is supported. 
+* SC32 is not supported, 32 real and imaginary parts of complex number are stored in neighbor vector registers.  
+* The operation defined for each vector element in following instruction behavior also follows LMUL and VL standards of the RVV specification. 
+* Operand objects are also controlled by SEW, execution on elements also follows the vm, and RVV-defined mask agnostic and tail agnostic rules.
+* All the multiplication in Zvw shift the result 1 bit left by default.
