@@ -37,12 +37,12 @@ if R_NL_TYPE == 0       % reciprocal
 elsif R_NL_TYPE == 1    % square root
     isOddE = ceill(E/2) - floor(E/2);
     E   = E + isOddE;
-    x   = x << (2^-isOddE);
+    x   = x * (2^-isOddE);
 
 elsif R_NL_TYPE == 2    % reciprocal of square root
     isOddE = ceill(E/2) - floor(E/2);
     E   = E + isOddE;
-    x   = x << (2^-isOddE);
+    x   = x * (2^-isOddE);
 
 elsif R_NL_TYPE == 3    % log2
 
@@ -78,16 +78,16 @@ postprocess for non-linear instruction.
 . *Operation*
 +
 ----
-Vd = postproc(R_NL_TYPE, tmp, s)
+vd = postproc(R_NL_TYPE, tmp, s)
 
 if R_NL_TYPE == 0       % reciprocal
-    Vd.y = s * floor(tmp/2);
+    vd.y = s * floor(tmp/2);
 
 elsif R_NL_TYPE == 1    % square root
-    Vd.y = tmp
+    vd.y = tmp
 
 elsif R_NL_TYPE == 2    % reciprocal of square root
-    Vd.y = floor(tmp/2);
+    vd.y = floor(tmp/2);
 
 elsif R_NL_TYPE == 3    % log2
 
