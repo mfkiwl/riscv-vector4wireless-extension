@@ -17,7 +17,7 @@
 - min: Find the minimum
 - max: Find the maximum
 - max_i: Find the element position in the vector register where the maximum value is located
-- lsb: The number of bits of the high-order sign bit minus 1
+- lsb: The number of leading sign bit minus 1
 - cfp_pack: Put e, i and r into the compressed complex format according to the complex compressed format
 - vcpack: extract the high 16 bits of 32-bit real numbers and 32-bit imaginary numbers to form a complex number in SC16 format
 - sum: Sum
