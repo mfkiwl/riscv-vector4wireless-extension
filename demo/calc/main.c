@@ -16,10 +16,21 @@ extern int32_t op_testzvwCdsm();
 extern int32_t op_testrvvCdsm();
 extern int32_t op_testzvwWap();
 extern int32_t op_testrvvWap();
+extern void model1_ut();
+extern void vdscmul_ut();
+extern void vdscmac_ut();
+extern void vperm_ut();
+
 
 int main()
 {
     int i;
+    // test case
+    model1_ut();
+    vdscmul_ut();
+    vdscmac_ut();
+    vperm_ut();
+
 	//ccm
     op_testzvwCcm();
     op_testrvvCcm();
