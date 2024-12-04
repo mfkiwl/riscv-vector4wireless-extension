@@ -69,14 +69,14 @@ vs2 stores the fixed-point value, vs1 or vs1[0] stores the fixed-point value n. 
 +
 ----
 VV version
-x[i], E[i] = NORM(R_NL_TYPE, vs2[i], vs1[i])
-x[i], s[i], E[i] = preproc(R_NL_TYPE, x[i], E[i])
-vd[i] = ExpAdjust(R_NL_TYPE, E[i])
+x[i], E[i] = norm(R_NL_TYPE, vs2[i], vs1[i])
+x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
+vd[i] = expAdjust(R_NL_TYPE, E[i])
 
 VS version
-x[i], E[i] = NORM(R_NL_TYPE, vs2[i], vs1[0])
-x[i], s[i], E[i] = preproc(R_NL_TYPE, x[i], E[i])
-vd[i] = ExpAdjust(R_NL_TYPE, E[i])
+x[i], E[i] = norm(R_NL_TYPE, vs2[i], vs1[0])
+x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
+vd[i] = expAdjust(R_NL_TYPE, E[i])
 ----
 
 ==== vnlm(vector non-linear mantissa calculation instruction)
@@ -97,25 +97,26 @@ vs2 stores the fixed-point value, vs1 or vs1[0] stores the fixed-point value n. 
 +
 ----
 VV version
-x[i], E[i] = NORM(R_NL_TYPE, vs2[i], vs1[i])
-x[i], s[i], E[i] = preproc(R_NL_TYPE, x[i], E[i])
+x[i], E[i] = norm(R_NL_TYPE, vs2[i], vs1[i])
+x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
 segIdx[i] = findSeg(x[i], R_SEG[N])  // N is segment group ID
 If (segIdx[i] is valid)
 { 
 tmp = alg_round_shift_right((A[segIdx[i]] * x[i]), n) + B[segIdx[i]];
-Vd[i] = postproc(R_NL_TYPE, tmp)
+Vd[i] = postProc(R_NL_TYPE, tmp)
 }
 N =(N+1) mod K;  //K is the max segments group number
 
 VS version
-x[i], E[i] = NORM(R_NL_TYPE, vs2[i], vs1[0])
-x[i], s[i], E[i] = preproc(R_NL_TYPE, x[i], E[i])
+x[i], E[i] = norm(R_NL_TYPE, vs2[i], vs1[0])
+x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
 segIdx[i] = findSeg(x[i], R_SEG[N]) // N is segment group ID
 If (segIdx[i] is valid)
 { 
 tmp = alg_round_shift_right((A[segIdx[i]] * x[i]), n) + B[segIdx[i]];
-Vd[i] = postproc(R_NL_TYPE, tmp)
+Vd[i] = postProc(R_NL_TYPE, tmp)
 }
 N =(N+1) mod K; //K is the max segments group number
 ----
 
+*Note*: the definition of the basic operations for norm/preProc/findSeg/postProc/expAdjust are defined at chapter 12.
