@@ -308,5 +308,37 @@ void vperm_ut()
             return; 
             }
     }
-    printf("vperm0_ut passed!\n")
+    printf("vperm0_ut passed!\n");
+}
+
+int32_t gAddr[64] = {1};
+int32_t gRes[64] = {0};
+int32_t op_testMvZero()
+{
+    size_t vl, avl;
+    uint32_t vtypeE;
+
+    vint32m2_t vA;
+                   
+    avl = 64;
+    vtypeE = TA | MA | M2 | E32;
+    asm volatile("vsetvl %[vl], %[avl], %[vtype]": [vl] "=r" (vl) : [avl] "r" (avl), [vtype] "r" (vtypeE));
+
+/*
+
+ 1000546:	5e003157          	vmv.v.i	v2,0
+ 100054a:	02076107          	vle32.v	v2,(a4)
+ 100054e:	56200057          	vdsmacini.v	v2
+ 1000552:	bbc18793          	addi	a5,gp,-1092 # 2000143c <gRes>
+ 1000556:	0207e127          	vse32.v	v2,(a5)
+*/
+    asm volatile("vle32.v %[vA], (%[gAddr]);\
+                  vdsmacini.v %[vA];" 
+                  :[vA]"+vr"(vA)
+                  :[gAddr]"r"(gAddr)); 
+                                      
+    asm volatile("vse32.v %[vA], (%[gRes]);" 
+                  :[vA]"=vr"(vA)
+                  :[gRes]"r"(gRes));                              
+    return 0;
 }
