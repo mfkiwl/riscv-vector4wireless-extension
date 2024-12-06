@@ -1,7 +1,7 @@
 [[chapter10]]
 == Fast non-linear operations
 === Introduction
-In the fast nonlinear instructions vs2 store the fixed-point value in Q32.n format，vs1 store the fix point value n of the fix point format, n belongs to [0, 31]. vd stores the scaling shift value or the mantissa value of the fix point nonlinear output. +
+In the fast nonlinear instructions vs2 store the fixed-point value in Q32.n format，vs1 store the fix point value n of the fix point format, n belongs to [0, 31]. vd stores the scaling shift value n of output or the mantissa value of the output in Q32.n format. +
 
 The segmentation of the nonlinear function is represented by five parameters A, B, S, SE and T. A represents the slope of the straight line, B represents the bias of the straight line, S represents the mantissa value of the starting position of the straight line on X-axis, SE is the exponent value value of the starting position of the straight line on X-axis, T is the nonlinear function type. +
 
