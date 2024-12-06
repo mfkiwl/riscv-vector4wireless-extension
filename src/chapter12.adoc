@@ -69,33 +69,6 @@ segIdx = sum(lutIndex);          // find which segment belong to
 ----
 
 
-=== postProc
-
-. *Description*
-+
-postprocess for non-linear instruction.
-
-. *Operation*
-+
-----
-y = postproc(R_NL_TYPE, tmp, s, E)
-
-if R_NL_TYPE == 0       % reciprocal
-    y = s * alg_shift_right(tmp,1);
-    if (E < 0) y = y >> E;
-    
-elsif R_NL_TYPE == 1    % square root
-    vd.y = tmp
-
-elsif R_NL_TYPE == 2    % reciprocal of square root
-    vd.y = alg_shift_right(tmp,1);
-
-elsif R_NL_TYPE == 3    % log2
-
-elsif R_NL_TYPE == 4    % arctan
-
-----
-
 === expAdjust
 
 . *Description*
@@ -113,11 +86,44 @@ if R_NL_TYPE == 0       % reciprocal
     else e = 31;
 
 elsif R_NL_TYPE == 1    % square root
-    vd.E = ceil(E/2)-31;
+    E = ceil(E/2);
+    if (E >= 0) e = 31 - E;
+    else e = 31;   
    
 elsif R_NL_TYPE == 2    % reciprocal of square root
-    vd.E = -ceil(E/2)+1-31;
-   
+    E = -ceil(E/2)+1;
+    if (E >= 0) e = 31 - E;
+    else e = 31;
+
+elsif R_NL_TYPE == 3    % log2
+
+elsif R_NL_TYPE == 4    % arctan
+
+----
+
+
+=== postProc
+
+. *Description*
++
+postprocess for non-linear instruction.
+
+. *Operation*
++
+----
+y = postproc(R_NL_TYPE, tmp, s, E)
+
+if R_NL_TYPE == 0       % reciprocal
+    y = s * alg_shift_right(tmp,1);
+    if (E < 0) y = y >> -E;
+    
+elsif R_NL_TYPE == 1    % square root
+    if (E < 0) y = y >> -E;
+
+elsif R_NL_TYPE == 2    % reciprocal of square root
+    y = alg_shift_right(tmp,1);
+    if (E < 0) y = y >> -E;
+
 elsif R_NL_TYPE == 3    % log2
 
 elsif R_NL_TYPE == 4    % arctan
