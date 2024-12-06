@@ -81,13 +81,14 @@ postprocess for non-linear instruction.
 vd = postproc(R_NL_TYPE, tmp, s)
 
 if R_NL_TYPE == 0       % reciprocal
-    vd.y = s * floor(tmp/2);
-
+    vd.y = s * alg_shift_right(tmp,1);
+    if (E < 0) vd.y = vd.y >> E;
+    
 elsif R_NL_TYPE == 1    % square root
     vd.y = tmp
 
 elsif R_NL_TYPE == 2    % reciprocal of square root
-    vd.y = floor(tmp/2);
+    vd.y = alg_shift_right(tmp,1);
 
 elsif R_NL_TYPE == 3    % log2
 
@@ -107,7 +108,9 @@ adjust the exponent for the output.
 vd = ExpAdjust(R_NL_TYPE, E)
 
 if R_NL_TYPE == 0       % reciprocal
-    vd.E = -E+1-31;
+    E = 1 - E;
+    if (E >= 0) vd.e = 31 - E;
+    else vd.e = 31;
 
 elsif R_NL_TYPE == 1    % square root
     vd.E = ceil(E/2)-31;
