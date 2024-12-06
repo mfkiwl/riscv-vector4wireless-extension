@@ -104,7 +104,7 @@ If (segIdx[i] is valid)
 { 
   tmp = alg_round_shift_right((A[segIdx[i]] * x[i]), n) + B[segIdx[i]];
   e[i], E[i] = expAdjust(R_NL_TYPE, E[i]);
-  Vd[i] = postProc(R_NL_TYPE, tmp, E[i]);
+  Vd[i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
 }
 N =(N+1) mod K;  //K is the max segments group number
 
@@ -116,7 +116,7 @@ If (segIdx[i] is valid)
 { 
   tmp = alg_round_shift_right((A[segIdx[i]] * x[i]), n) + B[segIdx[i]];
   e[i], E[i] = expAdjust(R_NL_TYPE, E[i]);
-  Vd[i] = postProc(R_NL_TYPE, tmp, E[i]);
+  Vd[i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
 }
 N =(N+1) mod K; //K is the max segments group number
 ----
