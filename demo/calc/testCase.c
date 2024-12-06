@@ -218,6 +218,7 @@ void vdscmac_ut()
         "vmv.s.x v0, %[vs1];\
         vmv.s.x v6, %[vs2];\
         csrw vcsr, %[vcsrA4M15R0Sa];\
+        vdsmacini.i 15;\
         vdscmac.vs v6, v0;\
         vdscmaco.vs v12, v6, v0;\
         vmv.x.s %[vd], v12;"
@@ -243,6 +244,7 @@ void vdscmac_ut()
     "vle32.v v0, (%[vsrc1]);\
     vle32.v v6, (%[vsrc2]);\
     csrw vcsr, %[vcsrA4M15R0Sa];\
+    vdsmacini.i 15;\
     vdscmac.vv v6, v0;\
     vdscmaco.vv v12, v6, v0;\
     vse32.v v12, (%[vdst]);"
