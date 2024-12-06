@@ -78,7 +78,7 @@ postprocess for non-linear instruction.
 . *Operation*
 +
 ----
-vd = postproc(R_NL_TYPE, tmp, s)
+vd = postproc(R_NL_TYPE, tmp, s, E)
 
 if R_NL_TYPE == 0       % reciprocal
     vd.y = s * alg_shift_right(tmp,1);
@@ -105,12 +105,12 @@ adjust the exponent for the output.
 . *Operation*
 +
 ----
-vd = ExpAdjust(R_NL_TYPE, E)
+e, E = ExpAdjust(R_NL_TYPE, E)
 
 if R_NL_TYPE == 0       % reciprocal
     E = 1 - E;
-    if (E >= 0) vd.e = 31 - E;
-    else vd.e = 31;
+    if (E >= 0) e = 31 - E;
+    else e = 31;
 
 elsif R_NL_TYPE == 1    % square root
     vd.E = ceil(E/2)-31;
