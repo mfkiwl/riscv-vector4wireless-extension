@@ -41,10 +41,24 @@ Every 2^rs1 elements in vs2 are accumulated and then do algorithm round right sh
 +
 ----
 VS version
-vd[j] = clip_low_SEW(alg_round_shift_right(sum(vs2[j * 2^rs1 .... j * 2^rs1 + 2^rs1 - 1]), accsft))
+n = 2^rs1;
+for (j = 0; j < VLEN/32/n; j++)
+{
+  start = j * n;
+  end = j * n + n - 1;
+  temp  = sum(vs2[start ... end]);
+  vd[j] = clip_low_SEW(alg_round_shift_right(temp, accsft));
+}
 
 VI version
-vd[j] = clip_low_SEW(alg_round_shift_right(sum(vs2[j * 2^uimm .... j * 2^uimm + 2^uimm - 1]), accsft))
+n = 2^uimm;
+for (j = 0; j < VLEN/32/n; j++)
+{
+  start = j * n;
+  end = j * n + n - 1;
+  temp  = sum(vs2[start ... end]);
+  vd[j] = clip_low_SEW(alg_round_shift_right(temp, accsft));
+}
 ----
 
 
