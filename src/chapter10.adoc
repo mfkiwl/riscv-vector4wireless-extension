@@ -102,8 +102,9 @@ x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
 segIdx[i] = findSeg(x[i], R_SEG[N])  // N is segment group ID
 If (segIdx[i] is valid)
 { 
-tmp = alg_round_shift_right((A[segIdx[i]] * x[i]), n) + B[segIdx[i]];
-Vd[i] = postProc(R_NL_TYPE, tmp)
+  tmp = alg_round_shift_right((A[segIdx[i]] * x[i]), n) + B[segIdx[i]];
+  e[i], E[i] = expAdjust(R_NL_TYPE, E[i]);
+  Vd[i] = postProc(R_NL_TYPE, tmp, E[i]);
 }
 N =(N+1) mod K;  //K is the max segments group number
 
@@ -113,8 +114,9 @@ x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
 segIdx[i] = findSeg(x[i], R_SEG[N]) // N is segment group ID
 If (segIdx[i] is valid)
 { 
-tmp = alg_round_shift_right((A[segIdx[i]] * x[i]), n) + B[segIdx[i]];
-Vd[i] = postProc(R_NL_TYPE, tmp)
+  tmp = alg_round_shift_right((A[segIdx[i]] * x[i]), n) + B[segIdx[i]];
+  e[i], E[i] = expAdjust(R_NL_TYPE, E[i]);
+  Vd[i] = postProc(R_NL_TYPE, tmp, E[i]);
 }
 N =(N+1) mod K; //K is the max segments group number
 ----
