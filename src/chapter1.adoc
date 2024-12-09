@@ -10,9 +10,9 @@
 - get_e: Get the exponent part in the Complex Packed Float-point format(CPF), 4bit exponent at highest bits, following 6bits image part, and real part at the lowest 6bits. e.g 0x3F45 = 0b 0011 1111 0100 0101, the exponent part is at highest bits, get_e(0x3F45) = 0b'0011' 
 - get_i: Get the imaginary part in the Complex Packed Float-point format(CPF), 4bit exponent at highest bits, following 6bits image part, and real part at the lowest 6bits. e.g 0x3F45 = 0b 0011 1111 0100 0101, the image part is the 6 bits after exponent bits, get_i(0x3F45) = 0b'111101'
 - get_r: Get the real part in the complex compressed format(CPF), 4bit exponent at highest bits, following 6bits image part, and real part at the lowest 6bits. e.g 0x3F45 = 0b 0011 1111 0100 0101, the real part is the lowest 6 bits, get_r(0x3F45) = 0b'000101'
-- zp16: Add 0 to 16 bits at the end
-- zp32: Add 0 to 32 bits at the end
-- sx16: sign extension to 16 bits
+- zp16: Add 0 to 16 bits at lowest bits. e.g.zp16(0b'111101') = 0b'1111010000000000'
+- zp32: Add 0 to 32 bits at lowest bits. e.g.zp32(0b'111101') = 0b'11110100000000000000000000000000'
+- sx16: sign extension to 16 bits. e.g. sx16()
 - sx32: sign extension to 32 bits
 - min: Find the minimum
 - max: Find the maximum
