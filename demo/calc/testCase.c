@@ -344,3 +344,82 @@ int32_t op_testMvZero()
                   :[gRes]"r"(gRes));                              
     return 0;
 }
+
+int32_t gMacj[64] ={
+0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,
+0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,
+0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,
+0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001,0x00010001
+};
+
+void vvdscmacjor_utm1()
+{
+    size_t vl, avl;
+    uint32_t vtypeE;
+    int32_t shiftBit = 0;
+    
+    vint32m1_t vAcc,vA;
+                   
+    avl = 32;
+    vtypeE = TA | MA | M1 | E32;
+    asm volatile("vsetvl %[vl], %[avl], %[vtype]": [vl] "=r" (vl) : [avl] "r" (avl), [vtype] "r" (vtypeE)); 
+    
+    asm volatile("vle32.v %[vA], (%[gMacj]);" 
+                  :[vA]"+vr"(vA)
+                  :[gMacj]"r"(gMacj)); 
+                  
+    asm volatile("vdsmacini.s %[shiftBit];" : :[shiftBit]"r"(shiftBit)); 
+                                   
+    asm volatile("vdscmacj.vv %[vA], %[vA];" 
+                  :
+                  :[vA]"vr"(vA));
+                  
+    asm volatile("vdscmacjor.vv %[vAcc],%[vA], %[vA];" 
+                  :[vAcc]"=vr"(vAcc)
+                  :[vA]"vr"(vA));
+                  
+
+    asm volatile("vse32.v %[vAcc], (%[gRes]);" 
+                  :[vAcc]"=vr"(vAcc)
+                  :[gRes]"r"(gRes));   
+    int32_t i;
+    for (i = 0; i < 1; i++)
+    {
+      printf("res[%d] = %x\n",i,gRes[i]);
+    }                 
+                                             
+                  
+}
+
+void vvdscmacjor_utm2()
+{
+    size_t vl, avl;
+    uint32_t vtypeE;
+    int32_t shiftBit = 0;
+    
+    vint32m2_t vAcc,vA;
+   
+    avl = 64;
+    vtypeE = TA | MA | M2 | E32;
+    asm volatile("vsetvl %[vl], %[avl], %[vtype]": [vl] "=r" (vl) : [avl] "r" (avl), [vtype] "r" (vtypeE)); 
+    
+    asm volatile("vle32.v %[vA], (%[gMacj]);" 
+                  :[vA]"+vr"(vA)
+                  :[gMacj]"r"(gMacj)); 
+                  
+    asm volatile("vdsmacini.s %[shiftBit];" : :[shiftBit]"r"(shiftBit)); 
+                                                     
+    asm volatile("vdscmacjor.vv %[vAcc],%[vA], %[vA];" 
+                  :[vAcc]"=vr"(vAcc)
+                  :[vA]"vr"(vA));  
+                  
+    asm volatile("vse32.v %[vAcc], (%[gRes]);" 
+                  :[vAcc]"=vr"(vAcc)
+                  :[gRes]"r"(gRes)); 
+     int32_t i;                         
+   for (i = 0; i < 1; i++)
+    {
+      printf("res[%d] = %x\n",i,gRes[i]);
+    }                                                  
+                  
+}
