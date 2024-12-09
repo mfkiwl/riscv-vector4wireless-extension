@@ -208,8 +208,8 @@ Tmp.i = vs1[0].r * vs2[i].i + vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/
 Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
 ACCREG[i].r += Tmp.r;
 ACCREG[i].i += Tmp.i;
-vd[i].r = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
-vd[i].i = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW
+vd[i].r = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW/2
+vd[i].i = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW/2
 ACCREG[i] = 0；
 ----
 
