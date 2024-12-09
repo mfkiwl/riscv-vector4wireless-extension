@@ -19,15 +19,15 @@
 - min_i: Find the element index in the vector register where the minimum value is located.
 - max_i: Find the element index in the vector register where the maximum value is located.
 - lsb: The number of leading sign bit number minus 1. e.g. lsb( 0b'00010010') = 2, lsb( 0b'1111 1101') = 5.
-- cfp_pack: Put e, i and r into the compressed complex format according to the complex compressed format
-- vcpack: extract the high 16 bits of 32-bit real numbers and 32-bit imaginary numbers to form a complex number in SC16 format
-- sum: Sum
+- cpf_pack: Put e, i and r into the compressed complex format according to the complex compressed format. e.g. cpf(e=0x3, i=0xFFFD, r=0x5) = 0x3F45
+- vcpack: extract the high 16 bits of 32-bit real numbers and 32-bit imaginary numbers in rounding mode to form a complex number in SC16 format. e.g i = 0x00058000, r = 0x00038000, vcpack(0x00058000, 0x00038000) = 0x00060004
+- sum: sum
 - conj: Convert a complex to it's conjugate complex.
-- alg_round_shift_right: Arithmetic right shift with vxrm mode rounding
-- alg_shift_left: Arithmetic left shift
-- alg_shift_right: Arithmetic right shift without rounding.
-- shift_left: Logical left shift
-- clip_low_SEW:  Saturate and clip the lowest SEW width bit number
+- alg_round_shift_right: Arithmetic right shift with vxrm mode rounding, e.g. vxrm=rnu, alg_round_shift_right(0x0005, 1) = 0x3
+- alg_shift_left: Arithmetic left shift with Saturate. 
+- alg_shift_right: Arithmetic right shift without rounding. e.g. alg_shift_right(0x0005, 1) = 0x2
+- shift_left: Logical left shift.
+- clip_low_SEW:  Saturate and clip the lowest SEW width bit number. 
 - round_clip_high_SEW: Saturate clip the high SEW width bit number with vxrm mode rounding
 - MIN_SEW: The minimum value of the signed number corresponding to the element of SEW bit width
 - MAX_SEW: The maximum value of the signed number corresponding to the element of SEW bit width
