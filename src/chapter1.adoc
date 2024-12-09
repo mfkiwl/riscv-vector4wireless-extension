@@ -6,10 +6,10 @@
 - int8: 8 bit signed char 
 - int16: 16 bit signed half word
 - int32: 32 bit word
-- sc16: signed complex with 16bits image and 16bits real part, real part in low 16bit.
-- get_e: Get the exponent part in the complex compressed format
-- get_i: Get the imaginary part in the complex compressed format
-- get_r: Get the real part in the complex compressed format
+- sc16: signed complex with 16bits image and 16bits real part, real part in low 16bit. e.g. 0xFFFD0005, image = -3, real = 5
+- get_e: Get the exponent part in the Complex Packed Float-point format(CPF), 4bit exponent at highest bits, following 6bits image part, and real part at the lowest 6bits. e.g 0x3F45 = 0b 0011 1111 0100 0101, the exponent part is at highest bits, get_e(0x3F45) = 0b'0011' 
+- get_i: Get the imaginary part in the Complex Packed Float-point format(CPF), 4bit exponent at highest bits, following 6bits image part, and real part at the lowest 6bits. e.g 0x3F45 = 0b 0011 1111 0100 0101, the image part is the 6 bits after exponent bits, get_i(0x3F45) = 0b'111101'
+- get_r: Get the real part in the complex compressed format(CPF), 4bit exponent at highest bits, following 6bits image part, and real part at the lowest 6bits. e.g 0x3F45 = 0b 0011 1111 0100 0101, the real part is the lowest 6 bits, get_r(0x3F45) = 0b'000101'
 - zp16: Add 0 to 16 bits at the end
 - zp32: Add 0 to 32 bits at the end
 - sx16: sign extension to 16 bits
@@ -21,7 +21,7 @@
 - cfp_pack: Put e, i and r into the compressed complex format according to the complex compressed format
 - vcpack: extract the high 16 bits of 32-bit real numbers and 32-bit imaginary numbers to form a complex number in SC16 format
 - sum: Sum
-- conj: Convert to the conjugate complex number of a negative number
+- conj: Convert a complex to it's conjugate complex.
 - alg_round_shift_right: Arithmetic right shift with vxrm mode rounding
 - alg_shift_left: Arithmetic left shift
 - shift_left: Logical left shift
