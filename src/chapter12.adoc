@@ -35,12 +35,12 @@ if R_NL_TYPE == 0       % reciprocal
     x = abs(x);
 
 elsif R_NL_TYPE == 1    % square root
-    isOddE = ceill(E/2) - floor(E/2);
+    isOddE = ceil(E/2) - floor(E/2);
     E   = E + isOddE;
     x   = x * (2^-isOddE);
 
 elsif R_NL_TYPE == 2    % reciprocal of square root
-    isOddE = ceill(E/2) - floor(E/2);
+    isOddE = ceil(E/2) - floor(E/2);
     E   = E + isOddE;
     x   = x * (2^-isOddE);
 
@@ -86,12 +86,12 @@ if R_NL_TYPE == 0       % reciprocal
     else e = 31;
 
 elsif R_NL_TYPE == 1    % square root
-    E = ceil(E/2);
+    E = (E>>1);
     if (E >= 0) e = 31 - E;
     else e = 31;   
    
 elsif R_NL_TYPE == 2    % reciprocal of square root
-    E = -ceil(E/2)+1;
+    E = -(E>>1)+1;
     if (E >= 0) e = 31 - E;
     else e = 31;
 
