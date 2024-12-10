@@ -423,3 +423,101 @@ void vvdscmacjor_utm2()
     }                                                  
                   
 }
+
+
+int32_t gMacjMAXNumI1[32] ={
+0x00007FFF,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,
+0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000};
+
+int32_t gMacjMAXNumI2[32] ={
+0x7FFF0000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,
+0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000};
+
+int32_t gMacjMAXNumR1[32] ={
+0x00007FFF,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,
+0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000};
+
+int32_t gMacjMAXNumR2[32] ={
+0x00007FFF,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,
+0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000};
+
+void vdscmacjoi_ut()
+{
+    size_t vl, avl;
+    uint32_t vtypeE;
+    int32_t shiftBit = 0;
+    
+    vint32m1_t vAcc,vS1,vS2;
+    vint32m1_t vZ;     
+    avl = 32;
+    vtypeE = TA | MA | M1 | E32;
+    asm volatile("vsetvl %[vl], %[avl], %[vtype]": [vl] "=r" (vl) : [avl] "r" (avl), [vtype] "r" (vtypeE)); 
+    
+    uint32_t vcsrA0M0R0Sa = ACCSFT0 | MULSFT0 | VXRM_RNU | VXSAT1;    
+    asm volatile("csrw vcsr, %[vcsrA0M0R0Sa];"
+    :
+    : [vcsrA0M0R0Sa] "r" (vcsrA0M0R0Sa)
+    );   
+     
+    asm volatile("vmv.v.i %[vZ], 0;"
+                 :[vZ]"=vd"(vZ)
+                 :);
+                 
+    asm volatile("vdscmacjo.vv %[vAcc],%[vZ], %[vZ];" 
+                  :[vAcc]"=vr"(vAcc)
+                  :[vZ]"vr"(vZ)); 
+    asm volatile("vdsmacini.s %[shiftBit];" : :[shiftBit]"r"(shiftBit)); 
+        
+    asm volatile("vle32.v %[vS1], (%[gMacjMAXNumI1]);" 
+                  :[vS1]"=vr"(vS1)
+                  :[gMacjMAXNumI1]"r"(gMacjMAXNumI1)); 
+
+    asm volatile("vle32.v %[vS2], (%[gMacjMAXNumI2]);" 
+                  :[vS2]"=vr"(vS2)
+                  :[gMacjMAXNumI2]"r"(gMacjMAXNumI2)); 
+                                    
+                               
+    asm volatile("vdscmacj.vv %[vS2], %[vS1];" 
+                  :
+                  :[vS1]"vr"(vS1),[vS2]"vr"(vS2));
+                                    
+    asm volatile("vdscmacjoi.vv %[vAcc],%[vZ], %[vZ];" 
+                  :[vAcc]"=vr"(vAcc)
+                  :[vZ]"vr"(vZ));
+
+    asm volatile("vse32.v %[vAcc], (%[gRes]);" 
+                  :[vAcc]"=vr"(vAcc)
+                  :[gRes]"r"(gRes));   
+
+    printf("img res = %x\n",gRes[0]);
+    
+    asm volatile("vdscmacjo.vv %[vAcc],%[vZ], %[vZ];" 
+                  :[vAcc]"=vr"(vAcc)
+                  :[vZ]"vr"(vZ)); 
+    asm volatile("vdsmacini.s %[shiftBit];" : :[shiftBit]"r"(shiftBit)); 
+        
+    asm volatile("vle32.v %[vS1], (%[gMacjMAXNumR1]);" 
+                  :[vS1]"=vr"(vS1)
+                  :[gMacjMAXNumR1]"r"(gMacjMAXNumR1)); 
+
+    asm volatile("vle32.v %[vS2], (%[gMacjMAXNumR2]);" 
+                  :[vS2]"=vr"(vS2)
+                  :[gMacjMAXNumR2]"r"(gMacjMAXNumR2)); 
+                                    
+                               
+    asm volatile("vdscmacj.vv %[vS1], %[vS1];" 
+                  :
+                  :[vS1]"vr"(vS1),[vS2]"vr"(vS2));
+                                    
+    asm volatile("vdscmacjor.vv %[vAcc],%[vZ], %[vZ];" 
+                  :[vAcc]"=vr"(vAcc)
+                  :[vZ]"vr"(vZ));
+
+    asm volatile("vse32.v %[vAcc], (%[gRes]);" 
+                  :[vAcc]"=vr"(vAcc)
+                  :[gRes]"r"(gRes));   
+
+    printf("real res = %x\n",gRes[0]);   
+    
+           
+}
