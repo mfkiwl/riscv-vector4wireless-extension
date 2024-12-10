@@ -420,5 +420,6 @@ void vvdscmacjor_utm2()
    for (i = 0; i < 1; i++)
     {
       printf("res[%d] = %x\n",i,gRes[i]);
-    }                                                                
+    }                                                  
+                  
 }
