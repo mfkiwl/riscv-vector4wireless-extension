@@ -29,7 +29,8 @@ RISCV_PREFIX ?= riscv$(XLEN)-wing-elf-
 RISCV_GCC ?= $(RISCV_PREFIX)gcc
 
 #ISA Configs   Default:M134
-    MARCH_CFG = rv32imcv_zicsr_zicntr_zvw
+    #MARCH_CFG = rv32imcv_zicsr_zicntr_zvw
+    MARCH_CFG = rv32imc_zve32x_zicsr_zicntr_zvw
     ABI_CFG   = ilp32
     CORE_CFG  = CUSTOM
 
