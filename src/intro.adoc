@@ -21,7 +21,7 @@ The wireless signal processing extension instruction built on the RVV extension 
 
 *Currently, there are some limitations for Zvw* 
 
-* It only supports RV32 and SEW=32bits, when SEW=32 SC16 is supported.
-* SC32 is not supported, 32 real and imaginary parts of complex number are stored in neighbor vector registers.  
+* *It only supports RV32 and SEW=32bits, when SEW=32 SC16 is supported.*
+* *SC32 is not supported, 32 real and imaginary parts of complex number are stored in neighbor vector registers.*  
 * *The operation defined for each vector element in following instruction behavior follows RVV1.0 rule, inlcudeing LMUL/VL/vm/ta/ma operation rule.* 
-* All the multiplication in Zvw shift the result 1 bit left by default.
+* *All the multiplication in Zvw shift the result 1 bit left by default.*
