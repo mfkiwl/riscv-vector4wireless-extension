@@ -10,7 +10,7 @@ Key additions include:
 * Definitions for vector state register extension fields 
 * Complex dynamic scaling operation instructions 
 * Complex compressed format conversion instructions 
-* Vector register element inter-operation instructions 
+* Vector register inter-element operation instructions 
 * Fixed-point dynamic scaling operation instructions  
 * Dynamic scaling multiply-accumulate operation instructions
 * Unified fast nonlinear operation instructions
