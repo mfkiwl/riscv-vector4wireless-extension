@@ -18,7 +18,7 @@
 - max: Find the maximum value from a vector register from right to left. the right element have the higher priority to be the maximum value if there are multiple element equal to maximum value.
 - min_i: Find the element index in the vector register where the minimum value is located.
 - max_i: Find the element index in the vector register where the maximum value is located.
-- lsb: The number of leading sign bit number minus 1. e.g. lsb( 0b'0*00*10010') = 2, lsb( 0b'1111 1101') = 5.
+- lsb: The number of leading sign bit number minus 1. e.g. lsb( 0b'00010010') = 2, lsb( 0b'11111101') = 5.
 - cpf_pack: Put e, i and r into the compressed complex format according to the complex compressed format. e.g. cpf(e=0x3, i=0xFFFD, r=0x5) = 0x3F45
 - vcpack: extract the high 16 bits of 32-bit real numbers and 32-bit imaginary numbers in rounding mode to form a complex number in SC16 format. e.g i = 0x00058000, r = 0x00038000, vcpack(0x00058000, 0x00038000) = 0x00060004
 - sum: sum
