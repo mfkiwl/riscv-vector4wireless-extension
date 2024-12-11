@@ -185,7 +185,7 @@ Dynamic scaling of fixed-point complex numbers with constant bit width multiply 
 
 . *Description*
 +
-The complex numbers of vs2 and vs1 and vs1[0] are multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Arithmetically shift the real part and imaginary part of the value in the accumulation register, truncate and output them to vd, and clear the accumulation register. When SEW is 32bit, the complex number of SC16 is output.
+The complex numbers of vs2 and vs1 and vs1[0] are multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Arithmetically shift the real part and imaginary part of the value in the accumulation register, truncate and output them to vd, and clear the accumulation register. When SEW is 32bit, the complex number of SC16 is output. *output only happens once to a single vd register after the last mac finishes when LMUL > 1.*
 
 . *Operation*
 +
@@ -225,7 +225,7 @@ Fixed-point complex number dynamic scaling conjugate multiply and accumulate wit
 
 . *Description*
 +
-The complex conjugate of vs1/vs1[0] and vs2 is multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Arithmetically shift the real part and imaginary part of the value in the accumulation register, truncate and output them to vd, and clear the accumulation register. When SEW is 32bit, the complex number of SC16 is output.
+The complex conjugate of vs1/vs1[0] and vs2 is multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Arithmetically shift the real part and imaginary part of the value in the accumulation register, truncate and output them to vd, and clear the accumulation register. When SEW is 32bit, the complex number of SC16 is output.  *output only happens once to a single vd register after the last mac finishes when LMUL > 1.*
 
 . *Operation*
 +
@@ -265,7 +265,7 @@ Dynamically scale complex multiplication and accumulation and output the real pa
 
 . *Description*
 +
-The complex numbers of vs2 and vs1 and vs1[0] are multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Perform arithmetic shifts on the real part in the accumulation register, intercept the low bits of the real part, and output them to vd, and clear the real part to zero. When SEW is configured as 32bit, the real part of the output is 32bit. This command is invalid when SEW is configured as other values.
+The complex numbers of vs2 and vs1 and vs1[0] are multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Perform arithmetic shifts on the real part in the accumulation register, intercept the low bits of the real part, and output them to vd, and clear the real part to zero. When SEW is configured as 32bit, the real part of the output is 32bit. This command is invalid when SEW is configured as other values.  *output only happens once to a single vd register after the last mac finishes when LMUL > 1.*
 
 . *Operation*
 +
@@ -297,7 +297,7 @@ Dynamically scale complex multiplication and accumulation and output the imagina
 
 . *Description*
 +
-Multiply the complex numbers of vs2 and vs1 and vs1[0], perform an arithmetic shift on the imaginary part in the accumulation register, intercept the low bits of the imaginary part and output it to vd, and clear the imaginary part to zero. When SEW is configured for 32bit, the imaginary part of the output is 32bit. This command is invalid when SEW is configured to other values.
+Multiply the complex numbers of vs2 and vs1 and vs1[0], perform an arithmetic shift on the imaginary part in the accumulation register, intercept the low bits of the imaginary part and output it to vd, and clear the imaginary part to zero. When SEW is configured for 32bit, the imaginary part of the output is 32bit. This command is invalid when SEW is configured to other values. *output only happens once to a single vd register after the last mac finishes when LMUL > 1.*
 
 . *Operation*
 +
@@ -329,7 +329,7 @@ Dynamically scale complex conjugate multiply and accumulate and output the real 
 
 . *Description*
 +
-The complex conjugate of vs1/vs1[0] and vs2 is multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Perform arithmetic shifts on the real part in the accumulation register, intercept the low bits of the real part, and output them to vd, and clear the real part to zero. When SEW is configured as 32bit, the real part of the output is 32bit. This command is invalid when SEW is configured as other values.
+The complex conjugate of vs1/vs1[0] and vs2 is multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Perform arithmetic shifts on the real part in the accumulation register, intercept the low bits of the real part, and output them to vd, and clear the real part to zero. When SEW is configured as 32bit, the real part of the output is 32bit. This command is invalid when SEW is configured as other values. *output only happens once to a single vd register after the last mac finishes when LMUL > 1.*
 
 . *Operation*
 +
@@ -361,7 +361,7 @@ Dynamically scale complex conjugate multiply and accumulate and output the imagi
 
 . *Description*
 +
-Multiply the complex conjugate of vs1/vs1[0] and vs2, perform an arithmetic shift on the imaginary part in the accumulation register, intercept the low bits of the imaginary part and output it to vd, and clear the imaginary part to zero. When SEW is configured for 32bit, the imaginary part of the output is 32bit. This command is invalid when SEW is configured to other values.
+Multiply the complex conjugate of vs1/vs1[0] and vs2, perform an arithmetic shift on the imaginary part in the accumulation register, intercept the low bits of the imaginary part and output it to vd, and clear the imaginary part to zero. When SEW is configured for 32bit, the imaginary part of the output is 32bit. This command is invalid when SEW is configured to other values. *output only happens once to a single vd register after the last mac finishes when LMUL > 1.*
 
 . *Operation*
 +
