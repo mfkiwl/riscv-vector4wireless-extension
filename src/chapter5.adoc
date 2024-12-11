@@ -97,7 +97,7 @@ The two fixed-point numbers perform a dynamic scaling accumulation operation, an
 
 . *Description*
 +
-The signed fixed-point number of vs1 or vs1[0] and vs2 is multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs arithmetic shifting. The result is accumulated with the value in the accumulation register. After the accumulation, the value in the accumulation register is The value is arithmetic shifted and then truncated and output to vd, and the accumulation register is cleared. 
+The signed fixed-point number of vs1 or vs1[0] and vs2 is multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs arithmetic shifting. The result is accumulated with the value in the accumulation register. After the accumulation, the value in the accumulation register is The value is arithmetic shifted and then truncated and output to vd, and the accumulation register is cleared. *output only happens once to a single vd register after the last mac finishes when LMUL > 1.*
 
 . *Operation*
 +
