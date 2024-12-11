@@ -18,11 +18,3 @@ Key additions include:
 Currently, RISC-V Vector Working Group developed the RVV 1.0 vector extension, widely applied in AI and image processing. However, these basic instructions do not fully satisfy the requirements of wireless broadband signal processing, which involves handling complex numbers in 4G and 5G communications and demands high-precision fixed-point dynamic scaling. Therefore, additional and more effective vector extension instructions are necessary for wireless communication, covering a significant segment of vector signal processing needs, especially for 4G and 5G technologies.  
 
 The wireless signal processing extension instruction built on the RVV extension can accelerate advancements in 4G and 5G signal processing and facilitate the adoption of RISC-V in the wireless signal processing domain. The instruction set extends the RVV 1.0 specification to support high-bandwidth wireless communication signal processing. Termed the vector wireless broadband extension instruction set and represented by 'Zvw', it integrates into the basic 'v' extension. The Zvw extension adapts RVV instructions to better suit the high bandwidth, high-order modulation, and large throughput demands of wireless signal processing, particularly in 4G and 5G communications. 
-
-*Currently, there are some limitations for Zvw* 
-
-* *It only supports RV32 and SEW=32bits, when SEW=32 SC16 is supported.*
-* *SC32 is not supported, 32 real and imaginary parts of complex number are stored in neighbor vector registers.*  
-* *The operations defined for each vector element in following instruction behavior follow RVV1.0 rule, inlcudeing LMUL/VL/vm/ta/ma operation rule.* 
-* *For any '.vs' instruction, the 'v' register increase index while LMUL > 1, but 's' vector register don't increase index when LMUL > 1.* 
-* *All the multiplication in Zvw shift the result 1 bit left by default.*
