@@ -91,7 +91,7 @@ Computes the linear portion of the output of a nonlinear function of the input v
 
 . *Description*
 +
-vs2 stores the fixed-point value, vs1 or vs1[0] stores the fixed-point value n. According to the function type configured in the nonlinear control register and the segmented parameter configuration, the segmented nonlinear result is calculated. Finally, the results are put into vd after fix point format conversion.
+vs2 stores the fixed-point value, vs1 or vs1[0] stores the fixed-point value n. According to the function type configured in the nonlinear control register and the segmented parameter configuration, the segmented nonlinear result is calculated. Finally, the results are put into vd after fix point format conversion. After a vnlm instruction finishes search all it's segments it should increase the segement group index N by one in circular mode, circle size is K (N =(N+1) mod K).
 
 . *Operation*
 +
@@ -106,7 +106,6 @@ If (segIdx[i] is valid)
   e[i], E[i] = expAdjust(R_NL_TYPE, E[i]);
   Vd[i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
 }
-N =(N+1) mod K;  //K is the max segments group number
 
 VS version
 x[i], E[i] = norm(R_NL_TYPE, vs2[i], vs1[0])
@@ -118,7 +117,6 @@ If (segIdx[i] is valid)
   e[i], E[i] = expAdjust(R_NL_TYPE, E[i]);
   Vd[i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
 }
-N =(N+1) mod K; //K is the max segments group number
 ----
 
 *Note*: the definition of the basic operations for norm/preProc/findSeg/postProc/expAdjust are defined at chapter 12.
