@@ -533,12 +533,12 @@ void vlse32_ut()
     size_t vl, avl;
     uint32_t vtypeE;
 
-    vint32m1_t vs;
+    vint32m2_t vs;
 
     avl = 16;
     vtypeE = TA | MA | M2 | E32;
     asm volatile("vsetvl %[vl], %[avl], %[vtype]": [vl] "=r" (vl) : [avl] "r" (avl), [vtype] "r" (vtypeE)); 
     int32_t sample = 2;
-    asm volatile("vlse32.v %[vs],(%[g_lse32Test]);":[vs]"=vr"(vs):[g_lse32Test]"r"(g_lse32Test),[sample]"r"(sample));
+    asm volatile("vlse32.v %[vs],(%[g_lse32Test]),%[sample];":[vs]"=vr"(vs):[g_lse32Test]"r"(g_lse32Test),[sample]"r"(sample));
 }
 #pragma (pop)
