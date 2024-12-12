@@ -521,3 +521,24 @@ void vdscmacjoi_ut()
     
            
 }
+
+#pragma (push)
+#pragma (4)//8 16
+int32_t g_lse32Test[106] = {
+    1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,
+    33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64
+};
+void vlse32_ut()
+{
+    size_t vl, avl;
+    uint32_t vtypeE;
+
+    vint32m1_t vs;
+
+    avl = 16;
+    vtypeE = TA | MA | M2 | E32;
+    asm volatile("vsetvl %[vl], %[avl], %[vtype]": [vl] "=r" (vl) : [avl] "r" (avl), [vtype] "r" (vtypeE)); 
+    int32_t sample = 2;
+    asm volatile("vlse32.v %[vs],(%[g_lse32Test]);":[vs]"=vr"(vs):[g_lse32Test]"r"(g_lse32Test),[sample]"r"(sample));
+}
+#pragma (pop)
