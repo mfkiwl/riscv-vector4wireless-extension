@@ -43,7 +43,7 @@ The elements of two vector registers are funnel shifted left.
 
 . *Description*
 +
-vs2 and vs1 form a new vector with twice the length from left to right. All elements are sequentially shifted left by fsht bits, left shifted out and discarded. Finally, the left half of the elements are intercepted to form a new vector and output to vd.
+vs2 and vs1 form a new vector with twice the length from left to right. All elements are sequentially shifted left by fsht bits, left shifted out and discarded. Finally, the left half of the elements are intercepted to form a new vector and output to vd.Only LMUL=1 is supported
 
 . *Operation*
 +
@@ -63,7 +63,7 @@ The elements of two vector registers are funnel shifted right.
 
 . *Description*
 +
-vs2 and vs1 form a new vector with twice the length from left to right. All elements are shifted to the right by fsht bits in order, and the right side is shifted out and discarded. Finally, the right half of the elements are intercepted to form a new vector and output to vd.
+vs2 and vs1 form a new vector with twice the length from left to right. All elements are shifted to the right by fsht bits in order, and the right side is shifted out and discarded. Finally, the right half of the elements are intercepted to form a new vector and output to vd.Only LMUL=1 is supported
 
 . *Operation*
 +
