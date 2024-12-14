@@ -8,6 +8,7 @@
 * *The operations defined for each vector element in following instruction behavior follow RVV1.0 rule, inlcudeing LMUL/VL/vm/ta/ma operation rule.* 
 * *For any '.vs' instruction, the 'v' register increase index while LMUL > 1, but 's' vector register don't increase index when LMUL > 1.* 
 * *All the multiplication in Zvw shift the result 1 bit left by default.*
+* *All Zvw instruction only supports signed integer operations. except uimm values.*
 
 == Basic operations definition
 
