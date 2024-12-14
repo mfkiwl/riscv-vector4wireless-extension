@@ -42,6 +42,6 @@
 - round_clip_high_SEW: Saturate clip the high SEW width bit number with vxrm mode rounding. e.g. SEW=32bit, round_clip_high_SEW(0x0050000381) = 0x00500004, round_clip_high_SEW(0x7fffffff80) = 0x7fffffff
 - MIN_SEW: The minimum value of the signed number corresponding to the element of SEW bit width
 - MAX_SEW: The maximum value of the signed number corresponding to the element of SEW bit width
-- ACCREG[i]: The i-th accumulation register inside the MAC ALU, 80 bits, 32 elements in total
-- MULSFTREG[i]: The i-th multiply shift register inside the MAC ALU, 5bits/element, 8*32 elements in total
+- ACCREG[i]: The i-th accumulation register inside the MAC ALU, 80 bits signed integer or 40bit signed image and real for complex value, 32 elements in total.
+- MULSFTREG[i]: The i-th multiply shift register inside the MAC ALU, 5bits unsigned value per element, 8*32 elements in total.
 
