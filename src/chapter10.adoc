@@ -69,14 +69,14 @@ vs2 stores the fixed-point value, vs1 or vs1[0] stores the fixed-point value n. 
 +
 ----
 VV version
-x[i], E[i] = norm(R_NL_TYPE, vs2[i], vs1[i])
+x[i], E[i] = norm(R_NL_TYPE, vs2[j][i], vs1[j][i])
 x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
-vd[i] = expAdjust(R_NL_TYPE, E[i])
+vd[j][i] = expAdjust(R_NL_TYPE, E[i])
 
 VS version
-x[i], E[i] = norm(R_NL_TYPE, vs2[i], vs1[0])
+x[i], E[i] = norm(R_NL_TYPE, vs2[j][i], vs1[j][0])
 x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
-vd[i] = expAdjust(R_NL_TYPE, E[i])
+vd[j][i] = expAdjust(R_NL_TYPE, E[i])
 ----
 
 ==== vnlm(vector non-linear mantissa calculation instruction)
@@ -97,25 +97,27 @@ vs2 stores the fixed-point value, vs1 or vs1[0] stores the fixed-point value n. 
 +
 ----
 VV version
-x[i], E[i] = norm(R_NL_TYPE, vs2[i], vs1[i])
+x[i], E[i] = norm(R_NL_TYPE, vs2[j][i], vs1[j][i])
 x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
 segIdx[i] = findSeg(x[i], R_SEG[N])  // N is segment group ID
 If (segIdx[i] is valid)
 { 
-  tmp = alg_round_shift_right((A[segIdx[i]] * x[i]), n) + B[segIdx[i]];
+  tmp = A[segIdx[i]] * x[i]; //SEW = SEW * SEW
+  tmp = alg_round_shift_right(tmp, n) + B[segIdx[i]]; //SEW = SEW + SEW, n depend on customer implementation
   e[i], E[i] = expAdjust(R_NL_TYPE, E[i]);
-  Vd[i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
+  vd[j][i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
 }
 
 VS version
-x[i], E[i] = norm(R_NL_TYPE, vs2[i], vs1[0])
+x[i], E[i] = norm(R_NL_TYPE, vs2[j][i], vs1[j][0])
 x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
 segIdx[i] = findSeg(x[i], R_SEG[N]) // N is segment group ID
 If (segIdx[i] is valid)
 { 
-  tmp = alg_round_shift_right((A[segIdx[i]] * x[i]), n) + B[segIdx[i]];
+  tmp = A[segIdx[i]] * x[i]; //SEW = SEW * SEW
+  tmp = alg_round_shift_right((A[segIdx[i]] * x[i]), n) + B[segIdx[i]]; //SEW = SEW + SEW, n depend on customer implementation
   e[i], E[i] = expAdjust(R_NL_TYPE, E[i]);
-  Vd[i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
+  vd[j][i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
 }
 ----
 
