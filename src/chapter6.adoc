@@ -355,24 +355,23 @@ Dynamically scale complex conjugate multiply and accumulate and output the imagi
 
 . *Description*
 +
-Multiply the complex conjugate of vs1/vs1[0] and vs2, perform an arithmetic shift on the imaginary part in the accumulation register, intercept the low bits of the imaginary part and output it to vd, and clear the imaginary part to zero. When SEW is configured for 32bit, the imaginary part of the output is 32bit. This command is invalid when SEW is configured to other values. *output only happens once to a single vd register after the last mac finishes when LMUL > 1.*
+Multiply the complex conjugate of vs1/vs1[0] and vs2, perform an arithmetic shift on the imaginary part in the accumulation register, intercept the low bits of the imaginary part and output it to vd, and clear the imaginary part to zero. When SEW is configured for 32bit, the imaginary part of the output is 32bit. This command is invalid when SEW is configured to other values. *Clear the ACCREG all image part after all element of the VR are processed.*
 
 . *Operation*
 +
 ----
 VV version
-Tmp.i = vs1[i].r * vs2[i].i - vs1[i].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
-Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+Tmp.i = vs1[j][i].r * vs2[j][i].i - vs1[j][i].i * vs2[j][i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[j][i]);
 ACCREG[i].i += Tmp.i;
-vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW
-ACCREG[i].i = 0；
+vd[0][i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW
 
 VS version
-Tmp.i = vs1[0].r * vs2[i].i - vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
-Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+Tmp.i = vs1[0][0].r * vs2[j][i].i - vs1[0][0].i * vs2[j][i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[j][i]);
 ACCREG[i].i += Tmp.i;
-vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW
-ACCREG[i].i = 0；
+vd[0][i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW
+
 ----
 
 === vdscmulr(vector dynamic scaling complex multiply real part)
