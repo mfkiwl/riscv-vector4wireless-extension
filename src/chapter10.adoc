@@ -74,7 +74,7 @@ x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
 vd[j][i] = expAdjust(R_NL_TYPE, E[i])
 
 VS version
-x[i], E[i] = norm(R_NL_TYPE, vs2[j][i], vs1[j][0])
+x[i], E[i] = norm(R_NL_TYPE, vs2[j][i], vs1[0][0])
 x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
 vd[j][i] = expAdjust(R_NL_TYPE, E[i])
 ----
@@ -109,7 +109,7 @@ If (segIdx[i] is valid)
 }
 
 VS version
-x[i], E[i] = norm(R_NL_TYPE, vs2[j][i], vs1[j][0])
+x[i], E[i] = norm(R_NL_TYPE, vs2[j][i], vs1[0][0])
 x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
 segIdx[i] = findSeg(x[i], R_SEG[N]) // N is segment group ID
 If (segIdx[i] is valid)
