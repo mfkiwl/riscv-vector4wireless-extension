@@ -19,14 +19,14 @@ The signed fixed-point number of vs1 or vs1[0] and vs2 is multiplied. The interm
 +
 ----
 VV version
-Tmp = vs1[i] * vs2[i]  // 2*SEW = SEW * SEW
+Tmp = vs1[j][i] * vs2[j][i]  // 2*SEW = SEW * SEW
 Tmp = alg_round_shift_right(tmp, mulsft);
-vd[i] = clip_low_SEW(tmp); // SEW = 2*SEW
+vd[j][i] = clip_low_SEW(tmp); // SEW = 2*SEW
 
 VS version
-Tmp = vs1[0] * vs2[i]  // 2*SEW = SEW * SEW
+Tmp = vs1[0][0] * vs2[j][i]  // 2*SEW = SEW * SEW
 Tmp = alg_round_shift_right(tmp, mulsft);
-vd[i] = clip_low_SEW(tmp); // SEW = 2*SEW
+vd[j][i] = clip_low_SEW(tmp); // SEW = 2*SEW
 ----
 
 === vdsmacini(vector dynamic scaling MAC initialization)
@@ -48,13 +48,13 @@ vs1, rs1 or uimm are stored as the shift value before the accumulator accumulate
 +
 ----
 V version
-MULSFT[i] = vs[i];
+MULSFT[j][i] = vs[j][i];
 
 S version
-MULSFT[i] = rs1;
+MULSFT[j][i] = rs1;
 
 I version
-MULSFT[i] = uimm;
+MULSFT[j][i] = uimm;
 ----
 
 === vdsmac(vector dynamic scaling MAC)
@@ -75,13 +75,13 @@ The signed fixed-point number of vs1 or vs1[0] and vs2 is multiplied. The interm
 +
 ----
 VV version
-Tmp = vs1[i] * vs2[i]  // 2*SEW = SEW * SEW
-Tmp = alg_round_shift_right(tmp, MULSFT[i]);
+Tmp = vs1[j][i] * vs2[j][i]  // 2*SEW = SEW * SEW
+Tmp = alg_round_shift_right(tmp, MULSFT[j][i]);
 ACCREG[i] += tmp;
 
 VS version
-Tmp = vs1[0] * vs2[i]  // 2*SEW = SEW * SEW
-Tmp = alg_round_shift_right(tmp, MULSFT[i]);
+Tmp = vs1[0][0] * vs2[j][i]  // 2*SEW = SEW * SEW
+Tmp = alg_round_shift_right(tmp, MULSFT[j][i]);
 ACCREG[i] += tmp;
 ----
 
@@ -103,17 +103,17 @@ The signed fixed-point number of vs1 or vs1[0] and vs2 is multiplied. The interm
 +
 ----
 VV version
-Tmp = vs1[i] * vs2[i]  // 2*SEW = SEW * SEW
-Tmp = alg_round_shift_right(tmp, MULSFT[i]);
+Tmp = vs1[j][i] * vs2[j][i]  // 2*SEW = SEW * SEW
+Tmp = alg_round_shift_right(tmp, MULSFT[j][i]);
 ACCREG[i] += tmp;
-vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i], accsft)) // SEW
+vd[0][i] = clip_low_SEW(alg_round_shift_right(ACCREG[i], accsft)) // SEW
 ACCREG[i] = 0；
 
 VS version
-Tmp = vs1[0] * vs2[i]  // 2*SEW = SEW * SEW
-Tmp = alg_round_shift_right(tmp, MULSFT[i]);
+Tmp = vs1[0][0] * vs2[j][i]  // 2*SEW = SEW * SEW
+Tmp = alg_round_shift_right(tmp, MULSFT[j][i]);
 ACCREG[i] += tmp;
-vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i], accsft)) // SEW
+vd[0][i] = clip_low_SEW(alg_round_shift_right(ACCREG[i], accsft)) // SEW
 ACCREG[i] = 0；
 ----
 
@@ -133,5 +133,5 @@ vs2 stores fixed-point values, calculates the number of leading sign bits of eac
 . *Operation*
 +
 ----
-vd[i] = lsb(vs2[i]);
+vd[j][i] = lsb(vs2[j][i]);
 ----
