@@ -17,8 +17,8 @@ The elements of vs2 are used as real parts, and the elements of vs1 are used as 
 . *Operation*
 +
 ----
-vd[i].r = round_clip_high_16(vs2[i]);
-vd[i].i = round_clip_high_16(vs1[i]); 
+vd[j][i].r = round_clip_high_16(vs2[j][i]);
+vd[j][i].i = round_clip_high_16(vs1[j][i]); 
 ----
 
 === vcunpackr(vector complex real unpacking instruction)
@@ -37,7 +37,7 @@ The elements of vs2 are SC16 complex numbers. The 16-bit real part is extracted 
 . *Operation*
 +
 ----
-vd[i] = ZP32(vs2[i].r); 
+vd[j][i] = ZP32(vs2[j][i].r); 
 ----
 
 
@@ -57,6 +57,6 @@ The elements of vs2 are SC16 complex numbers. The 16-bit imaginary part is extra
 . *Operation*
 +
 ----
-vd[i] = ZP32(vs2[i].i); 
+vd[j][i] = ZP32(vs2[j][i].i); 
 ----
 
