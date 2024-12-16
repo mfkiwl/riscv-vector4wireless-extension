@@ -17,7 +17,7 @@ vs2 stores a set of signed fixed-point complex numbers, performs conjugate trans
 . *Operation*
 +
 ----
-vd[i] = conj(vs2[i])
+vd[j][i] = conj(vs2[j][i])
 ----
 
 === vdscmul (vector dynamic scaling complex multiply)
@@ -38,16 +38,16 @@ The signed fixed-point complex numbers in vs1 or rs1 and vs2 are multiplied. The
 +
 ----
 VV version
-Tmp.r = vs1[i].r * vs2[i].r - vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
-Tmp.i = vs1[i].r * vs2[i].i + vs1[i].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
-vd[i].r = clip_low_SEW(alg_round_shift_right(Tmp.r, mulsft)) //SEW/2=SEW
-vd[i].i = clip_low_SEW(alg_round_shift_right(Tmp.i, mulsft)) //SEW/2=SEW
+Tmp.r = vs1[j][i].r * vs2[j][i].r - vs1[j][i].i * vs2[j][i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.i = vs1[j][i].r * vs2[j][i].i + vs1[j][i].i * vs2[j][i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+vd[j][i].r = clip_low_SEW(alg_round_shift_right(Tmp.r, mulsft)) //SEW/2=SEW
+vd[j][i].i = clip_low_SEW(alg_round_shift_right(Tmp.i, mulsft)) //SEW/2=SEW
 
 VS version
-Tmp.r = vs1[0].r * vs2[i].r - vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
-Tmp.i = vs1[0].r * vs2[i].i + vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
-vd[i].r = clip_low_SEW(alg_round_shift_right(Tmp.r, mulsft)) //SEW/2=SEW
-vd[i].i = clip_low_SEW(alg_round_shift_right(Tmp.i, mulsft)) //SEW/2=SEW
+Tmp.r = vs1[0][0].r * vs2[j][i].r - vs1[0][0].i * vs2[j][i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.i = vs1[0][0].r * vs2[j][i].i + vs1[0][0].i * vs2[j][i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+vd[j][i].r = clip_low_SEW(alg_round_shift_right(Tmp.r, mulsft)) //SEW/2=SEW
+vd[j][i].i = clip_low_SEW(alg_round_shift_right(Tmp.i, mulsft)) //SEW/2=SEW
 ----
 
 === vdscmulj (vector dynamic scaling complex conjugate multiply)
@@ -68,16 +68,16 @@ vs2 and the conjugate fixed-point complex numbers of vs1 are multiplied. The int
 +
 ----
 VV version
-Tmp.r = vs1[i].r * vs2[i].r + vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
-Tmp.i = vs1[i].r * vs2[i].i - vs1[i].i * vs2[i].r  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
-vd[i].r = clip_low_SEW(alg_round_shift_right(Tmp.r, mulsft)) //SEW/2=SEW
-vd[i].i = clip_low_SEW(alg_round_shift_right(Tmp.i, mulsft)) //SEW/2=SEW
+Tmp.r = vs1[j][i].r * vs2[j][i].r + vs1[j][i].i * vs2[j][i].i  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = vs1[j][i].r * vs2[j][i].i - vs1[j][i].i * vs2[j][i].r  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+vd[j][i].r = clip_low_SEW(alg_round_shift_right(Tmp.r, mulsft)) //SEW/2=SEW
+vd[j][i].i = clip_low_SEW(alg_round_shift_right(Tmp.i, mulsft)) //SEW/2=SEW
 
 VS version
-Tmp.r = vs1[0].r * vs2[i].r + vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
-Tmp.i = vs1[0].r * vs2[i].i - vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
-vd[i].r = clip_low_SEW(alg_round_shift_right(Tmp.r, mulsft)) //SEW/2 = SEW
-vd[i].i = clip_low_SEW(alg_round_shift_right(Tmp.i, mulsft)) //SEW/2 = SEW
+Tmp.r = vs1[0][0].r * vs2[j][i].r + vs1[0][0].i * vs2[j][i].i  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = vs1[0][0].r * vs2[j][i].i - vs1[0][0].i * vs2[j][i].r  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+vd[j][i].r = clip_low_SEW(alg_round_shift_right(Tmp.r, mulsft)) //SEW/2 = SEW
+vd[j][i].i = clip_low_SEW(alg_round_shift_right(Tmp.i, mulsft)) //SEW/2 = SEW
 ----
 
 === vdscredsum(vector dynamic scaling complex reduced sum)
@@ -91,7 +91,7 @@ The real and imaginary parts of each complex element in the vector register are 
 
 . *Description*
 +
-The real and imaginary parts of the complex elements in vs2 are accumulated separately and the accumulated value is shifted and the low SEW bit is intercepted and output to vd[0]. When SEW is configured as 32bit, SC16 complex addition is performed.
+The real and imaginary parts of the complex elements in vs2 are accumulated separately and the accumulated value is shifted and the low SEW bit is intercepted and output to vd[0]. When SEW is configured as 32bit, SC16 complex addition is performed. not controlled by LMUL, perform operations on a single VR statically.
 
 . *Operation*
 +
@@ -99,10 +99,10 @@ The real and imaginary parts of the complex elements in vs2 are accumulated sepa
 Tmp.r = 0；
 Tmp.i = 0；
 For each i in vs2 
-Tmp.r += v0.b[i] == 0 ? 0 : vs2[i].r
-Tmp.i += v0.b[i] == 0 ? 0 : vs2[i].i
-Vd[0].r = clip_low_SEW(alg_round_shift_right(Tmp.r, accsft)) // SEW
-Vd[0].i = clip_low_SEW(alg_round_shift_right(Tmp.i, accsft)) // SEW
+Tmp.r += v0.b[i] == 0 ? 0 : vs2[0][i].r
+Tmp.i += v0.b[i] == 0 ? 0 : vs2[0][i].i
+vd[0][0].r = clip_low_SEW(alg_round_shift_right(Tmp.r, accsft)) // SEW
+vd[0][0].i = clip_low_SEW(alg_round_shift_right(Tmp.i, accsft)) // SEW
 ----
 
 === vdscmac(vector dynamic scaling complex MAC)
@@ -123,18 +123,18 @@ The signed fixed-point complex numbers of vs2 and vs1/vs1[0] are multiplied. The
 +
 ----
 VV version
-Tmp.r = vs1[i].r * vs2[i].r - vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
-Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
-Tmp.i = vs1[i].r * vs2[i].i + vs1[i].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
-Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+Tmp.r = vs1[j][i].r * vs2[j][i].r - vs1[j][i].i * vs2[j][i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[j][i]);
+Tmp.i = vs1[j][i].r * vs2[j][i].i + vs1[j][i].i * vs2[j][i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[j][i]);
 ACCREG[i].r += Tmp.r;
 ACCREG[i].i += Tmp.i;
 
 VS version
-Tmp.r = vs1[0].r * vs2[i].r - vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
-Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
-Tmp.i = vs1[0].r * vs2[i].i + vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
-Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+Tmp.r = vs1[0][0].r * vs2[j][i].r - vs1[0][0].i * vs2[j][i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[j][i]);
+Tmp.i = vs1[0][0].r * vs2[j][i].i + vs1[0][0].i * vs2[j][i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[j][i]);
 ACCREG[i].r += Tmp.r;
 ACCREG[i].i += Tmp.i;
 ----
@@ -157,18 +157,18 @@ The conjugate multiplication of vs2 and vs1, vs1[0], the intermediate result aft
 +
 ----
 VV version
-Tmp.r = vs1[i].r * vs2[i].r + vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
-Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
-Tmp.i = vs1[i].r * vs2[i].i - vs1[i].i * vs2[i].r  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
-Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+Tmp.r = vs1[j][i].r * vs2[j][i].r + vs1[j][i].i * vs2[j][i].i  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[j][i]);
+Tmp.i = vs1[j][i].r * vs2[j][i].i - vs1[j][i].i * vs2[j][i].r  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[j][i]);
 ACCREG[i].r += Tmp.r;
 ACCREG[i].i += Tmp.i;
 
 VS version
-Tmp.r = vs1[0].r * vs2[i].r + vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
-Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
-Tmp.i = vs1[0].r * vs2[i].i - vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
-Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+Tmp.r = vs1[0][0].r * vs2[j][i].r + vs1[0][0].i * vs2[j][i].i  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[j][i]);
+Tmp.i = vs1[0][0].r * vs2[j][i].i - vs1[0][0].i * vs2[j][i].r  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[j][i]);
 ACCREG[i].r += Tmp.r;
 ACCREG[i].i += Tmp.i;
 ----
@@ -185,32 +185,32 @@ Dynamic scaling of fixed-point complex numbers with constant bit width multiply 
 
 . *Description*
 +
-The complex numbers of vs2 and vs1 and vs1[0] are multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Arithmetically shift the real part and imaginary part of the value in the accumulation register, truncate and output them to vd, and clear the accumulation register. When SEW is 32bit, the complex number of SC16 is output. *output only happens once to a single vd register after the last mac finishes when LMUL > 1.*
+The complex numbers of vs2 and vs1 and vs1[0] are multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Arithmetically shift the real part and imaginary part of the value in the accumulation register, truncate and output them to vd, and clear the accumulation register. When SEW is 32bit, the complex number of SC16 is output. *Clear the ACCREG after all element of the VR are processed.*
 
 . *Operation*
 +
 ----
 VV version
-Tmp.r = vs1[i].r * vs2[i].r - vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
-Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
-Tmp.i = vs1[i].r * vs2[i].i + vs1[i].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
-Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+Tmp.r = vs1[j][i].r * vs2[j][i].r - vs1[j][i].i * vs2[j][i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[j][i]);
+Tmp.i = vs1[j][i].r * vs2[j][i].i + vs1[j][i].i * vs2[j][i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[j][i]);
 ACCREG[i].r += Tmp.r;
 ACCREG[i].i += Tmp.i;
-vd[i].r = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW/2
-vd[i].i = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW/2
-ACCREG[i] = 0；
+vd[0][i].r = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW/2
+vd[0][i].i = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW/2
+
 
 VS version
-Tmp.r = vs1[0].r * vs2[i].r - vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
-Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
-Tmp.i = vs1[0].r * vs2[i].i + vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
-Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+Tmp.r = vs1[0][0].r * vs2[j][i].r - vs1[0][0].i * vs2[j][i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[j][i]);
+Tmp.i = vs1[0][0].r * vs2[j][i].i + vs1[0][0].i * vs2[j][i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[j][i]);
 ACCREG[i].r += Tmp.r;
 ACCREG[i].i += Tmp.i;
-vd[i].r = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW/2
-vd[i].i = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW/2
-ACCREG[i] = 0；
+vd[0][i].r = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW/2
+vd[0][i].i = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW/2
+
 ----
 
 === vdscmacjo(vector dynamic scaling complex conjugate MAC with output)
