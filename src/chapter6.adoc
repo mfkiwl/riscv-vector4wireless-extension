@@ -225,32 +225,32 @@ Fixed-point complex number dynamic scaling conjugate multiply and accumulate wit
 
 . *Description*
 +
-The complex conjugate of vs1/vs1[0] and vs2 is multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Arithmetically shift the real part and imaginary part of the value in the accumulation register, truncate and output them to vd, and clear the accumulation register. When SEW is 32bit, the complex number of SC16 is output.  *output only happens once to a single vd register after the last mac finishes when LMUL > 1.*
+The complex conjugate of vs1/vs1[0] and vs2 is multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Arithmetically shift the real part and imaginary part of the value in the accumulation register, truncate and output them to vd, and clear the accumulation register. When SEW is 32bit, the complex number of SC16 is output. *Clear the ACCREG after all element of the VR are processed.*
 
 . *Operation*
 +
 ----
 VV version
-Tmp.r = vs1[i].r * vs2[i].r + vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
-Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
-Tmp.i = vs1[i].r * vs2[i].i - vs1[i].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
-Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+Tmp.r = vs1[j][i].r * vs2[j][i].r + vs1[j][i].i * vs2[j][i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[j][i]);
+Tmp.i = vs1[j][i].r * vs2[j][i].i - vs1[j][i].i * vs2[j][i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[j][i]);
 ACCREG[i].r += Tmp.r;
 ACCREG[i].i += Tmp.i;
-vd[i].r = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW/2
-vd[i].i = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW/2
-ACCREG[i] = 0；
+vd[0][i].r = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW/2
+vd[0][i].i = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW/2
+
 
 VS version
-Tmp.r = vs1[0].r * vs2[i].r + vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
-Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
-Tmp.i = vs1[0].r * vs2[i].i - vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
-Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+Tmp.r = vs1[0][0].r * vs2[j][i].r + vs1[0][0].i * vs2[j][i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[j][i]);
+Tmp.i = vs1[0][0].r * vs2[j][i].i - vs1[0][0].i * vs2[j][i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[j][i]);
 ACCREG[i].r += Tmp.r;
 ACCREG[i].i += Tmp.i;
-vd[i].r = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW/2
-vd[i].i = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW/2
-ACCREG[i] = 0；
+vd[0][i].r = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW/2
+vd[0][i].i = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW/2
+
 ----
 
 === vdscmacor(vector dynamic scaling complex MAC with widen output of real part)
@@ -265,24 +265,22 @@ Dynamically scale complex multiplication and accumulation and output the real pa
 
 . *Description*
 +
-The complex numbers of vs2 and vs1/vs1[0] are multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Perform arithmetic shifts on the real part in the accumulation register, intercept the low bits of the real part, and output them to vd, and clear the real part to zero. When SEW is configured as 32bit, the real part of the output is 32bit. This command is invalid when SEW is configured as other values.  *output only happens once to a single vd register after the last mac finishes when LMUL > 1.*
+The complex numbers of vs2 and vs1/vs1[0] are multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Perform arithmetic shifts on the real part in the accumulation register, intercept the low bits of the real part, and output them to vd, and clear the real part to zero. When SEW is configured as 32bit, the real part of the output is 32bit. This command is invalid when SEW is configured as other values. *Clear the ACCREG all real part after all element of the VR are processed.*
 
 . *Operation*
 +
 ----
 VV version
-Tmp.r = vs1[i].r * vs2[i].r - vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
-Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
+Tmp.r = vs1[j][i].r * vs2[j][i].r - vs1[j][i].i * vs2[j][i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[j][i]);
 ACCREG[i].r += Tmp.r;
-vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
-ACCREG[i].r = 0；
+vd[0][i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
 
 VS version
-Tmp.r = vs1[0].r * vs2[i].r - vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
-Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
+Tmp.r = vs1[0][0].r * vs2[j][i].r - vs1[0][0].i * vs2[j][i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[j][i]);
 ACCREG[i].r += Tmp.r;
-vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
-ACCREG[i].r = 0；
+vd[0][i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
 ----
 
 === vdscmacoi(vector dynamic scaling complex MAC with widen output of image part)
@@ -297,24 +295,22 @@ Dynamically scale complex multiplication and accumulation and output the imagina
 
 . *Description*
 +
-Multiply the complex numbers of vs2 and vs1/vs1[0], perform an arithmetic shift on the imaginary part in the accumulation register, intercept the low bits of the imaginary part and output it to vd, and clear the imaginary part to zero. When SEW is configured for 32bit, the imaginary part of the output is 32bit. This command is invalid when SEW is configured to other values. *output only happens once to a single vd register after the last mac finishes when LMUL > 1.*
+Multiply the complex numbers of vs2 and vs1/vs1[0], perform an arithmetic shift on the imaginary part in the accumulation register, intercept the low bits of the imaginary part and output it to vd, and clear the imaginary part to zero. When SEW is configured for 32bit, the imaginary part of the output is 32bit. This command is invalid when SEW is configured to other values. *Clear the ACCREG all image part after all element of the VR are processed.*
 
 . *Operation*
 +
 ----
 VV version
-Tmp.i = vs1[i].r * vs2[i].i + vs1[i].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
-Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+Tmp.i = vs1[j][i].r * vs2[j][i].i + vs1[j][i].i * vs2[j][i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[j][i]);
 ACCREG[i].i += Tmp.i;
-vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW
-ACCREG[i].i = 0；
+vd[0][i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW
 
 VS version
-Tmp.i = vs1[0].r * vs2[i].i + vs1[0].i * vs2[i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
-Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[i]);
+Tmp.i = vs1[0][0].r * vs2[j][i].i + vs1[0][0].i * vs2[j][i].r  // SEW = SEW/2 * SEW/2 + SEW/2 * SEW/2
+Tmp.i = alg_round_shift_right(Tmp.i, MULSFT[j][i]);
 ACCREG[i].i += Tmp.i;
-vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW
-ACCREG[i].i = 0；
+vd[0][i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].i, accsft)) // SEW
 ----
 
 === vdscmacjor(vector dynamic scaling complex conjugate MAC with widen output of real part)
@@ -329,24 +325,22 @@ Dynamically scale complex conjugate multiply and accumulate and output the real 
 
 . *Description*
 +
-The complex conjugate of vs1/vs1[0] and vs2 is multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Perform arithmetic shifts on the real part in the accumulation register, intercept the low bits of the real part, and output them to vd, and clear the real part to zero. When SEW is configured as 32bit, the real part of the output is 32bit. This command is invalid when SEW is configured as other values. *output only happens once to a single vd register after the last mac finishes when LMUL > 1.*
+The complex conjugate of vs1/vs1[0] and vs2 is multiplied. The intermediate result after the multiplication retains 2 times the bit width, and then performs an arithmetic right shift, and the result is accumulated with the value in the accumulation register. Perform arithmetic shifts on the real part in the accumulation register, intercept the low bits of the real part, and output them to vd, and clear the real part to zero. When SEW is configured as 32bit, the real part of the output is 32bit. This command is invalid when SEW is configured as other values.*Clear the ACCREG all real part after all element of the VR are processed.*
 
 . *Operation*
 +
 ----
 VV version
-Tmp.r = vs1[i].r * vs2[i].r + vs1[i].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
-Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
+Tmp.r = vs1[j][i].r * vs2[j][i].r + vs1[j][i].i * vs2[j][i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[j][i]);
 ACCREG[i].r += Tmp.r;
-vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
-ACCREG[i].r = 0；
+vd[0][i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
 
 VS version
-Tmp.r = vs1[0].r * vs2[i].r + vs1[0].i * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
-Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[i]);
+Tmp.r = vs1[0][0].r * vs2[j][i].r + vs1[0][0].i * vs2[j][i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
+Tmp.r = alg_round_shift_right(Tmp.r, MULSFT[j][i]);
 ACCREG[i].r += Tmp.r;
-vd[i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
-ACCREG[i].r = 0；
+vd[0][i] = clip_low_SEW(alg_round_shift_right(ACCREG[i].r, accsft)) // SEW
 ----
 
 === vdscmacjoi(vector dynamic scaling complex conjugate MAC with widen output of image part)
