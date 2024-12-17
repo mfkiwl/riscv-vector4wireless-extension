@@ -477,4 +477,3 @@ VS version
 Tmp.i = vs1[0].i * vs2[i].r - vs1[0].r * vs2[i].i  // SEW = SEW/2 * SEW/2 - SEW/2 * SEW/2
 vd[i] = clip_low_SEW(alg_round_shift_right(Tmp.i, mulsft)) //SEW
 ----
-===
