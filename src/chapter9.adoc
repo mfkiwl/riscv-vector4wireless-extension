@@ -43,12 +43,12 @@ The elements of two vector registers are funnel shifted left.
 
 . *Description*
 +
-vs2 and vs1 form a new vector with twice the length from left to right. All elements are sequentially shifted left by fsht bits, left shifted out and discarded. Finally, the left half of the elements are intercepted to form a new vector and output to vd.Only LMUL=1 is supported
+combine vs2 and vs1 to form a new vector vr_temp with twice the length from left to right. All elements in vr_tmp are sequentially shifted left by fsht bits, left most 'fsht' elements are shifted out and discarded. Finally, the left half of vr_tp are output to vd. Only LMUL=1 is supported.
 
 . *Operation*
 +
 ----
-vd = vs2[(31- fsft) ... 0] : vs1[31 ... (31 - fsft + 1)]
+vd = {vs2[(31- fsft) ... 0], vs1[31 ... (31 - fsft + 1)]}
 ----
 
 
@@ -63,11 +63,11 @@ The elements of two vector registers are funnel shifted right.
 
 . *Description*
 +
-vs2 and vs1 form a new vector with twice the length from left to right. All elements are shifted to the right by fsht bits in order, and the right side is shifted out and discarded. Finally, the right half of the elements are intercepted to form a new vector and output to vd.Only LMUL=1 is supported
+combine vs2 and vs1 to form a new vector vr_temp with twice the length from left to right. All elements in vr_tmp are sequentially shifted right by 'fsht' elements, right most 'fsht' elements are shifted out and discarded. Finally, the right half of vr_tmp are output to vd. Only LMUL=1 is supported.
 
 . *Operation*
 +
 ----
-vd = vs2[(fsft - 1) ... 0] : vs1[31 ... fsft]
+vd = {vs2[(fsft - 1) ... 0], vs1[31 ... fsft]}
 ----
 
