@@ -71,6 +71,11 @@ int32_t op_testzvwCdsm()
     vint32m2_t volatile vR;
     vint32m2_t vZero;
     int32_t  volatile result;
+    uint32_t vcsrA0M0R0Sa = ACCSFT0 | MULSFT0 | VXRM_RNU | VXSAT1;    
+    asm volatile("csrw vcsr,%[vcsrA0M0R0Sa];"
+    :
+    : [vcsrA0M0R0Sa] "r" (vcsrA0M0R0Sa)
+    );   
     asm volatile("vsetvl %[vl], %[avl], %[vtype];\
                   vdsmacini.s %[gainShift];\
                   vle32.v %[vA0], (%[aCdsmAddr]);\

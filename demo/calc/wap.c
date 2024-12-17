@@ -45,6 +45,13 @@ int32_t op_testzvwWap()
     vint32m1_t vA0,vA1,vSum,vR;
     int32_t *a0Addr = aWapAddr[0];
     int32_t *a1Addr = aWapAddr[1];
+    
+    uint32_t vcsrA0M0R0Sa = ACCSFT0 | MULSFT0 | VXRM_RNU | VXSAT1;    
+    asm volatile("csrw vcsr,%[vcsrA0M0R0Sa];"
+    :
+    : [vcsrA0M0R0Sa] "r" (vcsrA0M0R0Sa)
+    );   
+        
     asm volatile("vsetvl %[vl], %[avl], %[vtype]": [vl] "=r" (vl) : [avl] "r" (avl), [vtype] "r" (vtypeE));
                              
 
