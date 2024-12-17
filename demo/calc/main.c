@@ -20,12 +20,17 @@ extern void model1_ut();
 extern void vdscmul_ut();
 extern void vdscmac_ut();
 extern void vperm_ut();
+extern void op_testMulj();
+extern void vconj_ut();
 
 
 int main()
 {
     int i;
     // test case
+    op_testMulj();
+    vconj_ut();
+    return;
     model1_ut();
     vdscmul_ut();
     vdscmac_ut();

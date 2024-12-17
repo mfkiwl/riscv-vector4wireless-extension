@@ -731,7 +731,7 @@ printf("vdsmac  start\n");
 
 
 int32_t g_multestData2[64] = {
-0x00010002,0x00010002,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,
+0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,
 0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,
 0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,
 0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,0x7fff7fff,
@@ -754,7 +754,7 @@ int32_t g_multestData1[64] = {
 
 int32_t g_muljestDataRes[64];
 int32_t g_muljestDataResT[64] = {
-0xFFFF0003,0xFFFF0003,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,
+0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,
 0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,
 0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,
 0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,
@@ -776,7 +776,7 @@ void op_testMulj()
                   :[vl] "=r" (vl)
                   :[avl] "r" (avl),[vtype] "r" (vType));
                   
-    uint32_t vcsrA0M0R0Sa = ACCSFT0 | MULSFT0 | VXRM_RNU | VXSAT1;    
+    uint32_t vcsrA0M0R0Sa = ACCSFT0 | MULSFT5 | VXRM_RNU | VXSAT1;    
     asm volatile("csrw vcsr,%[vcsrA0M0R0Sa];"
     :
     : [vcsrA0M0R0Sa] "r" (vcsrA0M0R0Sa)
@@ -789,7 +789,7 @@ void op_testMulj()
                   :[vS1]"=vd"(vS1)
                   :[g_multestData1]"r"(g_multestData1));                                 
     asm volatile("vdscmulj.vs %[vD],%[vS2],%[vS1];" 
-                  :[vD]"=vr"(vD)
+                  :[vD]"=&vr"(vD)
                   :[vS1]"vr"(vS1),[vS2]"vr"(vS2));  
     asm volatile("vse32.v  %[vD],(%[g_muljestDataRes]);"
                   :
