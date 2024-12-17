@@ -78,7 +78,7 @@ adjust the exponent for the output.
 . *Operation*
 +
 ----
-e, E = ExpAdjust(R_NL_TYPE, E)
+(e, E) = ExpAdjust(R_NL_TYPE, E)
 
 if R_NL_TYPE == 0       % reciprocal
     E = 1 - E;
