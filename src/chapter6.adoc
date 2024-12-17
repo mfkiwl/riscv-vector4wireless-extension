@@ -99,10 +99,10 @@ The real and imaginary parts of the complex elements in vs2 are accumulated sepa
 Tmp.r = 0；
 Tmp.i = 0；
 For each i in vs2 
-Tmp.r += v0.b[i] == 0 ? 0 : vs2[0][i].r
-Tmp.i += v0.b[i] == 0 ? 0 : vs2[0][i].i
-vd[0][0].r = clip_low_SEW(alg_round_shift_right(Tmp.r, accsft)) // SEW
-vd[0][0].i = clip_low_SEW(alg_round_shift_right(Tmp.i, accsft)) // SEW
+   Tmp.r += v0.b[i] == 0 ? 0 : vs2[0][i].r; //2SEW = SEW
+   Tmp.i += v0.b[i] == 0 ? 0 : vs2[0][i].i; //2SEW = SEW
+vd[0][0].r = clip_low_SEW(alg_round_shift_right(Tmp.r, accsft)) // SEW = 2SEW
+vd[0][0].i = clip_low_SEW(alg_round_shift_right(Tmp.i, accsft)) // SEW = 2SEW
 ----
 
 === vdscmac(vector dynamic scaling complex MAC)
