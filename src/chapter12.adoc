@@ -50,6 +50,8 @@ elsif R_NL_TYPE == 4    % arctan
     s = sign(x);
     x = abs(x);
 
+elsif R_NL_TYPE == 5    % log10
+
 ----
 
 === findSeg
@@ -102,6 +104,8 @@ elsif R_NL_TYPE == 3    % log2
 elsif R_NL_TYPE == 4    % arctan
     e = 28;
 
+elsif R_NL_TYPE == 5    % log10
+    e = 26;
 ----
 
 
@@ -135,5 +139,13 @@ elsif R_NL_TYPE == 3    % log2
 elsif R_NL_TYPE == 4    % arctan
     y = s*tmp + 843314857;          % Q(32.30) const for pi/4
     y = alg_round_shift_right(y,2)  % Q(32.28)
+
+elsif R_NL_TYPE == 5    % log10
+    if tmp>0 tmp=0;
+    if tmp<1-2^31 tmp = 1-2^31          % tmp belong to range (-1,0)
+    y0 = tmp>>5 + E<<26;                % log2 output Q(32.26)
+    y1 = y0*1292913986;                 % Q(32.32) for const log10(2)
+    y =  alg_round_shift_right(y1, 32); % log10 final output
+
 
 ----
