@@ -27,8 +27,8 @@ vd[0] = clip_low_SEW(alg_round_shift_right(tmp, accsft)) // SEW = 2SEW
 === vdsredsumn(vector dynamic scaling reduced sum for each n element)
 . *Grammar*
 +
-vdsredsumn.vs vd, vs2, rs1, vm +
-vdsredsumn.vi vd, vs2, uimm, vm +
+vdsredsumn.vs vd, vs2, rs1 +
+vdsredsumn.vi vd, vs2, uimm +
 
 . *Purpose*
 +
