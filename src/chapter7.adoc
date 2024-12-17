@@ -1,5 +1,5 @@
 [[chapter7]]
-== Dynamic scaling Reduced operation
+==  Dynamic scaling Reduced operation
 
 === vdsredsum(vector dynamic scaling reduced sum)
 . *Grammar*
