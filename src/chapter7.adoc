@@ -19,8 +19,9 @@ The elements in vs2 are accumulated and the accumulated value is dynamically shi
 ----
 Tmp = 0；
 For each i in vs2 
-Tmp += v0.b[i] == 0 ? 0 : vs2[i]
-Vd[0] = clip_low_SEW(alg_round_shift_right(tmp, accsft)) // SEW
+    Tmp += v0.b[i] == 0 ? 0 : vs2[i]  // 2SEW = SEW
+
+vd[0] = clip_low_SEW(alg_round_shift_right(tmp, accsft)) // SEW = 2SEW
 ----
 
 === vdsredsumn(vector dynamic scaling reduced sum for each n element)
@@ -42,22 +43,22 @@ Every 2^rs1 elements in vs2 are accumulated and then do algorithm round right sh
 ----
 VS version
 n = 2^rs1;
-for (j = 0; j < VLEN/32/n; j++)
+for (i = 0; i < VLEN/32/n; i++)
 {
-  start = j * n;
-  end = j * n + n - 1;
-  temp  = sum(vs2[start ... end]);
-  vd[j] = clip_low_SEW(alg_round_shift_right(temp, accsft));
+  start = i * n;
+  end = i * n + n - 1;
+  temp  = sum(vs2[start ... end]);  //2SEW = SEW
+  vd[i] = clip_low_SEW(alg_round_shift_right(temp, accsft)); //SEW = 2SEW
 }
 
 VI version
 n = 2^uimm;
-for (j = 0; j < VLEN/32/n; j++)
+for (i = 0; i < VLEN/32/n; i++)
 {
-  start = j * n;
-  end = j * n + n - 1;
-  temp  = sum(vs2[start ... end]);
-  vd[j] = clip_low_SEW(alg_round_shift_right(temp, accsft));
+  start = i * n;
+  end = i * n + n - 1;
+  temp  = sum(vs2[start ... end]); //2SEW = SEW
+  vd[i] = clip_low_SEW(alg_round_shift_right(temp, accsft)); //SEW = 2SEW
 }
 ----
 
