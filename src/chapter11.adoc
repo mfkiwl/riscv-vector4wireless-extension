@@ -176,8 +176,8 @@
 | vdscmulji.vv vd, vs2, vs1, vm   | 111100 | vm | vs2   | vs1         | 000   | vd     | 1010111
 | vdscmulji.vs vd, vs2, vs1, vm   | 111100 | vm | vs2   | vs1         | 100   | vd     | 1010111
 | vdsredsum.v vd, vs2, vm         | 010101 | vm | vs2   | 00000       | 010   | vd     | 1010111
-| vdsredsumn.vs vd, vs2, rs1, vm  | 001101 | vm | vs2   | rs1         | 100   | vd     | 1010111
-| vdsredsumn.vi vd, vs2, uimm, vm | 001101 | vm | vs2   | imm         | 011   | vd     | 1010111
+| vdsredsumn.vs vd, vs2, rs1      | 001101 | 1 | vs2   | rs1         | 100   | vd     | 1010111
+| vdsredsumn.vi vd, vs2, uimm     | 001101 | 1 | vs2   | imm         | 011   | vd     | 1010111
 | vredmaxi.vv vd, vs2, vs1, vm    | 010011 | vm | vs2   | vs1         | 010   | vd     | 1010111
 | vredmini.vv vd, vs2, vs1, vm    | 010110 | vm | vs2   | vs1         | 010   | vd     | 1010111
 | vpharot.s vd,rs1                | 001100 | 1  | 00000 | rs1         | 110   | vd     | 1010111
