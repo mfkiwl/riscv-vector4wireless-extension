@@ -33,7 +33,7 @@
 - cpf_pack: Put e, i and r into the compressed complex format according to the complex compressed format. e.g. cpf(e=0x3, i=0xFFFD, r=0x5) = 0x3F45
 - vcpack: extract the high 16 bits of 32-bit real numbers and 32-bit imaginary numbers in rounding mode to form a complex number in SC16 format. e.g i = 0x00058000, r = 0x00038000, vcpack(0x00058000, 0x00038000) = 0x00060004
 - sum: sum
-- conj: Convert a complex to it's conjugate complex.
+- conj: Convert a complex to it's conjugate complex. when min negative S16 value coverted to max positive S16 value it should saturated to 0x7fff. e.g. conj(0x80007fff) = 0x7fff7fff.
 - alg_round_shift_right: Arithmetic right shift with vxrm mode rounding, e.g. vxrm=rnu, alg_round_shift_right(0x0005, 1) = 0x3
 - alg_shift_left: Arithmetic left shift with Saturate. 
 - alg_shift_right: Arithmetic right shift without rounding. e.g. alg_shift_right(0x0005, 1) = 0x2
