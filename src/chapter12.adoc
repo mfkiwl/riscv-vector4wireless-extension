@@ -47,7 +47,8 @@ elsif R_NL_TYPE == 2    % reciprocal of square root
 elsif R_NL_TYPE == 3    % log2
 
 elsif R_NL_TYPE == 4    % arctan
-
+    s = sign(x);
+    x = abs(x);
 
 ----
 
@@ -78,7 +79,7 @@ adjust the exponent for the output.
 . *Operation*
 +
 ----
-(e, E) = ExpAdjust(R_NL_TYPE, E)
+e, E = ExpAdjust(R_NL_TYPE, E)
 
 if R_NL_TYPE == 0       % reciprocal
     E = 1 - E;
@@ -96,8 +97,10 @@ elsif R_NL_TYPE == 2    % reciprocal of square root
     else e = 31;
 
 elsif R_NL_TYPE == 3    % log2
+    e = 26;
 
 elsif R_NL_TYPE == 4    % arctan
+    e = 28;
 
 ----
 
@@ -125,7 +128,12 @@ elsif R_NL_TYPE == 2    % reciprocal of square root
     if (E < 0) y = y >> -E;
 
 elsif R_NL_TYPE == 3    % log2
+    if tmp>0 tmp=0;
+    if tmp<1-2^31 tmp = 1-2^31  % tmp belong to range (-1,0)
+    y = tmp>>5 + E<<26;         % final output Q(32.26)
 
 elsif R_NL_TYPE == 4    % arctan
+    y = s*tmp + 843314857;          % Q(32.30) const for pi/4
+    y = alg_round_shift_right(y,2)  % Q(32.28)
 
 ----
