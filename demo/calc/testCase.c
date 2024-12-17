@@ -584,10 +584,12 @@ void op_testUnpack()
     
     vint32m2_t vX;
     vint32m2_t vQ,vI;
+    vint32m2_t vQr,vIr;
     
     avl = 64;
     vType = TA | MA | M2 | E32;
-
+    uint32_t shift = 16;
+    
     asm volatile("vsetvl %[vl],%[avl],%[vtype];"
                   :[vl] "=r" (vl)
                   :[avl] "r" (avl),[vtype] "r" (vType));
@@ -604,33 +606,42 @@ void op_testUnpack()
                   :[vQ]"=vd"(vQ)
                   :[vX]"vd"(vX));
 
-    asm volatile("vse32.v  %[vI],(%[g_unpackResultI]);"
-                  :[vI]"=vr"(vI)
-                  :[g_unpackResultI]"r"(g_unpackResultI));    
 
-    asm volatile("vse32.v  %[vQ],(%[g_unpackResultI]);"
-                  :[vQ]"=vr"(vQ)
-                  :[g_unpackResultI]"r"(g_unpackResultI));    
+    asm volatile("vsrl.vx %[vIr],%[vI],%[shift];"
+                  :[vIr]"=vd"(vIr)
+                  :[vI]"vd"(vI),[shift]"r"(shift));
+
+    asm volatile("vsrl.vx %[vQr],%[vQ],%[shift];"
+                  :[vQr]"=vd"(vQr)
+                  :[vQ]"vd"(vQ),[shift]"r"(shift));
+                                    
+    asm volatile("vse32.v  %[vIr],(%[g_unpackResultI]);"
+                  :
+                  :[g_unpackResultI]"r"(g_unpackResultI),[vIr]"vr"(vIr));    
+
+    asm volatile("vse32.v  %[vQr],(%[g_unpackResultQ]);"
+                  :
+                  :[g_unpackResultQ]"r"(g_unpackResultQ),[vQr]"vr"(vQr));    
     int i;
     for (i = 0; i < 64; i++)
     {
         if (g_unpackResultQT[i] != g_unpackResultQ[i])
         {
-            printf("vcunpackr  fail");
+            printf("vcunpackr  fail %x\n",g_unpackResultQ[i]);
             return;
         }
     }        
-    printf("vcunpackr  pass");                    
+    printf("vcunpackr  pass\n");                    
 
     for (i = 0; i < 64; i++)
     {
         if (g_unpackResultIT[i] != g_unpackResultI[i])
         {
-            printf("vcunpacki  fail");
+            printf("vcunpacki  fail\n");
             return;
         }
     }        
-    printf("vcunpacki  pass");     
+    printf("vcunpacki  pass\n");     
     
 }
 
@@ -704,8 +715,8 @@ printf("vdsmac  start\n");
 
                  
     asm volatile("vse16.v  %[vMac],(%[g_macestDataRes]);"
-                  :[vMac]"=vr"(vMac)
-                  :[g_macestDataRes]"r"(g_macestDataRes));   
+                  :
+                  :[g_macestDataRes]"r"(g_macestDataRes),[vMac]"vr"(vMac));   
     int i;
     for (i = 0; i < 64; i++)
     {
@@ -781,8 +792,8 @@ void op_testMulj()
                   :[vD]"=vr"(vD)
                   :[vS1]"vr"(vS1),[vS2]"vr"(vS2));  
     asm volatile("vse32.v  %[vD],(%[g_muljestDataRes]);"
-                  :[vD]"=vr"(vD)
-                  :[g_muljestDataRes]"r"(g_muljestDataRes));   
+                  :
+                  :[g_muljestDataRes]"r"(g_muljestDataRes),[vD]"vr"(vD));   
     int i;
     for (i = 0; i < 64; i++)
     {
