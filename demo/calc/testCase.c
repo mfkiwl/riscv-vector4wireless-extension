@@ -776,7 +776,7 @@ void op_testMulj()
                   :[vl] "=r" (vl)
                   :[avl] "r" (avl),[vtype] "r" (vType));
                   
-    uint32_t vcsrA0M0R0Sa = ACCSFT0 | MULSFT5 | VXRM_RNU | VXSAT1;    
+    uint32_t vcsrA0M0R0Sa = ACCSFT0 | MULSFT1 | VXRM_RNU | VXSAT1;    
     asm volatile("csrw vcsr,%[vcsrA0M0R0Sa];"
     :
     : [vcsrA0M0R0Sa] "r" (vcsrA0M0R0Sa)

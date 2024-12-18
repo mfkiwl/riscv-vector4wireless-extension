@@ -30,7 +30,7 @@ int main()
     // test case
     op_testMulj();
     vconj_ut();
-    return;
+    
     model1_ut();
     vdscmul_ut();
     vdscmac_ut();
