@@ -25,6 +25,12 @@ extern void vconj_ut();
 extern void vdsredsum_ut();
 extern void vfsl_ut();
 extern void vfsr_ut();
+extern void nolinear_recip8_ut();
+extern void nolinear_sqrt8_ut();
+extern void nolinear_recipSqrt8_ut();
+extern void nolinear_arctan8_ut();
+extern void nolinear_log2seg8_ut();
+extern void nolinear_log10seg8_ut();
 
 int main()
 {
@@ -35,6 +41,12 @@ int main()
     vdsredsum_ut();
     vfsl_ut();
     vfsr_ut();
+    nolinear_recip8_ut();
+    nolinear_sqrt8_ut();
+    nolinear_recipSqrt8_ut();
+    nolinear_arctan8_ut();
+    nolinear_log2seg8_ut();
+    nolinear_log10seg8_ut();
     
     model1_ut();
     vdscmul_ut();

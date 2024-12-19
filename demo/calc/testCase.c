@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <riscv_vector.h>
 #include "op_common.h"
+#include "op_const_coef.h"
 
 typedef struct {
     uint8_t m0;
@@ -1124,4 +1125,271 @@ void vluxei32_ut()
     }
     printf("vluxei32.v_ut passed!\n");
 }
+
+
+void nolinear_recip8_ut()
+{
+    uint32_t vsrc1[32];
+    uint32_t mantissa[32];
+    uint32_t exponent[32];
+    uint32_t mantissaTv[32];
+    uint32_t exponentTv[32];
+    uint32_t i;
+    size_t vl;
+    uint32_t point = 1;
+    uint32_t len = 32;
+    uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+
+   asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+             : [vl] "=r" (vl)
+             : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
+
+    asm volatile("vle32.v v0,(%[vsrc1]);": : [vsrc1] "r" (vsrc1));
+
+    asm volatile(
+    "vlnlp.s %[recip_seg08_cfg_table];\
+    vnlm.vs v1, v0, %[point];\
+    vnle.vs v2, v0, %[point];\
+    vse32.v v1,(%[mantissa]);\
+    vse32.v v2,(%[exponent]);"
+    :
+    : [recip_seg08_cfg_table ] "r" (recip_seg08_cfg_table ),[point] "r" (point),[mantissa] "r" (mantissa),[exponent] "r" (exponent));
+
+    for (i = 0; i < len; i++)
+    {
+        if (mantissa[i] != mantissaTv[i])
+        {
+            printf("recip_seg08_ut mantissa data comparison failed at index %d mantissa[%d] mantissaTv[%d]!\n",i,mantissa[i],mantissaTv[i]);
+            return;
+        }
+        if (exponent[i] != exponentTv[i])
+        {
+            printf("recip_seg08_ut exponent data comparison failed at index %d exponent[%d] exponentTv[%d]!\n",i,exponent[i],exponentTv[i]);
+            return;
+        }
+    }
+    printf("recip_seg08_ut passed!\n");
+}
+
+void nolinear_sqrt8_ut()
+{
+    uint32_t vsrc1[32];
+    uint32_t mantissa[32];
+    uint32_t exponent[32];
+    uint32_t mantissaTv[32];
+    uint32_t exponentTv[32];
+    uint32_t i;
+    size_t vl;
+    uint32_t point = 1;
+    uint32_t len = 32;
+    uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+
+   asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+             : [vl] "=r" (vl)
+             : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
+
+    asm volatile("vle32.v v0,(%[vsrc1]);": : [vsrc1] "r" (vsrc1));
+
+    asm volatile(
+    "vlnlp.s %[sqrt_seg08_cfg_table];\
+    vnlm.vs v1, v0, %[point];\
+    vnle.vs v2, v0, %[point];\
+    vse32.v v1,(%[mantissa]);\
+    vse32.v v2,(%[exponent]);"
+    :
+    : [sqrt_seg08_cfg_table ] "r" (sqrt_seg08_cfg_table ),[point] "r" (point),[mantissa] "r" (mantissa),[exponent] "r" (exponent));
+
+    for (i = 0; i < len; i++)
+    {
+        if (mantissa[i] != mantissaTv[i])
+        {
+            printf("sqrt_seg08_ut mantissa data comparison failed at index %d mantissa[%d] mantissaTv[%d]!\n",i,mantissa[i],mantissaTv[i]);
+            return;
+        }
+        if (exponent[i] != exponentTv[i])
+        {
+            printf("sqrt_seg08_ut exponent data comparison failed at index %d exponent[%d] exponentTv[%d]!\n",i,exponent[i],exponentTv[i]);
+            return;
+        }
+    }
+    printf("sqrt_seg08_ut passed!\n");
+}
+
+
+void nolinear_recipSqrt8_ut()
+{
+    uint32_t vsrc1[32];
+    uint32_t mantissa[32];
+    uint32_t exponent[32];
+    uint32_t mantissaTv[32];
+    uint32_t exponentTv[32];
+    uint32_t i;
+    size_t vl;
+    uint32_t point = 1;
+    uint32_t len = 32;
+    uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+
+   asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+             : [vl] "=r" (vl)
+             : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
+
+    asm volatile("vle32.v v0,(%[vsrc1]);": : [vsrc1] "r" (vsrc1));
+
+    asm volatile(
+    "vlnlp.s %[recipSqrt_seg08_cfg_table];\
+    vnlm.vs v1, v0, %[point];\
+    vnle.vs v2, v0, %[point];\
+    vse32.v v1,(%[mantissa]);\
+    vse32.v v2,(%[exponent]);"
+    :
+    : [recipSqrt_seg08_cfg_table ] "r" (recipSqrt_seg08_cfg_table ),[point] "r" (point),[mantissa] "r" (mantissa),[exponent] "r" (exponent));
+
+    for (i = 0; i < len; i++)
+    {
+        if (mantissa[i] != mantissaTv[i])
+        {
+            printf("recipSqrt_seg08_ut mantissa data comparison failed at index %d mantissa[%d] mantissaTv[%d]!\n",i,mantissa[i],mantissaTv[i]);
+            return;
+        }
+        if (exponent[i] != exponentTv[i])
+        {
+            printf("recipSqrt_seg08_ut exponent data comparison failed at index %d exponent[%d] exponentTv[%d]!\n",i,exponent[i],exponentTv[i]);
+            return;
+        }
+    }
+    printf("recipSqrt_seg08_ut passed!\n");
+}
+
+void nolinear_arctan8_ut()
+{
+    uint32_t vsrc1[32];
+    uint32_t mantissa[32];
+    uint32_t exponent[32];
+    uint32_t mantissaTv[32];
+    uint32_t exponentTv[32];
+    uint32_t i;
+    size_t vl;
+    uint32_t point = 1;
+    uint32_t len = 32;
+    uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+
+   asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+             : [vl] "=r" (vl)
+             : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
+
+    asm volatile("vle32.v v0,(%[vsrc1]);": : [vsrc1] "r" (vsrc1));
+
+    asm volatile(
+    "vlnlp.s %[arctan_seg08_cfg_table];\
+    vnlm.vs v1, v0, %[point];\
+    vnle.vs v2, v0, %[point];\
+    vse32.v v1,(%[mantissa]);\
+    vse32.v v2,(%[exponent]);"
+    :
+    : [arctan_seg08_cfg_table ] "r" (arctan_seg08_cfg_table ),[point] "r" (point),[mantissa] "r" (mantissa),[exponent] "r" (exponent));
+
+    for (i = 0; i < len; i++)
+    {
+        if (mantissa[i] != mantissaTv[i])
+        {
+            printf("arctan_seg08_ut mantissa data comparison failed at index %d mantissa[%d] mantissaTv[%d]!\n",i,mantissa[i],mantissaTv[i]);
+            return;
+        }
+        if (exponent[i] != exponentTv[i])
+        {
+            printf("arctan_seg08_ut exponent data comparison failed at index %d exponent[%d] exponentTv[%d]!\n",i,exponent[i],exponentTv[i]);
+            return;
+        }
+    }
+    printf("arctan_seg08_ut passed!\n");
+}
+
+void nolinear_log2seg8_ut()
+{
+    uint32_t vsrc1[32];
+    uint32_t mantissa[32];
+    uint32_t exponent[32];
+    uint32_t mantissaTv[32];
+    uint32_t exponentTv[32];
+    uint32_t i;
+    size_t vl;
+    uint32_t point = 1;
+    uint32_t len = 32;
+    uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+
+   asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+             : [vl] "=r" (vl)
+             : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
+
+    asm volatile("vle32.v v0,(%[vsrc1]);": : [vsrc1] "r" (vsrc1));
+
+    asm volatile(
+    "vlnlp.s %[log2_seg08_cfg_table];\
+    vnlm.vs v1, v0, %[point];\
+    vnle.vs v2, v0, %[point];\
+    vse32.v v1,(%[mantissa]);\
+    vse32.v v2,(%[exponent]);"
+    :
+    : [log2_seg08_cfg_table ] "r" (log2_seg08_cfg_table ),[point] "r" (point),[mantissa] "r" (mantissa),[exponent] "r" (exponent));
+
+    for (i = 0; i < len; i++)
+    {
+        if (mantissa[i] != mantissaTv[i])
+        {
+            printf("log2_seg08_ut mantissa data comparison failed at index %d mantissa[%d] mantissaTv[%d]!\n",i,mantissa[i],mantissaTv[i]);
+            return;
+        }
+        if (exponent[i] != exponentTv[i])
+        {
+            printf("log2_seg08_ut exponent data comparison failed at index %d exponent[%d] exponentTv[%d]!\n",i,exponent[i],exponentTv[i]);
+            return;
+        }
+    }
+    printf("log2_seg08_ut passed!\n");
+}
+
+void nolinear_log10seg8_ut()
+{
+    uint32_t vsrc1[32];
+    uint32_t mantissa[32];
+    uint32_t exponent[32];
+    uint32_t mantissaTv[32];
+    uint32_t exponentTv[32];
+    uint32_t i;
+    size_t vl;
+    uint32_t point = 1;
+    uint32_t len = 32;
+    uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+
+   asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+             : [vl] "=r" (vl)
+             : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
+
+    asm volatile("vle32.v v0,(%[vsrc1]);": : [vsrc1] "r" (vsrc1));
+
+    asm volatile(
+    "vlnlp.s %[log10_seg08_cfg_table];\
+    vnlm.vs v1, v0, %[point];\
+    vnle.vs v2, v0, %[point];\
+    vse32.v v1,(%[mantissa]);\
+    vse32.v v2,(%[exponent]);"
+    :
+    : [log10_seg08_cfg_table ] "r" (log10_seg08_cfg_table ),[point] "r" (point),[mantissa] "r" (mantissa),[exponent] "r" (exponent));
+
+    for (i = 0; i < len; i++)
+    {
+        if (mantissa[i] != mantissaTv[i])
+        {
+            printf("log10_seg08_ut mantissa data comparison failed at index %d mantissa[%d] mantissaTv[%d]!\n",i,mantissa[i],mantissaTv[i]);
+            return;
+        }
+        if (exponent[i] != exponentTv[i])
+        {
+            printf("log10_seg08_ut exponent data comparison failed at index %d exponent[%d] exponentTv[%d]!\n",i,exponent[i],exponentTv[i]);
+            return;
+        }
+    }
+    printf("log10_seg08_ut passed!\n");
+}
+
 
