@@ -22,7 +22,9 @@ extern void vdscmac_ut();
 extern void vperm_ut();
 extern void op_testMulj();
 extern void vconj_ut();
-
+extern void vdsredsum_ut();
+extern void vfsl_ut();
+extern void vfsr_ut();
 
 int main()
 {
@@ -30,13 +32,16 @@ int main()
     // test case
     op_testMulj();
     vconj_ut();
+    vdsredsum_ut();
+    vfsl_ut();
+    vfsr_ut();
     
     model1_ut();
     vdscmul_ut();
     vdscmac_ut();
     vperm_ut();
 
-	//ccm
+    //ccm
     op_testzvwCcm();
     op_testrvvCcm();
     for (i = 0; i < 32 ; i++)

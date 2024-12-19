@@ -142,11 +142,11 @@ void vdscmul_ut()
 
     if (vd == vdTv)
     {
-        printf("vdsmul.vs_ut passed!\n");
+        printf("vdscmul.vs_ut passed!\n");
     }
     else
     {
-        printf("dsmul.vs_ut data comparison failed vd[%d] vdTv[%d]!\n",vd,vdTv);
+        printf("dscmul.vs_ut data comparison failed vd[%d] vdTv[%d]!\n",vd,vdTv);
     }
 
     len = 32;
@@ -168,11 +168,11 @@ void vdscmul_ut()
     {
         if (vdst[i] != vdstTv[i])
         {
-            printf("dsmul.vv_ut data comparison failed at index %d vdst[%d] vdstTv[%d]!\n",i,vdst[i],vdstTv[i]);
+            printf("dscmul.vv_ut data comparison failed at index %d vdst[%d] vdstTv[%d]!\n",i,vdst[i],vdstTv[i]);
             return;
         }
     }
-    printf("vdsmul.vv_ut passed!\n");
+    printf("vdscmul.vv_ut passed!\n");
 }
 
 void vdscmac_ut()
@@ -262,10 +262,6 @@ void vdscmac_ut()
     }
     printf("vdscmac.vv_ut passed!\n");
 }
-
-
-
-
 
 void vperm_ut()
 {
@@ -860,6 +856,57 @@ void vconj_ut()
 }
 
 
+void vdsredsum_ut()
+{
+    uint32_t vsrc1[64] =
+    {
+        0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,
+        0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,
+        0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,
+        0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,
+        0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,
+        0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,
+        0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,
+        0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF,
+   };
+    uint32_t vdst[32];
+    uint32_t vdstTv[32] =
+    {
+        0x00007FFF,0x00000384,0x00000384,0x00000384,0x00000384,0x00000384,0x00000384,0x00000384,
+        0x00000384,0x00000384,0x00000384,0x00000384,0x00000384,0x00000384,0x00000384,0x00000384,
+        0x00000384,0x00000384,0x00000384,0x00000384,0x00000384,0x00000384,0x00000384,0x00000384,
+        0x00000384,0x00000384,0x00000384,0x00000384,0x00000384,0x00000384,0x00000384,0x00000384
+    };
+   uint32_t i;
+    size_t vl;
+    uint32_t len = 64;
+    uint32_t vtypeL2E32 = MA | TA | M2 | E32;
+    uint32_t vcsrA6M0R0Sa = ACCSFT6 | MULSFT0 | VXRM_RNU | VXSAT1;
+
+   asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+             : [vl] "=r" (vl)
+             : [avl] "r" (len),[vtype] "r" (vtypeL2E32));
+
+    asm volatile(
+    "vle32.v v0,(%[vsrc1]);\
+    csrw vcsr,%[vcsrA6M0R0Sa];\
+    vdsredsum.v v2,v0;\
+    vse32.v v2,(%[vdst]);"
+    :
+    : [vcsrA6M0R0Sa ] "r" (vcsrA6M0R0Sa ),[vsrc1] "r" (vsrc1),[vdst] "r" (vdst)
+    );
+
+    for (i = 0; i < 1; i++)
+    {
+        if (vdst[i] != vdstTv[i])
+        {
+            printf("vdsredsum.v_ut data comparison failed at index %d vdst[%d] vdstTv[%d]!\n",i,vdst[i],vdstTv[i]);
+            return;
+        }
+    }
+    printf("vdsredsum.v_ut passed!\n");
+}
+
 void vdscredsum_ut()
 {
     uint32_t vsrc1[64] =
@@ -909,6 +956,120 @@ void vdscredsum_ut()
         }
     }
     printf("vdscredsum.v_ut passed!\n");
+}
+
+
+void vfsl_ut()
+{
+    uint32_t vsrc1[32] =
+    {
+        0x00001C1C,0x00001C1D,0x00001C1E,0x00001C1F,0x00001C20,0x00001C21,0x00001C22,0x00001C23,
+        0x00001C24,0x00001C25,0x00001C26,0x00001C27,0x00001C28,0x00001C29,0x00001C2A,0x00001C2B,
+        0x00001C2C,0x00001C2D,0x00001C2E,0x00001C2F,0x00001C30,0x00001C31,0x00001C32,0x00001C33,
+        0x00001C34,0x00001C35,0x00001C36,0x00001C37,0x00001C38,0x00001C39,0x00001C3A,0x00001C3B
+    };
+    uint32_t vsrc2[32] =
+    {
+        0x00001C1C,0x00001C1D,0x00001C1E,0x00001C1F,0x00001C20,0x00001C21,0x00001C22,0x00001C23,
+        0x00001C24,0x00001C25,0x00001C26,0x00001C27,0x00001C28,0x00001C29,0x00001C2A,0x00001C2B,
+        0x00001C2C,0x00001C2D,0x00001C2E,0x00001C2F,0x00001C30,0x00001C31,0x00001C32,0x00001C33,
+        0x00001C34,0x00001C35,0x00001C36,0x00001C37,0x00001C38,0x00001C39,0x00001C3A,0x00001C3B
+    };
+    uint32_t vdst[32];
+    uint32_t vdstTv[32] =
+    {
+        0x00001C2C,0x00001C2D,0x00001C2E,0x00001C2F,0x00001C30,0x00001C31,0x00001C32,0x00001C33,
+        0x00001C34,0x00001C35,0x00001C36,0x00001C37,0x00001C38,0x00001C39,0x00001C3A,0x00001C3B,
+        0x00001C1C,0x00001C1D,0x00001C1E,0x00001C1F,0x00001C20,0x00001C21,0x00001C22,0x00001C23,
+        0x00001C24,0x00001C25,0x00001C26,0x00001C27,0x00001C28,0x00001C29,0x00001C2A,0x00001C2B,
+    };
+    uint32_t i;
+
+    size_t vl;
+    uint32_t len = 32;
+    uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+    uint32_t vcsrA0F16M0R0Sa = ACCSFT0 | FSFT16| MULSFT0 | VXRM_RNU | VXSAT1;
+
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+                 : [vl] "=r" (vl)
+                 : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
+    asm volatile ("csrw vcsr,%[vcsrA0F16M0R0Sa]"::[vcsrA0F16M0R0Sa] "r" (vcsrA0F16M0R0Sa));
+
+    asm volatile(
+    "vle32.v v0,(%[vsrc1]);\
+    vle32.v v1,(%[vsrc2]);\
+    vfsl.vv v2,v1,v0;\
+    vse32.v v2,(%[vdst]);"
+    :
+    : [vsrc1] "r" (vsrc1),[vsrc2] "r" (vsrc2),[vdst] "r" (vdst)
+    );
+
+    for (i = 0; i < len; i++)
+    {
+        if (vdst[i] != vdstTv[i])
+        {
+            printf("vfsl_ut data comparison failed at index %d vdst[%d] vdstTv[%d]!\n",i,vdst,vdstTv);
+            return; 
+
+            }
+    }
+    printf("vfsl_ut passed!\n");
+}
+
+void vfsr_ut()
+{
+    uint32_t vsrc1[32] =
+    {
+        0x00001C1C,0x00001C1D,0x00001C1E,0x00001C1F,0x00001C20,0x00001C21,0x00001C22,0x00001C23,
+        0x00001C24,0x00001C25,0x00001C26,0x00001C27,0x00001C28,0x00001C29,0x00001C2A,0x00001C2B,
+        0x00001C2C,0x00001C2D,0x00001C2E,0x00001C2F,0x00001C30,0x00001C31,0x00001C32,0x00001C33,
+        0x00001C34,0x00001C35,0x00001C36,0x00001C37,0x00001C38,0x00001C39,0x00001C3A,0x00001C3B
+    };
+    uint32_t vsrc2[32] =
+    {
+        0x00001C1C,0x00001C1D,0x00001C1E,0x00001C1F,0x00001C20,0x00001C21,0x00001C22,0x00001C23,
+        0x00001C24,0x00001C25,0x00001C26,0x00001C27,0x00001C28,0x00001C29,0x00001C2A,0x00001C2B,
+        0x00001C2C,0x00001C2D,0x00001C2E,0x00001C2F,0x00001C30,0x00001C31,0x00001C32,0x00001C33,
+        0x00001C34,0x00001C35,0x00001C36,0x00001C37,0x00001C38,0x00001C39,0x00001C3A,0x00001C3B
+    };
+    uint32_t vdst[32];
+    uint32_t vdstTv[32] =
+    {
+        0x00001C2C,0x00001C2D,0x00001C2E,0x00001C2F,0x00001C30,0x00001C31,0x00001C32,0x00001C33,
+        0x00001C34,0x00001C35,0x00001C36,0x00001C37,0x00001C38,0x00001C39,0x00001C3A,0x00001C3B,
+        0x00001C3B,0x00001C3A,0x00001C39,0x00001C38,0x00001C37,0x00001C36,0x00001C35,0x00001C34,
+        0x00001C33,0x00001C32,0x00001C31,0x00001C30,0x00001C2F,0x00001C2E,0x00001C2D,0x00001C2C
+    };
+    uint32_t i;
+
+    size_t vl;
+    uint32_t len = 32;
+    uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+    uint32_t vcsrA0F16M0R0Sa = ACCSFT0 | FSFT16| MULSFT0 | VXRM_RNU | VXSAT1;
+
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+                 : [vl] "=r" (vl)
+                 : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
+    asm volatile ("csrw vcsr,%[vcsrA0F16M0R0Sa]"::[vcsrA0F16M0R0Sa] "r" (vcsrA0F16M0R0Sa));
+
+    asm volatile(
+    "vle32.v v0,(%[vsrc1]);\
+    vle32.v v1,(%[vsrc2]);\
+    vfsr.vv v2,v1,v0;\
+    vse32.v v2,(%[vdst]);"
+    :
+    : [vsrc1] "r" (vsrc1),[vsrc2] "r" (vsrc2),[vdst] "r" (vdst)
+    );
+
+    for (i = 0; i < len; i++)
+    {
+        if (vdst[i] != vdstTv[i])
+        {
+            printf("vfsr_ut data comparison failed at index %d vdst[%d] vdstTv[%d]!\n",i,vdst,vdstTv);
+            return; 
+            }
+    }
+    printf("vfsr_ut passed!\n");
 }
 
 void vluxei32_ut()
