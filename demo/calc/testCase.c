@@ -1247,14 +1247,111 @@ void nolinear_recip8_ut()
 
 void nolinear_sqrt8_ut()
 {
-    uint32_t vsrc1[32];
+    uint32_t vsrc1[32] = {0x00000001,
+0x00000002,
+0x00000003,
+0x00000004,
+0x00000005,
+0x00000006,
+0x00000007,
+0x00000008,
+0x00000009,
+0x0000000a,
+0x0000000b,
+0x0000000c,
+0x0000000d,
+0x0000000e,
+0x0000000f,
+0x00000010,
+0x00000011,
+0x00000012,
+0x00000013,
+0x00000014,
+0x00000015,
+0x00000016,
+0x00000017,
+0x00000018,
+0x00000019,
+0x0000001a,
+0x0000001b,
+0x0000001c,
+0x0000001d,
+0x0000001e,
+0x0000001f,
+0x00000020};
     uint32_t mantissa[32];
     uint32_t exponent[32];
-    uint32_t mantissaTv[32];
-    uint32_t exponentTv[32];
+    uint32_t mantissaTv[32] = {
+ 0x0169f2ee,
+0x020139b9,
+0x0272cd01,
+0x02d3e5dd,
+0x0329e425,
+0x0376b6e5,
+0x03bdc98a,
+0x04027373,
+0x043d4aca,
+0x04782222,
+0x04b25896,
+0x04e59a03,
+0x0518db71,
+0x054bc5e8,
+0x0579c8d1,
+0x05a7cbbb,
+0x05d59974,
+0x05ffb4d5,
+0x0629d036,
+0x0653c84a,
+0x067ad618,
+0x06a1e3e5,
+0x06c8d8de,
+0x06ed6dca,
+0x071202b6,
+0x07368563,
+0x07590c3c,
+0x077b9315,
+0x079e0c0e,
+0x07bed49b,
+0x07df9d28,
+0x0804e6e6       
+    };
+    uint32_t exponentTv[32] = {
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f,
+0x0000001f        
+    };
     uint32_t i;
     size_t vl;
-    uint32_t point = 1;
+    uint32_t point = 0x0000000d;
     uint32_t len = 32;
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
     uint32_t vnlcrSqrt8 = SEG8|FUNC_SQRT;
@@ -1344,115 +1441,14 @@ void nolinear_recipSqrt8_ut()
 
 void nolinear_arctan8_ut()
 {
-    uint32_t vsrc1[32] = 
-    {
-        0x3ced4f47, 
-        0x3a100758,  
-        0x3743e9a1,  
-        0x3489c907,  
-        0x31e168ef,  
-        0x2f6bde5c,  
-        0x2d15ee3e,  
-        0x2acc59c1,  
-        0x288fe8fb,  
-        0x26609287,  
-        0x243d589c,  
-        0x22270cb5,  
-        0x20319c99,  
-        0x1e460ab5,  
-        0x1c626d36,  
-        0x1a87718b,  
-        0x18b49bfb,  
-        0x16e986a8,  
-        0x15258fbe,  
-        0x1368cefd,  
-        0x11b2cf49,  
-        0x10029e70,  
-        0x0e5b7dc1,  
-        0x0cb9298a,  
-        0x0b1a33ca,  
-        0x097e407b,  
-        0x07e50e8c,  
-        0x064dee4b,  
-        0x04b8e455,  
-        0x0324deb3,  
-        0x0192424d,  
-        0x00000000
-    };
+    uint32_t vsrc1[32];
     uint32_t mantissa[32];
     uint32_t exponent[32];
-    uint32_t mantissaTv[32] =
-    {
-        0x0065e9c7,  
-        0x00c7841b,  
-        0x0129e19e,  
-        0x01930a4e,  
-        0x01f98674,  
-        0x025b006a,  
-        0x02c08607,  
-        0x0323f280,  
-        0x038523db,  
-        0x03ec66f8,  
-        0x045452f4,  
-        0x04b9ca59,  
-        0x05190449,  
-        0x057f4ba4,  
-        0x05e4c066,  
-        0x0648658f,  
-        0x06aa5516,  
-        0x071008cc,  
-        0x0776ecfa,  
-        0x07dc2cdf,  
-        0x083fe324,  
-        0x08a246ed,  
-        0x09091565,  
-        0x096e0c51,  
-        0x09d23315,  
-        0x0a359fe6,  
-        0x0a998c9d,  
-        0x0afedb6e,  
-        0x0b63a54c,  
-        0x0bc82e62,  
-        0x0c2c5d94,  
-        0x0c90fdaa
-    };
-    uint32_t exponentTv[32] =
-    {
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c, 
-        0x0000001c
-    };
+    uint32_t mantissaTv[32];
+    uint32_t exponentTv[32];
     uint32_t i;
     size_t vl;
-    uint32_t point = 31;
+    uint32_t point = 1;
     uint32_t len = 32;
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
     uint32_t vnlcrArctan8 = SEG8|FUNC_ARCTAN;
