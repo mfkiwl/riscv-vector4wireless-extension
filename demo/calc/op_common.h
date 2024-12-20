@@ -157,10 +157,11 @@
 
 //---------------------cnltcr csr------------------------------
 #define FUNC_RECIP         (0)
-#define FUNC_SQUARE        (1)
-#define FUNC_RECIP_SQYARE  (2)
+#define FUNC_SQRT          (1)
+#define FUNC_RECIP_SQRT    (2)
 #define FUNC_LOG2          (3)
 #define FUNC_ARCTAN        (4)
+#define FUNC_LOG10         (5)
 #define SEG4               (0 << 16)
 #define SEG8               (1 << 16)
 #define SEG12              (2 << 16)

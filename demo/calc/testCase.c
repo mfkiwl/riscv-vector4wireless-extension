@@ -1139,8 +1139,11 @@ void nolinear_recip8_ut()
     uint32_t point = 1;
     uint32_t len = 32;
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+    uint32_t vnlcrRecip8 = SEG8|FUNC_RECIP;
 
-   asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+    asm volatile("vcsrw vnlcr, %[vnlcrRecip8];": : [vnlcrRecip8] "r" (vnlcrRecip8));
+
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
              : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
 
@@ -1183,8 +1186,11 @@ void nolinear_sqrt8_ut()
     uint32_t point = 1;
     uint32_t len = 32;
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+    uint32_t vnlcrSqrt8 = SEG8|FUNC_SQRT;
 
-   asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+    asm volatile("vcsrw vnlcr, %[vnlcrSqrt8];": : [vnlcrSqrt8] "r" (vnlcrSqrt8));
+
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
              : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
 
@@ -1228,8 +1234,11 @@ void nolinear_recipSqrt8_ut()
     uint32_t point = 1;
     uint32_t len = 32;
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+    uint32_t vnlcrRecipSqrt8 = SEG8|FUNC_RECIP_SQRT;
 
-   asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+    asm volatile("vcsrw vnlcr, %[vnlcrRecipSqrt8];": : [vnlcrRecipSqrt8] "r" (vnlcrRecipSqrt8));
+
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
              : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
 
@@ -1272,8 +1281,11 @@ void nolinear_arctan8_ut()
     uint32_t point = 1;
     uint32_t len = 32;
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+    uint32_t vnlcrArctan8 = SEG8|FUNC_ARCTAN;
 
-   asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+    asm volatile("vcsrw vnlcr, %[vnlcrArctan8];": : [vnlcrArctan8] "r" (vnlcrArctan8));
+
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
              : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
 
@@ -1316,8 +1328,11 @@ void nolinear_log2seg8_ut()
     uint32_t point = 1;
     uint32_t len = 32;
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+    uint32_t vnlcrLog2Seg8 = SEG8|FUNC_LOG2;
 
-   asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+    asm volatile("vcsrw vnlcr, %[vnlcrLog2Seg8];": : [vnlcrLog2Seg8] "r" (vnlcrLog2Seg8));
+
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
              : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
 
@@ -1360,8 +1375,11 @@ void nolinear_log10seg8_ut()
     uint32_t point = 1;
     uint32_t len = 32;
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+    uint32_t vnlcrLog10Seg8 = SEG8|FUNC_LOG10;
 
-   asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+    asm volatile("vcsrw vnlcr, %[vnlcrLog10Seg8];": : [vnlcrLog10Seg8] "r" (vnlcrLog10Seg8));
+
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
              : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
 
