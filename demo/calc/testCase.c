@@ -1344,14 +1344,115 @@ void nolinear_recipSqrt8_ut()
 
 void nolinear_arctan8_ut()
 {
-    uint32_t vsrc1[32];
+    uint32_t vsrc1[32] = 
+    {
+        0x3ced4f47, 
+        0x3a100758,  
+        0x3743e9a1,  
+        0x3489c907,  
+        0x31e168ef,  
+        0x2f6bde5c,  
+        0x2d15ee3e,  
+        0x2acc59c1,  
+        0x288fe8fb,  
+        0x26609287,  
+        0x243d589c,  
+        0x22270cb5,  
+        0x20319c99,  
+        0x1e460ab5,  
+        0x1c626d36,  
+        0x1a87718b,  
+        0x18b49bfb,  
+        0x16e986a8,  
+        0x15258fbe,  
+        0x1368cefd,  
+        0x11b2cf49,  
+        0x10029e70,  
+        0x0e5b7dc1,  
+        0x0cb9298a,  
+        0x0b1a33ca,  
+        0x097e407b,  
+        0x07e50e8c,  
+        0x064dee4b,  
+        0x04b8e455,  
+        0x0324deb3,  
+        0x0192424d,  
+        0x00000000
+    };
     uint32_t mantissa[32];
     uint32_t exponent[32];
-    uint32_t mantissaTv[32];
-    uint32_t exponentTv[32];
+    uint32_t mantissaTv[32] =
+    {
+        0x0065e9c7,  
+        0x00c7841b,  
+        0x0129e19e,  
+        0x01930a4e,  
+        0x01f98674,  
+        0x025b006a,  
+        0x02c08607,  
+        0x0323f280,  
+        0x038523db,  
+        0x03ec66f8,  
+        0x045452f4,  
+        0x04b9ca59,  
+        0x05190449,  
+        0x057f4ba4,  
+        0x05e4c066,  
+        0x0648658f,  
+        0x06aa5516,  
+        0x071008cc,  
+        0x0776ecfa,  
+        0x07dc2cdf,  
+        0x083fe324,  
+        0x08a246ed,  
+        0x09091565,  
+        0x096e0c51,  
+        0x09d23315,  
+        0x0a359fe6,  
+        0x0a998c9d,  
+        0x0afedb6e,  
+        0x0b63a54c,  
+        0x0bc82e62,  
+        0x0c2c5d94,  
+        0x0c90fdaa
+    };
+    uint32_t exponentTv[32] =
+    {
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c, 
+        0x0000001c
+    };
     uint32_t i;
     size_t vl;
-    uint32_t point = 1;
+    uint32_t point = 31;
     uint32_t len = 32;
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
     uint32_t vnlcrArctan8 = SEG8|FUNC_ARCTAN;
