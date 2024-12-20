@@ -1129,14 +1129,18 @@ void vluxei32_ut()
 
 void nolinear_recip8_ut()
 {
-    uint32_t vsrc1[32];
+    uint32_t vsrc1[32] = {0x00000001,0x00000002,0x00000003,0x00000004,0x00000005,0x00000006,0x00000007,0x00000008,
+                          0x00000009,0x0000000a,0x0000000b,0x0000000c,0x0000000d,0x0000000e,0x0000000f,0x00000010,
+                          0x00000011,0x00000012,0x00000013,0x00000014,0x00000015,0x00000016,0x00000017,0x00000018,
+                          0x00000019,0x0000001a,0x0000001b,0x0000001c,0x0000001d,0x0000001e,0x0000001f,0x00000020
+};
     uint32_t mantissa[32];
     uint32_t exponent[32];
     uint32_t mantissaTv[32];
     uint32_t exponentTv[32];
     uint32_t i;
     size_t vl;
-    uint32_t point = 1;
+    uint32_t point = 0xd;
     uint32_t len = 32;
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
     uint32_t vnlcrRecip8 = SEG8|FUNC_RECIP;
@@ -1151,6 +1155,7 @@ void nolinear_recip8_ut()
 
     asm volatile(
     "vlnlp.s %[recip_seg08_cfg_table];\
+    vnlm.vs v1, v0, %[point];\
     vnlm.vs v1, v0, %[point];\
     vnle.vs v2, v0, %[point];\
     vse32.v v1,(%[mantissa]);\
@@ -1198,6 +1203,7 @@ void nolinear_sqrt8_ut()
 
     asm volatile(
     "vlnlp.s %[sqrt_seg08_cfg_table];\
+    vnlm.vs v1, v0, %[point];\
     vnlm.vs v1, v0, %[point];\
     vnle.vs v2, v0, %[point];\
     vse32.v v1,(%[mantissa]);\
@@ -1247,6 +1253,7 @@ void nolinear_recipSqrt8_ut()
     asm volatile(
     "vlnlp.s %[recipSqrt_seg08_cfg_table];\
     vnlm.vs v1, v0, %[point];\
+    vnlm.vs v1, v0, %[point];\
     vnle.vs v2, v0, %[point];\
     vse32.v v1,(%[mantissa]);\
     vse32.v v2,(%[exponent]);"
@@ -1293,6 +1300,7 @@ void nolinear_arctan8_ut()
 
     asm volatile(
     "vlnlp.s %[arctan_seg08_cfg_table];\
+    vnlm.vs v1, v0, %[point];\
     vnlm.vs v1, v0, %[point];\
     vnle.vs v2, v0, %[point];\
     vse32.v v1,(%[mantissa]);\
@@ -1341,6 +1349,7 @@ void nolinear_log2seg8_ut()
     asm volatile(
     "vlnlp.s %[log2_seg08_cfg_table];\
     vnlm.vs v1, v0, %[point];\
+    vnlm.vs v1, v0, %[point];\
     vnle.vs v2, v0, %[point];\
     vse32.v v1,(%[mantissa]);\
     vse32.v v2,(%[exponent]);"
@@ -1387,6 +1396,7 @@ void nolinear_log10seg8_ut()
 
     asm volatile(
     "vlnlp.s %[log10_seg08_cfg_table];\
+    vnlm.vs v1, v0, %[point];\
     vnlm.vs v1, v0, %[point];\
     vnle.vs v2, v0, %[point];\
     vse32.v v1,(%[mantissa]);\
