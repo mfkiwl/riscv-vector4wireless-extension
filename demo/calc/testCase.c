@@ -1498,4 +1498,46 @@ void nolinear_log10seg8_ut()
     printf("log10_seg08_ut passed!\n");
 }
 
+void vdsredsum_ut1()
+{
+    #if 0
+    uint32_t vsrc1[32] =
+    {
+        0xfff52a5d,0x142704,0xfff8ead3,0xfff60a28,0x1f359,0x50201,0xfff5e246,0x12e5f,0x27db4,0xfff8f9f2,0xfffeb1c8,0xffe559ad,0xffe504bf,
+0xff435d0,0xfffb5c8e,0x62ac,0xfff209be,0xfffbc61d,0xa7dce,0xffdd86fd,0x84c70,0xa18b3,0x1d2e5f,0xa411,0xffdca2cb,0xffed5dc,0x2157fb,0x6284a,
+0x53ccd,0x70f39,0xfff75252,0xff05c3b
+   };
+    uint32_t vdst[32];
+    uint32_t vdstTv[32] =
+    {
+        0xfffd3e4c
+    };
+   uint32_t i;
+    size_t vl;
+    uint32_t len = 32;
+    uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+    uint32_t vcsrA5M0R0Sa = ACCSFT5 | MULSFT0 | VXRM_RNU | VXSAT1;
+
+   asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+             : [vl] "=r" (vl)
+             : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
+
+    asm volatile(
+    "vle32.v v0,(%[vsrc1]);\
+    csrw vcsr,%[vcsrA5M0R0Sa];\
+    vdsredsum.v v2,v0;\
+    vse32.v v2,(%[vdst]);"
+    :
+    : [vcsrA5M0R0Sa ] "r" (vcsrA5M0R0Sa ),[vsrc1] "r" (vsrc1),[vdst] "r" (vdst)
+    );
+
+
+    if (vdst[0] != vdstTv[0])
+    {
+        printf("vdsredsum.v_ut data comparison failed at index %d vdst[%d] vdstTv[%d]!\n",i,vdst[i],vdstTv[i]);
+        return;
+    }
+#endif
+    printf("vdsredsum.v_ut passed!\n");
+}
 
