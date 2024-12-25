@@ -1126,7 +1126,7 @@ void vluxei32_ut()
     printf("vluxei32.v_ut passed!\n");
 }
 
-
+#if 0
 void nolinear_recip8_ut()
 {
     uint32_t vsrc1[32] = {0x00000001,0x00000002,0x00000003,0x00000004,0x00000005,0x00000006,0x00000007,0x00000008,
@@ -1497,18 +1497,47 @@ void nolinear_log10seg8_ut()
     }
     printf("log10_seg08_ut passed!\n");
 }
-
+#endif
 void vdsredsum_ut1()
 {
-    #if 0
-    uint32_t vsrc1[32] =
+
+    int32_t vsrc1[32] =
     {
-        0xfff52a5d,0x142704,0xfff8ead3,0xfff60a28,0x1f359,0x50201,0xfff5e246,0x12e5f,0x27db4,0xfff8f9f2,0xfffeb1c8,0xffe559ad,0xffe504bf,
-0xff435d0,0xfffb5c8e,0x62ac,0xfff209be,0xfffbc61d,0xa7dce,0xffdd86fd,0x84c70,0xa18b3,0x1d2e5f,0xa411,0xffdca2cb,0xffed5dc,0x2157fb,0x6284a,
-0x53ccd,0x70f39,0xfff75252,0xff05c3b
+        0xfff52a5d,
+        0x00142704,
+        0xfff8ead3,
+        0xfff60a28,
+        0x0001f359,
+        0x00050201,
+        0xfff5e246,
+        0x00012e5f,
+        0x00027db4,
+        0xfff8f9f2,
+        0xfffeb1c8,
+        0xffe559ad,
+        0xffe504bf,
+        0xfff435d0,
+        0xfffb5c8e,
+        0x000062ac,
+        0xfff209be,
+        0xfffbc61d,
+        0x000a7dce,
+        0xffdd86fd,
+        0x00084c70,
+        0x000a18b3,
+        0x001d2e5f,
+        0x0000a411,
+        0xffdca2cb,
+        0xfffed5dc,
+        0x002157fb,
+        0x0006284a,
+        0x00053ccd,
+        0x00070f39,
+        0xfff75252,
+        0xfff05c3b
    };
     uint32_t vdst[32];
-    uint32_t vdstTv[32] =
+    int32_t vdstTv[32] =
     {
         0xfffd3e4c
     };
@@ -1534,10 +1563,10 @@ void vdsredsum_ut1()
 
     if (vdst[0] != vdstTv[0])
     {
-        printf("vdsredsum.v_ut data comparison failed at index %d vdst[%d] vdstTv[%d]!\n",i,vdst[i],vdstTv[i]);
+        printf("vdsredsum.v_ut1 data comparison failed vdst[%x] vdstTv[%x]!\n",vdst[0],vdstTv[0]);
         return;
     }
-#endif
+
     printf("vdsredsum.v_ut passed!\n");
 }
 

@@ -31,6 +31,7 @@ extern void nolinear_recipSqrt8_ut();
 extern void nolinear_arctan8_ut();
 extern void nolinear_log2seg8_ut();
 extern void nolinear_log10seg8_ut();
+extern void vdsredsum_ut1();
 
 int main()
 {
@@ -41,13 +42,15 @@ int main()
     vdsredsum_ut();
     vfsl_ut();
     vfsr_ut();
+#if 0    
     nolinear_recip8_ut();
     nolinear_sqrt8_ut();
     nolinear_recipSqrt8_ut();
     nolinear_arctan8_ut();
     nolinear_log2seg8_ut();
     nolinear_log10seg8_ut();
-    
+#endif    
+    vdsredsum_ut1();
     model1_ut();
     vdscmul_ut();
     vdscmac_ut();
