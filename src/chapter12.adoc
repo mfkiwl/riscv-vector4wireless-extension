@@ -13,9 +13,13 @@ vs2 is 32bit fixpoint real number, vs1 is the fix point position, e.g. for a Q32
 ----
 x, E = norm(R_NL_TYPE, vs2, vs1)
 
-eNorm =  lsb(vs2); // take 32 bit-width data for example
-x = vs2 << eNorm;
-E = 31 - eNorm - vs1；
+if R_NL_TYPE == 4       % arctan
+    x = vs2;
+    E = 0;
+else
+    eNorm =  lsb(vs2); // take 32 bit-width data for example
+    x = vs2 << eNorm;
+    E = 31 - eNorm - vs1；
 
 ----
 
@@ -81,21 +85,21 @@ adjust the exponent for the output.
 . *Operation*
 +
 ----
-e, E = ExpAdjust(R_NL_TYPE, R_NL_SEG_EXP, E)
+e, E = ExpAdjust(R_NL_TYPE, E)
 
 if R_NL_TYPE == 0       % reciprocal
     E =  -E + 1;
-    if (E >= R_NL_SEG_EXP[1]-31) e = R_NL_SEG_EXP[1] - E;
+    if (E >= 0) e = 31 - E;
     else e = 31;
 
 elsif R_NL_TYPE == 1    % square root
     E = (E>>1);
-    if (E >=  R_NL_SEG_EXP[1]-31) e = R_NL_SEG_EXP[1] - E;
+    if (E >= 0) e = 31 - E;
     else e = 31;   
    
 elsif R_NL_TYPE == 2    % reciprocal of square root
     E = -(E>>1)+1;
-    if (E >=  R_NL_SEG_EXP[1]-31) e = R_NL_SEG_EXP[1] - E;
+    if (E >=  0) e = 31 - E;
     else e = 31;
 
 elsif R_NL_TYPE == 3    % log2
@@ -118,18 +122,18 @@ postprocess for non-linear instruction.
 . *Operation*
 +
 ----
-y = postproc(R_NL_TYPE, R_NL_SEG_EXP, tmp, s, E)
+y = postproc(R_NL_TYPE, tmp, s, E)
 
 if R_NL_TYPE == 0       % reciprocal
-    y = s * alg_shift_right(tmp,1);
-    if (E < R_NL_SEG_EXP[1]-31) y = y >> -E;
+    %y = s * alg_shift_right(tmp,1);
+    if (E < 0) y = y >> -E;
     
 elsif R_NL_TYPE == 1    % square root
-    if (E < R_NL_SEG_EXP[1]-31) y = y >> -E;
+    if (E < 0) y = y >> -E;
 
 elsif R_NL_TYPE == 2    % reciprocal of square root
-    y = alg_shift_right(tmp,1);
-    if (E < R_NL_SEG_EXP[1]-31) y = y >> -E;
+    %y = alg_shift_right(tmp,1);
+    if (E < 0) y = y >> -E;
 
 elsif R_NL_TYPE == 3    % log2
     if tmp>0 tmp=0;
