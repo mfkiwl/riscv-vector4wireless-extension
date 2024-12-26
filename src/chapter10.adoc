@@ -103,7 +103,7 @@ segIdx[i] = findSeg(x[i], R_SEG[N])  // N is segment group ID
 If (segIdx[i] is valid)
 { 
   tmp = A[segIdx[i]] * x[i]; //2SEW = SEW * SEW
-  tmp = round_clip_high_SEW(alg_round_shift_right(tmp, 31)) + B[segIdx[i]]; //SEW = SEW + SEW
+  tmp = clip_low_SEW(alg_round_shift_right(tmp, 31)) + B[segIdx[i]]; //SEW = SEW + SEW
   tmp <<= 31 - R_NL_SEG_EXP[0]
   e[i], E[i] = expAdjust(R_NL_TYPE, E[i]);
   vd[j][i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
@@ -116,7 +116,7 @@ segIdx[i] = findSeg(x[i], R_SEG[N]) // N is segment group ID
 If (segIdx[i] is valid)
 { 
   tmp = A[segIdx[i]] * x[i]; //SEW = SEW * SEW
-  tmp = round_clip_high_SEW(alg_round_shift_right(tmp, 31)) + B[segIdx[i]]; //SEW = SEW + SEW
+  tmp = clip_low_SEW(alg_round_shift_right(tmp, 31)) + B[segIdx[i]]; //SEW = SEW + SEW
   tmp <<= 31 - R_NL_SEG_EXP[0]
   e[i], E[i] = expAdjust(R_NL_TYPE, E[i]);
   vd[j][i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
