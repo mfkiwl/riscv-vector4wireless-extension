@@ -81,21 +81,21 @@ adjust the exponent for the output.
 . *Operation*
 +
 ----
-e, E = ExpAdjust(R_NL_TYPE, E)
+e, E = ExpAdjust(R_NL_TYPE, R_NL_SEG_EXP, E)
 
 if R_NL_TYPE == 0       % reciprocal
-    E = 1 - E;
-    if (E >= 0) e = 31 - E;
+    E =  -E + 1;
+    if (E >= R_NL_SEG_EXP[1]-31) e = R_NL_SEG_EXP[1] - E;
     else e = 31;
 
 elsif R_NL_TYPE == 1    % square root
     E = (E>>1);
-    if (E >= 0) e = 31 - E;
+    if (E >=  R_NL_SEG_EXP[1]-31) e = R_NL_SEG_EXP[1] - E;
     else e = 31;   
    
 elsif R_NL_TYPE == 2    % reciprocal of square root
     E = -(E>>1)+1;
-    if (E >= 0) e = 31 - E;
+    if (E >=  R_NL_SEG_EXP[1]-31) e = R_NL_SEG_EXP[1] - E;
     else e = 31;
 
 elsif R_NL_TYPE == 3    % log2
@@ -118,18 +118,18 @@ postprocess for non-linear instruction.
 . *Operation*
 +
 ----
-y = postproc(R_NL_TYPE, tmp, s, E)
+y = postproc(R_NL_TYPE, R_NL_SEG_EXP, tmp, s, E)
 
 if R_NL_TYPE == 0       % reciprocal
     y = s * alg_shift_right(tmp,1);
-    if (E < 0) y = y >> -E;
+    if (E < R_NL_SEG_EXP[1]-31) y = y >> -E;
     
 elsif R_NL_TYPE == 1    % square root
-    if (E < 0) y = y >> -E;
+    if (E < R_NL_SEG_EXP[1]-31) y = y >> -E;
 
 elsif R_NL_TYPE == 2    % reciprocal of square root
     y = alg_shift_right(tmp,1);
-    if (E < 0) y = y >> -E;
+    if (E < R_NL_SEG_EXP[1]-31) y = y >> -E;
 
 elsif R_NL_TYPE == 3    % log2
     if tmp>0 tmp=0;
