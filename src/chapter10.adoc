@@ -26,7 +26,7 @@ The segmentation information of the nonlinear function is stored through the par
 |================================
 
 R_NL_SEG[16]: 16 nonlinear function segment points registers +
-R_NL_SEG_EXP[16]: 16 nonlinear function segment points exponent registers (required for some nonlinear functions) +
+R_NL_SEG_EXP[16]: 16 nonlinear function segment points exponent registers (required for some nonlinear functions) R_NL_SEG_EXP[0] stores exponent of R_NL_A and R_NL_B, R_NL_SEG_EXP[1] stores exponent of R_NL_SEG  +
 R_NL_A[16]: 16 nonlinear function segement slope registers +
 R_NL_B[16]: 16 nonlinear function segement offset registers +
 
@@ -103,8 +103,11 @@ segIdx[i] = findSeg(x[i], R_SEG[N])  // N is segment group ID
 If (segIdx[i] is valid)
 { 
   tmp = A[segIdx[i]] * x[i]; //2SEW = SEW * SEW
-  tmp = clip_low_SEW(alg_round_shift_right(tmp, 31)) + B[segIdx[i]]; //SEW = SEW + SEW
-  tmp <<= 31 - R_NL_SEG_EXP[0]
+  tmp = clip_low_SEW(alg_round_shift_right(tmp, R_NL_SEG_EXP[1])) + B[segIdx[i]]; //SEW = SEW + SEW
+  if R_NL_SEG_EXP[1] >= R_NL_SEG_EXP[0]
+    tmp <<= R_NL_SEG_EXP[1] - R_NL_SEG_EXP[0]
+  else
+    tmp >>= R_NL_SEG_EXP[0] - R_NL_SEG_EXP[1]
   e[i], E[i] = expAdjust(R_NL_TYPE, E[i]);
   vd[j][i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
 }
@@ -116,8 +119,11 @@ segIdx[i] = findSeg(x[i], R_SEG[N]) // N is segment group ID
 If (segIdx[i] is valid)
 { 
   tmp = A[segIdx[i]] * x[i]; //2SEW = SEW * SEW
-  tmp = clip_low_SEW(alg_round_shift_right(tmp, 31)) + B[segIdx[i]]; //SEW = SEW + SEW
-  tmp <<= 31 - R_NL_SEG_EXP[0]
+  tmp = clip_low_SEW(alg_round_shift_right(tmp, R_NL_SEG_EXP[1])) + B[segIdx[i]]; //SEW = SEW + SEW
+  if R_NL_SEG_EXP[1] >= R_NL_SEG_EXP[0]
+    tmp <<= R_NL_SEG_EXP[1] - R_NL_SEG_EXP[0]
+  else
+    tmp >>= R_NL_SEG_EXP[0] - R_NL_SEG_EXP[1]
   e[i], E[i] = expAdjust(R_NL_TYPE, E[i]);
   vd[j][i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
 }
