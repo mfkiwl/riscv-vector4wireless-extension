@@ -125,7 +125,7 @@ postprocess for non-linear instruction.
 y = postproc(R_NL_TYPE, tmp, s, E)
 
 if R_NL_TYPE == 0       % reciprocal
-    %y = s * alg_shift_right(tmp,1);
+    y = s * tmp;
     if (E < 0) y = y >> -E;
     
 elsif R_NL_TYPE == 1    % square root
