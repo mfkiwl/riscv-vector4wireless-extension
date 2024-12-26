@@ -26,7 +26,7 @@ The segmentation information of the nonlinear function is stored through the par
 |================================
 
 R_NL_SEG[16]: 16 nonlinear function segment points registers +
-R_NL_SEG_EXP[16]: 16 nonlinear function segment points exponent registers (required for some nonlinear functions) R_NL_SEG_EXP[0] stores exponent of R_NL_A and R_NL_B, R_NL_SEG_EXP[1] stores exponent of R_NL_SEG  +
+R_NL_SEG_EXP[16]: 16 nonlinear function segment points exponent registers (required for some nonlinear functions) R_NL_SEG_EXP[0] stores exponent of R_NL_A and R_NL_B, R_NL_SEG_EXP[1] stores exponent of expected intermediate output +
 R_NL_A[16]: 16 nonlinear function segement slope registers +
 R_NL_B[16]: 16 nonlinear function segement offset registers +
 
@@ -98,7 +98,7 @@ vs2 stores the fixed-point value, vs1 or vs1[0] stores the fixed-point value n. 
 ----
 VV version
 x[i], E[i] = norm(R_NL_TYPE, vs2[j][i], vs1[j][i])
-x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
+x[i], s[i], E[i] = preProc(R_NL_TYPE, R_NL_SEG_EXP, x[i], E[i])
 segIdx[i] = findSeg(x[i], R_SEG[N])  // N is segment group ID
 If (segIdx[i] is valid)
 { 
@@ -108,8 +108,8 @@ If (segIdx[i] is valid)
     tmp <<= R_NL_SEG_EXP[1] - R_NL_SEG_EXP[0]
   else
     tmp >>= R_NL_SEG_EXP[0] - R_NL_SEG_EXP[1]
-  e[i], E[i] = expAdjust(R_NL_TYPE, E[i]);
-  vd[j][i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
+  e[i], E[i] = expAdjust(R_NL_TYPE, R_NL_SEG_EXP, E[i]);
+  vd[j][i] = postProc(R_NL_TYPE, R_NL_SEG_EXP, tmp, s[i], E[i]);
 }
 
 VS version
@@ -124,8 +124,8 @@ If (segIdx[i] is valid)
     tmp <<= R_NL_SEG_EXP[1] - R_NL_SEG_EXP[0]
   else
     tmp >>= R_NL_SEG_EXP[0] - R_NL_SEG_EXP[1]
-  e[i], E[i] = expAdjust(R_NL_TYPE, E[i]);
-  vd[j][i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
+  e[i], E[i] = expAdjust(R_NL_TYPE, R_NL_SEG_EXP, E[i]);
+  vd[j][i] = postProc(R_NL_TYPE, R_NL_SEG_EXP, tmp, s[i], E[i]);
 }
 ----
 
