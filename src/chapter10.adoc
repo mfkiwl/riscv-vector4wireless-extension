@@ -103,13 +103,13 @@ segIdx[i] = findSeg(x[i], R_SEG[N])  // N is segment group ID
 If (segIdx[i] is valid)
 { 
   tmp = A[segIdx[i]] * x[i]; //2SEW = SEW * SEW
-  tmp = clip_low_SEW(alg_round_shift_right(tmp, R_NL_SEG_EXP[1])) + B[segIdx[i]]; //SEW = SEW + SEW
+  tmp = clip_low_SEW(alg_round_shift_right(tmp, R_NL_SEG_EXP[2])) + B[segIdx[i]]; //SEW = SEW + SEW
   if R_NL_SEG_EXP[1] >= R_NL_SEG_EXP[0]
     tmp <<= R_NL_SEG_EXP[1] - R_NL_SEG_EXP[0]
   else
     tmp >>= R_NL_SEG_EXP[0] - R_NL_SEG_EXP[1]
-  e[i], E[i] = expAdjust(R_NL_TYPE, R_NL_SEG_EXP, E[i]);
-  vd[j][i] = postProc(R_NL_TYPE, R_NL_SEG_EXP, tmp, s[i], E[i]);
+  e[i], E[i] = expAdjust(R_NL_TYPE, E[i]);
+  vd[j][i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
 }
 
 VS version
@@ -119,13 +119,13 @@ segIdx[i] = findSeg(x[i], R_SEG[N]) // N is segment group ID
 If (segIdx[i] is valid)
 { 
   tmp = A[segIdx[i]] * x[i]; //2SEW = SEW * SEW
-  tmp = clip_low_SEW(alg_round_shift_right(tmp, R_NL_SEG_EXP[1])) + B[segIdx[i]]; //SEW = SEW + SEW
+  tmp = clip_low_SEW(alg_round_shift_right(tmp, R_NL_SEG_EXP[2])) + B[segIdx[i]]; //SEW = SEW + SEW
   if R_NL_SEG_EXP[1] >= R_NL_SEG_EXP[0]
     tmp <<= R_NL_SEG_EXP[1] - R_NL_SEG_EXP[0]
   else
     tmp >>= R_NL_SEG_EXP[0] - R_NL_SEG_EXP[1]
-  e[i], E[i] = expAdjust(R_NL_TYPE, R_NL_SEG_EXP, E[i]);
-  vd[j][i] = postProc(R_NL_TYPE, R_NL_SEG_EXP, tmp, s[i], E[i]);
+  e[i], E[i] = expAdjust(R_NL_TYPE, E[i]);
+  vd[j][i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
 }
 ----
 
