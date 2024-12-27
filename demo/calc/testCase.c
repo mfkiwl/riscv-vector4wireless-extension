@@ -1539,7 +1539,7 @@ void vdsredsum_ut1()
     uint32_t vdst[32];
     int32_t vdstTv[32] =
     {
-        0xfffd3e4c
+        0xfffd3e49
     };
    uint32_t i;
     size_t vl;
