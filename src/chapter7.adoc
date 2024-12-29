@@ -74,7 +74,7 @@ Find the maximum value in the vector register and its corresponding index value 
 
 . *Description*
 +
-vs2 saves the input value, vs1 saves the index value corresponding to each input value, finds the maximum value in vs2 and writes it into vd[0], and its corresponding index value is written into vd[1]. If the maximum value appears in multiple locations, follow The first maximum value from low to high index position is written into vd, and the value in vs2 and the index value in vs1 are set to the signed minimum value corresponding to SEW.
+vs2 saves the input value, vs1 saves the index value corresponding to each input value, finds the maximum value in vs2 and writes it into vd[0], and its corresponding index value is written into vd[1]. If the maximum value appears in multiple locations, output The first maximum value searched from low element to high element into vd.
 
 . *Operation*
 +
@@ -82,8 +82,6 @@ vs2 saves the input value, vs1 saves the index value corresponding to each input
 vd[0] = max[vs2]; 
 i = max_i[vs2]; // First maximum value searched from lowest element
 vd[1] = vs1[i];
-vs1[i] = MIN_SEW;
-vs2[i] = MIN_SEW;
 ----
 
 === vredmini(vector reduced min with index)
@@ -97,7 +95,7 @@ Find the minimum value in the vector register and its corresponding index value 
 
 . *Description*
 +
-vs2 saves the input value, vs1 saves the index value corresponding to each input value, finds the minimum value in vs2 and writes it into vd[0], and its corresponding index value is written into vd[1]. If the minimum value appears in multiple locations, follow The first minimum value of the element index position from low to high is written into vd, and the value in vs2 and the index value in vs1 are set to the signed maximum value corresponding to SEW.
+vs2 saves the input value, vs1 saves the index value corresponding to each input value, finds the minimum value in vs2 and writes it into vd[0], and its corresponding index value is written into vd[1]. If the minimum value appears in multiple locations, output The first minimum value searched from low element to high element into vd.
 
 . *Operation*
 +
@@ -105,7 +103,5 @@ vs2 saves the input value, vs1 saves the index value corresponding to each input
 vd[0] = min[vs2];
 i = min_i[vs2]; //First minimum value searched from lowest element
 vd[1] = vs1[i];
-vs1[i] = MAX_SEW;
-vs2[i] = MAX_SEW;
 ----
 
