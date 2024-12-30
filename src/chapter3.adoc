@@ -21,8 +21,8 @@ rs1 stores the base address, and vd is the target register. The total number of 
 - ‘b2h’ is 8bit->16bit signed number conversion; 
 - ‘b2w’ is 8bit->32bit signed number conversion; 
 - ‘h2w’ is 16bit->32bit signed number conversion; 
-- ‘pa2c’ is CFL(6/6/4)->SC16 format conversion； 
-- ‘pb2c’ is CFL(7/7/2)->SC16 format conversion.
+- ‘pa2c’ is CPF(6/6/4)->SC16 format conversion； 
+- ‘pb2c’ is CPF(7/7/2)->SC16 format conversion.
 
 . *Operation*
 +
@@ -67,8 +67,8 @@ rs1 stores the base address, and vs3 is the source register. The total number of
 - ‘h2b’ is 16bit->8bit signed number conversion; 
 - ‘w2b’ is 32bit->8bit signed number conversion; 
 - ‘w2h’ is 32bit->16bit signed number conversion; 
-- ‘c2pa’ is SC16->CFL(6/6/4) format conversion； 
-- ‘c2pb’ is SC16->CFL(7/7/2) format conversion.
+- ‘c2pa’ is SC16->CPF(6/6/4) format conversion； 
+- ‘c2pb’ is SC16->CPF(7/7/2) format conversion.
 
 . *Operation*
 +
