@@ -35,7 +35,7 @@ preprocess for non-linear instruction.
 x, s, E = preproc(R_NL_TYPE, x, E)
 
 if R_NL_TYPE == 0       % reciprocal
-    s = sign(x);
+    s = sign(x);        % if x>0 s=1; elsif x<0 s=-1; elsif x==0 s=0;
     x = abs(x);
 
 elsif R_NL_TYPE == 1    % square root
@@ -51,7 +51,7 @@ elsif R_NL_TYPE == 2    % reciprocal of square root
 elsif R_NL_TYPE == 3    % log2
 
 elsif R_NL_TYPE == 4    % arctan
-    s = sign(x);
+    s = sign(x);        % if x>0 s=1; elsif x<0 s=-1; elsif x==0 s=0;
     x = abs(x);
 
 elsif R_NL_TYPE == 5    % log10
