@@ -36,9 +36,9 @@ vd[j][i] = loadFormatConvert(void *rs1, A2B) {
     case ‘h2w’
       return sx32(int16 rs1[j][i])
     case ‘pa2c’
-      img = get_i(sc16 rs1[j][i])
-      real = get_r(sc16 rs1[j][i])
-      e = get_e(sc16 rs1[j][i])
+      img = get_i(cfl rs1[j][i])
+      real = get_r(cfl rs1[j][i])
+      e = get_e(cfl rs1[j][i])
       I = zp32( img )
       R = zp32( real )
       return vcpack(sra(I, e), sra(R, e))
@@ -84,7 +84,7 @@ void storeFormatConvert(void *rs1, vs3[j][i], B2A) {
     case ‘c2pa’
       I = vs3[j][i].i
       R = vs3[j][i].r
-      num = max(abs(I), abs(R))
+      num = abs(I) > abs(R) ? abs(I) : abs(R)
       exp = lsb(num)
       img = round_clip_high_6bit(I << exp)
       real = round_clip_high_6bit(R << exp)
