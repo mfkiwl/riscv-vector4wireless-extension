@@ -29,54 +29,54 @@
 ## 2.1 WingGCC目录结构：
 ## .
 ## ├── bin
-## │   ├── riscv32-wing-elf-addr2line
-## │   ├── riscv32-wing-elf-ar
-## │   ├── riscv32-wing-elf-as
-## │   ├── riscv32-wing-elf-c++
-## │   ├── riscv32-wing-elf-c++filt
-## │   ├── riscv32-wing-elf-cpp
-## │   ├── riscv32-wing-elf-elfedit
-## │   ├── riscv32-wing-elf-g++
-## │   ├── riscv32-wing-elf-gcc
-## │   ├── riscv32-wing-elf-gcc-14.1.0
-## │   ├── riscv32-wing-elf-gcc-ar
-## │   ├── riscv32-wing-elf-gcc-nm
-## │   ├── riscv32-wing-elf-gcc-ranlib
-## │   ├── riscv32-wing-elf-gcov
-## │   ├── riscv32-wing-elf-gcov-dump
-## │   ├── riscv32-wing-elf-gcov-tool
-## │   ├── riscv32-wing-elf-gdb
-## │   ├── riscv32-wing-elf-gdb-add-index
-## │   ├── riscv32-wing-elf-gprof
-## │   ├── riscv32-wing-elf-ld
-## │   ├── riscv32-wing-elf-ld.bfd
-## │   ├── riscv32-wing-elf-lto-dump
-## │   ├── riscv32-wing-elf-nm
-## │   ├── riscv32-wing-elf-objcopy
-## │   ├── riscv32-wing-elf-objdump
-## │   ├── riscv32-wing-elf-ranlib
-## │   ├── riscv32-wing-elf-readelf
-## │   ├── riscv32-wing-elf-run
-## │   ├── riscv32-wing-elf-size
-## │   ├── riscv32-wing-elf-strings
-## │   └── riscv32-wing-elf-strip
+## │   ├── riscv32-wing-elf-addr2line
+## │   ├── riscv32-wing-elf-ar
+## │   ├── riscv32-wing-elf-as
+## │   ├── riscv32-wing-elf-c++
+## │   ├── riscv32-wing-elf-c++filt
+## │   ├── riscv32-wing-elf-cpp
+## │   ├── riscv32-wing-elf-elfedit
+## │   ├── riscv32-wing-elf-g++
+## │   ├── riscv32-wing-elf-gcc
+## │   ├── riscv32-wing-elf-gcc-14.1.0
+## │   ├── riscv32-wing-elf-gcc-ar
+## │   ├── riscv32-wing-elf-gcc-nm
+## │   ├── riscv32-wing-elf-gcc-ranlib
+## │   ├── riscv32-wing-elf-gcov
+## │   ├── riscv32-wing-elf-gcov-dump
+## │   ├── riscv32-wing-elf-gcov-tool
+## │   ├── riscv32-wing-elf-gdb
+## │   ├── riscv32-wing-elf-gdb-add-index
+## │   ├── riscv32-wing-elf-gprof
+## │   ├── riscv32-wing-elf-ld
+## │   ├── riscv32-wing-elf-ld.bfd
+## │   ├── riscv32-wing-elf-lto-dump
+## │   ├── riscv32-wing-elf-nm
+## │   ├── riscv32-wing-elf-objcopy
+## │   ├── riscv32-wing-elf-objdump
+## │   ├── riscv32-wing-elf-ranlib
+## │   ├── riscv32-wing-elf-readelf
+## │   ├── riscv32-wing-elf-run
+## │   ├── riscv32-wing-elf-size
+## │   ├── riscv32-wing-elf-strings
+## │   └── riscv32-wing-elf-strip
 ## ├── include
-## │   ├── gdb
-## │   └── sim
+## │   ├── gdb
+## │   └── sim
 ## ├── lib
-## │   ├── bfd-plugins
-## │   ├── gcc
-## │   ├── libcc1.la
-## │   ├── libcc1.so -> libcc1.so.0.0.0
-## │   ├── libcc1.so.0 -> libcc1.so.0.0.0
-## │   ├── libcc1.so.0.0.0
-## │   └── libriscv32-wing-elf-sim.a
+## │   ├── bfd-plugins
+## │   ├── gcc
+## │   ├── libcc1.la
+## │   ├── libcc1.so -> libcc1.so.0.0.0
+## │   ├── libcc1.so.0 -> libcc1.so.0.0.0
+## │   ├── libcc1.so.0.0.0
+## │   └── libriscv32-wing-elf-sim.a
 ## ├── libexec
-## │   └── gcc
+## │   └── gcc
 ## ├── riscv32-wing-elf
-## │   ├── bin
-## │   ├── include
-## │   └── lib
+## │   ├── bin
+## │   ├── include
+## │   └── lib
 ## └── share
 ##     ├── gcc-14.1.0
 ##     ├── gdb
@@ -98,65 +98,65 @@
 
 ## 3.0 intrinsic支持.vv和.vs指令
 ## 以vdsmul指令举例，vv后缀为.vv指令，_vs后缀为.vs指令，有
-vint8mf8_t __riscv_vdsmul_vv_i8mf8(vint8mf8_t vs2, vint8mf8_t vs1, unsigned int vxrm, size_t vl);
-vint8mf8_t __riscv_vdsmul_vs_i8mf8(vint8mf8_t vs2, vint8mf8_t vs1, unsigned int vxrm, size_t vl);
+vint8mf8_t __riscv_vdsmul_vv_i8mf8(vint8mf8_t vs2, vint8mf8_t vs1, size_t vl);
+vint8mf8_t __riscv_vdsmul_vs_i8mf8(vint8mf8_t vs2, vint8mf8_t vs1, size_t vl);
  
 ## 3.1 intrinsic支持不同的EEW和EMUL：
 ## 请参考riscv官方intrinsic文档说明v-intrinsic-spec 7.1节
-vint8mf8_t __riscv_vdsmul_vs_i8mf8(vint8mf8_t vs2, vint8mf8_t vs1, unsigned int vxrm, size_t vl);
-vint8mf4_t __riscv_vdsmul_vs_i8mf4(vint8mf4_t vs2, vint8mf4_t vs1, unsigned int vxrm, size_t vl);
-vint8mf2_t __riscv_vdsmul_vs_i8mf2(vint8mf2_t vs2, vint8mf2_t vs1, unsigned int vxrm, size_t vl);
-vint8m1_t __riscv_vdsmul_vs_i8m1(vint8m1_t vs2, vint8m1_t vs1, unsigned int vxrm, size_t vl);
-vint8m2_t __riscv_vdsmul_vs_i8m2(vint8m2_t vs2, vint8m2_t vs1, unsigned int vxrm, size_t vl);
-vint8m4_t __riscv_vdsmul_vs_i8m4(vint8m4_t vs2, vint8m4_t vs1, unsigned int vxrm, size_t vl);
-vint8m8_t __riscv_vdsmul_vs_i8m8(vint8m8_t vs2, vint8m8_t vs1, unsigned int vxrm, size_t vl);
+vint8mf8_t __riscv_vdsmul_vs_i8mf8(vint8mf8_t vs2, vint8mf8_t vs1, size_t vl);
+vint8mf4_t __riscv_vdsmul_vs_i8mf4(vint8mf4_t vs2, vint8mf4_t vs1, size_t vl);
+vint8mf2_t __riscv_vdsmul_vs_i8mf2(vint8mf2_t vs2, vint8mf2_t vs1, size_t vl);
+vint8m1_t __riscv_vdsmul_vs_i8m1(vint8m1_t vs2, vint8m1_t vs1, size_t vl);
+vint8m2_t __riscv_vdsmul_vs_i8m2(vint8m2_t vs2, vint8m2_t vs1, size_t vl);
+vint8m4_t __riscv_vdsmul_vs_i8m4(vint8m4_t vs2, vint8m4_t vs1, size_t vl);
+vint8m8_t __riscv_vdsmul_vs_i8m8(vint8m8_t vs2, vint8m8_t vs1, size_t vl);
 ## 请注意没有vint16mf8
-vint16mf4_t __riscv_vdsmul_vs_i16mf4(vint16mf4_t vs2, vint16mf4_t vs1, unsigned int vxrm, size_t vl);
-vint16mf2_t __riscv_vdsmul_vs_i16mf2(vint16mf2_t vs2, vint16mf2_t vs1, unsigned int vxrm, size_t vl);
-vint16m1_t __riscv_vdsmul_vs_i16m1(vint16m1_t vs2, vint16m1_t vs1, unsigned int vxrm, size_t vl);
-vint16m2_t __riscv_vdsmul_vs_i16m2(vint16m2_t vs2, vint16m2_t vs1, unsigned int vxrm, size_t vl);
-vint16m4_t __riscv_vdsmul_vs_i16m4(vint16m4_t vs2, vint16m4_t vs1, unsigned int vxrm, size_t vl);
-vint16m8_t __riscv_vdsmul_vs_i16m8(vint16m8_t vs2, vint16m8_t vs1, unsigned int vxrm, size_t vl);
+vint16mf4_t __riscv_vdsmul_vs_i16mf4(vint16mf4_t vs2, vint16mf4_t vs1, size_t vl);
+vint16mf2_t __riscv_vdsmul_vs_i16mf2(vint16mf2_t vs2, vint16mf2_t vs1, size_t vl);
+vint16m1_t __riscv_vdsmul_vs_i16m1(vint16m1_t vs2, vint16m1_t vs1, size_t vl);
+vint16m2_t __riscv_vdsmul_vs_i16m2(vint16m2_t vs2, vint16m2_t vs1, size_t vl);
+vint16m4_t __riscv_vdsmul_vs_i16m4(vint16m4_t vs2, vint16m4_t vs1, size_t vl);
+vint16m8_t __riscv_vdsmul_vs_i16m8(vint16m8_t vs2, vint16m8_t vs1, size_t vl);
  
-vint32mf2_t __riscv_vdsmul_vs_i32mf2(vint32mf2_t vs2, vint32mf2_t vs1, unsigned int vxrm, size_t vl);
-vint32m1_t __riscv_vdsmul_vs_i32m1(vint32m1_t vs2, vint32m1_t vs1, unsigned int vxrm, size_t vl);
-vint32m2_t __riscv_vdsmul_vs_i32m2(vint32m2_t vs2, vint32m2_t vs1, unsigned int vxrm, size_t vl);
-vint32m4_t __riscv_vdsmul_vs_i32m4(vint32m4_t vs2, vint32m4_t vs1, unsigned int vxrm, size_t vl);
-vint32m8_t __riscv_vdsmul_vs_i32m8(vint32m8_t vs2, vint32m8_t vs1, unsigned int vxrm, size_t vl);
+vint32mf2_t __riscv_vdsmul_vs_i32mf2(vint32mf2_t vs2, vint32mf2_t vs1, size_t vl);
+vint32m1_t __riscv_vdsmul_vs_i32m1(vint32m1_t vs2, vint32m1_t vs1, size_t vl);
+vint32m2_t __riscv_vdsmul_vs_i32m2(vint32m2_t vs2, vint32m2_t vs1, size_t vl);
+vint32m4_t __riscv_vdsmul_vs_i32m4(vint32m4_t vs2, vint32m4_t vs1, size_t vl);
+vint32m8_t __riscv_vdsmul_vs_i32m8(vint32m8_t vs2, vint32m8_t vs1, size_t vl);
  
-vint64m1_t __riscv_vdsmul_vs_i64m1(vint64m1_t vs2, vint64m1_t vs1, unsigned int vxrm, size_t vl);
-vint64m2_t __riscv_vdsmul_vs_i64m2(vint64m2_t vs2, vint64m2_t vs1, unsigned int vxrm, size_t vl);
-vint64m4_t __riscv_vdsmul_vs_i64m4(vint64m4_t vs2, vint64m4_t vs1, unsigned int vxrm, size_t vl);
-vint64m8_t __riscv_vdsmul_vs_i64m8(vint64m8_t vs2, vint64m8_t vs1, unsigned int vxrm, size_t vl);
+vint64m1_t __riscv_vdsmul_vs_i64m1(vint64m1_t vs2, vint64m1_t vs1, size_t vl);
+vint64m2_t __riscv_vdsmul_vs_i64m2(vint64m2_t vs2, vint64m2_t vs1, size_t vl);
+vint64m4_t __riscv_vdsmul_vs_i64m4(vint64m4_t vs2, vint64m4_t vs1, size_t vl);
+vint64m8_t __riscv_vdsmul_vs_i64m8(vint64m8_t vs2, vint64m8_t vs1, size_t vl);
  
 ## 3.2 intrinsic支持int和uint类型，如
-vuint8mf8_t __riscv_vdsmul_vs_u8mf8(vuint8mf8_t vs2, vuint8mf8_t vs1, unsigned int vxrm, size_t vl);
-vuint16mf4_t __riscv_vdsmul_vs_u16mf4(vuint16mf4_t vs2, vuint16mf4_t vs1, unsigned int vxrm, size_t vl);
-vuint32mf2_t __riscv_vdsmul_vs_u32mf2(vuint32mf2_t vs2, vuint32mf2_t vs1, unsigned int vxrm, size_t vl);
-vuint64m1_t __riscv_vdsmul_vs_u64m1(vuint64m1_t vs2, vuint64m1_t vs1, unsigned int vxrm, size_t vl);
+vuint8mf8_t __riscv_vdsmul_vs_u8mf8(vuint8mf8_t vs2, vuint8mf8_t vs1, size_t vl);
+vuint16mf4_t __riscv_vdsmul_vs_u16mf4(vuint16mf4_t vs2, vuint16mf4_t vs1, size_t vl);
+vuint32mf2_t __riscv_vdsmul_vs_u32mf2(vuint32mf2_t vs2, vuint32mf2_t vs1, size_t vl);
+vuint64m1_t __riscv_vdsmul_vs_u64m1(vuint64m1_t vs2, vuint64m1_t vs1, size_t vl);
  
 ## 3.3 intrinsic支持不同的predication，即不同的vm, vta和vma组合：
 ## 请参考riscv官方intrinsic文档说明v-intrinsic-spec 6.1节
 ## 以下以EEW=8和EMUL=1的vdsmul指令intrinsic为例，其他EEW和EMUL的组合省略。
 ## 无后缀，即vm=1, vta=1
-vint8m1_t __riscv_vdsmul_vs_i8m1(vint8m1_t vs2, vint8m1_t vs1, unsigned int vxrm, size_t vl);
+vint8m1_t __riscv_vdsmul_vs_i8m1(vint8m1_t vs2, vint8m1_t vs1, size_t vl);
  
 ## tu后缀，即vm=1, vta=0
-vint8m1_t __riscv_vdsmul_vv_i8m1_tu(vint8m1_t vd, vint8m1_t vs2, vint8m1_t vs1, unsigned int vxrm, size_t vl);
+vint8m1_t __riscv_vdsmul_vv_i8m1_tu(vint8m1_t vd, vint8m1_t vs2, vint8m1_t vs1, size_t vl);
  
 ## m后缀，即vm=0, vta=1, vma=1
-vint8m1_t __riscv_vdsmul_vv_i8m1_m(vbool8_t vm, vint8m1_t vs2, vint8m1_t vs1, unsigned int vxrm, size_t vl);
+vint8m1_t __riscv_vdsmul_vv_i8m1_m(vbool8_t vm, vint8m1_t vs2, vint8m1_t vs1, size_t vl);
  
 ## tum后缀，即vm=0, vta=0, vma=1
 ## 当掩码有tu或者mu时，intrinsic会添加一个vd参数来描述指令需要在计算时使用vd寄存器
 ## 请参考riscv官方intrinsic文档说明v-intrinsic-spec 9.3节
-vint8m1_t __riscv_vdsmul_vv_i8m1_tum(vbool8_t vm, vint8m1_t vd, vint8m1_t vs2, vint8m1_t vs1, unsigned int vxrm, size_t vl);
+vint8m1_t __riscv_vdsmul_vv_i8m1_tum(vbool8_t vm, vint8m1_t vd, vint8m1_t vs2, vint8m1_t vs1, size_t vl);
  
 ## mu后缀，即vm=0, vta=1, vma=0
-vint8m1_t __riscv_vdsmul_vv_i8m1_mu(vbool8_t vm, vint8m1_t vd, vint8m1_t vs2, vint8m1_t vs1, unsigned int vxrm, size_t vl);
+vint8m1_t __riscv_vdsmul_vv_i8m1_mu(vbool8_t vm, vint8m1_t vd, vint8m1_t vs2, vint8m1_t vs1, size_t vl);
  
 ## tumu后缀，即vm=0, vta=0, vma=0
-vint8m1_t __riscv_vdsmul_vv_i8m1_tumu(vbool8_t vm, vint8m1_t vd, vint8m1_t vs2, vint8m1_t vs1, unsigned int vxrm, size_t vl);
+vint8m1_t __riscv_vdsmul_vv_i8m1_tumu(vbool8_t vm, vint8m1_t vd, vint8m1_t vs2, vint8m1_t vs1, size_t vl);
  
 ########################4.已实现指令intrinsic说明#########################
 ## 每条指令根据不同的后缀可能有上百个相关intrinsic函数
@@ -185,8 +185,8 @@ void __riscv_vsfcw2b_v_u32mf2_m(vbool64_t vm, uint8_t *rs1, vuint32mf2_t vs3, si
 ## vdsmul 默认
 ## vdsmacini 无vd参数，只支持无后缀和m后缀
 ## vdsmac intrinsic函数添加一个返回值, 无vd参数，只支持无后缀和m后缀
-## 即原本为void __riscv_vdsmac_i8m1(vint8m1_t vs2, vint8m1_t vs1, unsigned int vxrm, size_t vl); 
-## 变为vint8m1_t __riscv_vdsmac_i8m1(vint8m1_t vs2, vint8m1_t vs1, unsigned int vxrm, size_t vl);
+## 即原本为void __riscv_vdsmac_i8m1(vint8m1_t vs2, vint8m1_t vs1, size_t vl); 
+## 变为vint8m1_t __riscv_vdsmac_i8m1(vint8m1_t vs2, vint8m1_t vs1, size_t vl);
 ## vdsmaco 默认
 ## vlsb 默认
 ## vconj 默认
@@ -208,7 +208,7 @@ void __riscv_vsfcw2b_v_u32mf2_m(vbool64_t vm, uint8_t *rs1, vuint32mf2_t vs3, si
 ## vdscmuljr 默认
 ## vdscmulji 默认
 ## vdsredsum 默认
-## vdsredsumn 无vm位，只支持无后缀和tu后缀
+## vdsredsumn 默认
 ## vlfcb2h 默认
 ## vlfcb2w 默认
 ## vlfch2w 默认
@@ -228,4 +228,3 @@ void __riscv_vsfcw2b_v_u32mf2_m(vbool64_t vm, uint8_t *rs1, vuint32mf2_t vs3, si
 ## vlnlp 无vm位，无vd参数，只支持无后缀
 ## vnle 默认
 ## vnlm 默认
-
