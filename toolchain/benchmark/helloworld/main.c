@@ -5,60 +5,22 @@
  */
 #include <stdio.h>
 #include <riscv_vector.h>
-#include "op_common.h"
 
-extern int32_t volatile rZvmAddr[32];
-extern int32_t volatile rRvvAddr[32];
+vint8m1_t test_vdsmac_vs_i8m1(vint8m1_t vs2, vint8m1_t vs1, size_t vl) {
+    return __riscv_vdsmac_vs_i8m1(vs2, vs1, 0, vl);
+}
 
-extern int32_t op_testzvwCcm();
-extern int32_t op_testrvvCcm();
-extern int32_t op_testzvwCdsm();
-extern int32_t op_testrvvCdsm();
-extern int32_t op_testzvwWap();
-extern int32_t op_testrvvWap();
+size_t vl = 4;
+
+char dest[] = "Hello!";
 
 int main()
 {
-    int i;
-	//ccm
-    op_testzvwCcm();
-    op_testrvvCcm();
-    for (i = 0; i < 32 ; i++)
-    {
-      if (rZvmAddr[i] != rRvvAddr[i])
-      {
-        printf("ccm fail\n");
-        break;
-      }
-    }
-	if (i >= 32)
-	{
-        printf("ccm succ\n");
-	}
-	
-	//cdsm
-    int32_t resZvw = op_testzvwCdsm();
-    int32_t resRvv = op_testrvvCdsm();
-    if (resZvw == resRvv)
-    {
-      printf("cdsm succ\n");
-    }
-    else
-    {
-      printf("cdsm fail\n");
-    }	
-	
-	//wap
-   resZvw = op_testzvwWap();
-   resRvv = op_testrvvWap();
+    vint8m1_t vs2, vs1;
+    vs2 = __riscv_vle8_v_i8m1(dest, vl);
+    vint8m1_t vd = test_vdsmac_vs_i8m1(vs2, vs1, vl);
+    __riscv_vse8_v_i8m1(dest, vd, vl);
 
-    if (resZvw == resRvv)
-    {
-      printf("wap succ %x \n",resRvv);
-    }
-    else
-    {
-      printf("wap fail resZvw %x ,resRvv %x\n", resZvw, resRvv);
-    }
+    printf("%s\r\n", dest);
     return 0;
 }
