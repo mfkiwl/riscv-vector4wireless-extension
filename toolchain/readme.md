@@ -1,4 +1,4 @@
-、、、# Declaration
+# Declaration
 本工具由隼瞻科技开发，授权给Zvw项目开源使用。
 
 This tool is developed by Wingsemitech Co.ltd, licensed for open source "Zvw" project.
