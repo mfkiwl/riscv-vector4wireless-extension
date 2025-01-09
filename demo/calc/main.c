@@ -32,10 +32,11 @@ extern void nolinear_arctan8_ut();
 extern void nolinear_log2seg8_ut();
 extern void nolinear_log10seg8_ut();
 extern void vdsredsum_ut1();
-
+extern int32_t op_intrinsicTest1();
 int main()
 {
     int i;
+    op_intrinsicTest1();
     // test case
     op_testMulj();
     vconj_ut();
