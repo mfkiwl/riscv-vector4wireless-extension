@@ -26,10 +26,10 @@ int32_t op_intrinsicTest1()
     	    
 	    vA0 = __riscv_vle32_v_i32m4((int32_t*)aAddr, avl);
 	    vA1 = __riscv_vle32_v_i32m4((int32_t*)bAddr, avl);
-	    //vR  = __riscv_vdscmulj_vv_i32m1(vA0,vA1,vcsrA0M0R0Sa, avl);
-	     asm volatile("vdscmacj.vv %[vA0], %[vA1];" 
-                  :
-                  :[vA0]"vr"(vA0),[vA1]"vr"(vA1));
+	    __riscv_vdscmacj_vv_i32m4(vA0,vA1,0, avl);
+	    // asm volatile("vdscmacj.vv %[vA0], %[vA1];" 
+        //          :
+        //          :[vA0]"vr"(vA0),[vA1]"vr"(vA1));
            vR = __riscv_vdscmacjor_vv_i32m4(vZero,vZero,0,avl);
            __riscv_vse32_v_i32m4((int32_t*)rZvmAddr,vR,avl);    	    
     	}
