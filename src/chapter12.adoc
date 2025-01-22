@@ -13,7 +13,7 @@ vs2 is 32bit fixpoint real number, vs1 is the fix point position, e.g. for a Q32
 ----
 x, E = norm(R_NL_TYPE, vs2, vs1)
 
-if R_NL_TYPE == 4       % arctan
+if R_NL_TYPE == 4 || R_NL_TYPE == 6 || R_NL_TYPE == 7   % arctan/sin/cos: norm should be skipped
     x = vs2;
     E = 0;
 else
@@ -48,13 +48,13 @@ elsif R_NL_TYPE == 2    % reciprocal of square root
     E   = E + isOddE;
     x   = x >> isOddE;
 
-elsif R_NL_TYPE == 3    % log2
+elsif R_NL_TYPE == 3 || R_NL_TYPE == 5   % log2/log10 should be skipped
 
 elsif R_NL_TYPE == 4    % arctan
     s = sign(x);        % if x>0 s=1; elsif x<0 s=-1; elsif x==0 s=0;
     x = abs(x);
 
-elsif R_NL_TYPE == 5    % log10
+elsif R_NL_TYPE == 6 || R_NL_TYPE == 7    % sin/cos should be skipped
 
 ----
 
@@ -110,6 +110,10 @@ elsif R_NL_TYPE == 4    % arctan
 
 elsif R_NL_TYPE == 5    % log10
     e = 26;
+
+elseif R_NL_TYPE == 6 || R_NL_TYPE == 7 % sin/cos
+    e = 31;
+
 ----
 
 
@@ -151,5 +155,7 @@ elsif R_NL_TYPE == 5    % log10
     y1 = y0*1292913986;                 % Q(32.32) for const log10(2)
     y =  alg_round_shift_right(y1, 32); % log10 final output
 
+elsif R_NL_TYPE == 6 || R_NL_TYPE == 7  % sin/cos
+    y = tmp;
 
 ----
