@@ -189,7 +189,7 @@
 | vnle.vs vd, vs2, vs1, vm        | 101100 | vm | vs2   | vs1         | 110   | vd     | 1010111
 | vnlm.vv vd, vs2, vs1, vm        | 101110 | vm | vs2   | vs1         | 010   | vd     | 1010111
 | vnlm.vs vd, vs2, vs1, vm        | 101110 | vm | vs2   | vs1         | 110   | vd     | 1010111
-| vlnlp.v vnpr, vs2               | 001000 | 1  | vs2   | 00000       | 000   | vd     | 1010111
+| vlnlp.v vnpr, vs2               | 001000 | 1  | vs2   | 00000       | 000   | 00000  | 1010111
 |===============================================================================================
 +
 - *Zvw Load & Store Instruction encoding*
