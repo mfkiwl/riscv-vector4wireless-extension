@@ -33,21 +33,21 @@ R_NL_B[16]: 16 nonlinear function segement offset registers +
 ==== vlnlp(vector load nonlinear parameter)
 . *Grammar*
 +
-vlnlp.s rs1 +
+vlnlp.v vnlpr, vs2 +
 
 . *Purpose*
 +
-Load nonlinear function parameter configuration from vector memory to nonlinear function parameter registers vnlpr0 and vnlpr1
+Load nonlinear function parameter configuration from vector register to nonlinear function parameter registers vnlpr0 and vnlpr1
 
 . *Description*
 +
-Load configuration from vector memory address rs1 to vnlpr0 and vnlpr1, a total of 2048bits.
+Load configuration from vector register vs2 to vnlpr0 and vnlpr1, 2048bits in total. LMUL is set to 2 contantly.
 
 . *Operation*
 +
 ----
-vnlpr0 = *rs1;
-vnlpr1 = *(rs1 + 128);
+vnlpr.l = VR[n]       // .l means low 1024bits in vnlpr
+vnlpr.h = VR[n+1];    // .h means high 1024bits in vnlpr
 ----
 
 ==== vnle(vector non-linear exponent calculation instruction)
