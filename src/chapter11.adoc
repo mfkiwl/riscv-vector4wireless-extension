@@ -39,14 +39,14 @@
 |=================================================================================================
 5+| funct6 4+| funct6 4+| funct6            
 | 000000 | V | X | I | vadd         | 000000 | V |   | vredsum     | 000000 | V | F | vfadd       
-| 000001 | V | X |   | *_vdsmac_*     | 000001 | V |   | vredand     | 000001 | V |   | vfredusum   
+| 000001 | V | X |   | *_vdsmac_*   | 000001 | V |   | vredand     | 000001 | V |   | vfredusum   
 | 000010 | V | X |   | vsub         | 000010 | V |   | vredor      | 000010 | V | F | vfsub       
 | 000011 |   | X | I | vrsub        | 000011 | V |   | vredxor     | 000011 | V |   | vfredosum   
 | 000100 | V | X |   | vminu        | 000100 | V |   | vredminu    | 000100 | V | F | vfmin       
 | 000101 | V | X |   | vmin         | 000101 | V |   | vredmin     | 000101 | V |   | vfredmin    
 | 000110 | V | X |   | vmaxu        | 000110 | V |   | vredmaxu    | 000110 | V | F | vfmax       
 | 000111 | V | X |   | vmax         | 000111 | V |   | vredmax     | 000111 | V |   | vfredmax    
-| 001000 |   |   |   |              | 001000 | V | X | vaaddu      | 001000 | V | F | vfsgnj      
+| 001000 | V |   |   | vlnlp        | 001000 | V | X | vaaddu      | 001000 | V | F | vfsgnj      
 | 001001 | V | X | I | vand         | 001001 | V | X | vaadd       | 001001 | V | F | vfsgnjn     
 | 001010 | V | X | I | vor          | 001010 | V | X | vasubu      | 001010 | V | F | vfsgnjx     
 | 001011 | V | X | I | vxor         | 001011 | V | X | vasub       | 001011 |   |   |             
@@ -189,6 +189,7 @@
 | vnle.vs vd, vs2, vs1, vm        | 101100 | vm | vs2   | vs1         | 110   | vd     | 1010111
 | vnlm.vv vd, vs2, vs1, vm        | 101110 | vm | vs2   | vs1         | 010   | vd     | 1010111
 | vnlm.vs vd, vs2, vs1, vm        | 101110 | vm | vs2   | vs1         | 110   | vd     | 1010111
+| vlnlp.v vnpr, vs2               | 001000 | 1  | vs2   | 00000       | 000   | vd     | 1010111
 |===============================================================================================
 +
 - *Zvw Load & Store Instruction encoding*
@@ -207,7 +208,5 @@
 | vsfcw2h.v vs3, rs1, vm  | 000000     | vm | 10011       | rs1 | 110   | vs3    | 0100111
 | vsfcc2pa.v vs3, rs1, vm | 000000     | vm | 10100       | rs1 | 110   | vs3    | 0100111
 | vsfcc2pb.v vs3, rs1, vm | 000000     | vm | 10101       | rs1 | 110   | vs3    | 0100111
-| vlnlp.s rs1             | 000000     | 1  | 11000       | rs1 | 110   | 00000  | 0000111
 |=========================================================================================
-
 . 
