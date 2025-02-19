@@ -54,8 +54,21 @@ elsif R_NL_TYPE == 4    % arctan
     s = sign(x);        % if x>0 s=1; elsif x<0 s=-1; elsif x==0 s=0;
     x = abs(x);
 
-elsif R_NL_TYPE == 6 || R_NL_TYPE == 7    % sin/cos should be skipped
-
+elsif R_NL_TYPE == 6    % sin (x∈Q(32.30))
+    msb1 = x & 0x40000000;   % get 31st bit 
+    msb2 = x & 0x20000000;   % get 30th bit 
+    s    = 1 - 2*msb1;
+    x    = x & 0x1fffffff;   % mod(x,2^29)
+    if msb2==1 
+        x = 2^29 - x;
+    
+elsif R_NL_TYPE == 7    % cos (x∈Q(32.30))
+    msb1 = x & 0x40000000;   % get 31st bit 
+    msb2 = x & 0x20000000;   % get 30th bit 
+    s    = 1 - 2*xor(msb1, msb2);
+    x    = x & 0x1fffffff;   % mod(x,2^29)
+    if msb2==0 
+        x = 2^29 - x;
 ----
 
 === findSeg
@@ -67,10 +80,10 @@ find which segment the input data belongs to in N-th segment group.
 . *Operation*
 +
 ----
-segIdx = findSeg(x, R_NL_SEG) 
+segIdx = findSeg(x, R_SEG[N])  // N is segment group ID
 
-for iSeg = R_NL_SEG.nSegments
-    lutIndex(iSeg) = x >=R_NL_SEG.xStart(iSeg);
+for iSeg = R_SEG[N].nSegments        // segment number in one group
+    lutIndex(iSeg) = x >=R_SEG[N].xStart(iSeg);
 end
 segIdx = sum(lutIndex);          // find which segment belong to
 ----
@@ -156,6 +169,6 @@ elsif R_NL_TYPE == 5    % log10
     y =  alg_round_shift_right(y1, 32); % log10 final output
 
 elsif R_NL_TYPE == 6 || R_NL_TYPE == 7  % sin/cos
-    y = tmp;
+    y = s * tmp;
 
 ----
