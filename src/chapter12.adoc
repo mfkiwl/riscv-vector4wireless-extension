@@ -67,10 +67,10 @@ find which segment the input data belongs to in N-th segment group.
 . *Operation*
 +
 ----
-segIdx = findSeg(x, R_SEG[N])  // N is segment group ID
+segIdx = findSeg(x, R_NL_SEG) 
 
-for iSeg = R_SEG[N].nSegments        // segment number in one group
-    lutIndex(iSeg) = x >=R_SEG[N].xStart(iSeg);
+for iSeg = R_NL_SEG.nSegments
+    lutIndex(iSeg) = x >=R_NL_SEG.xStart(iSeg);
 end
 segIdx = sum(lutIndex);          // find which segment belong to
 ----
