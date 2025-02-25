@@ -93,7 +93,7 @@ vs2 stores the fixed-point value, vs1 or vs1[0] stores the fixed-point value n. 
 ----
 VV version
 x[i], E[i] = norm(R_NL_TYPE, vs2[j][i], vs1[j][i])
-x[i], s[i], E[i] = preProc(R_NL_TYPE, R_NL_SEG_EXP, x[i], E[i])
+x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
 segIdx[i] = findSeg(x[i], R_NL_SEG)
 If (segIdx[i] is valid)
 { 
