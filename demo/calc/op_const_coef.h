@@ -18,6 +18,8 @@ extern const int32_t recipSqrt_seg08_cfg_table[64];
 extern const int32_t log2_seg08_cfg_table[64];
 extern const int32_t arctan_seg08_cfg_table[64];
 extern const int32_t log10_seg08_cfg_table[64];
+extern const int32_t sin_seg12_cfg_table[64];
+extern const int32_t cos_seg12_cfg_table[64];
 //---------------------------------------------------
 
 
