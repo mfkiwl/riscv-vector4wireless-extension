@@ -162,6 +162,8 @@
 #define FUNC_LOG2          (3)
 #define FUNC_ARCTAN        (4)
 #define FUNC_LOG10         (5)
+#define FUNC_SIN           (6)
+#define FUNC_COS           (7)
 #define SEG4               (0 << 16)
 #define SEG8               (1 << 16)
 #define SEG12              (2 << 16)
