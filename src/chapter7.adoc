@@ -36,13 +36,13 @@ Every n elements in the vector register are accumulated and then round shifted b
 
 . *Description*
 +
-Every 2^rs1 elements in vs2 are accumulated and then do algorithm round right shift before output to vd.
+Every 2^rs1 elements in vs2 are accumulated and then do algorithm round right shift before output to vd. if vl is not the interger multiple of 2^rs1, the real processing length is 2^rs1 * ceiling(vl/2^rs1)
 
 . *Operation*
 +
 ----
 VS version
-n = 2^rs1;
+n = 2^rs1 * ceiling(vl/2^rs1);
 for (i = 0; i < VLEN/32/n; i++)
 {
   start = i * n;
@@ -52,7 +52,7 @@ for (i = 0; i < VLEN/32/n; i++)
 }
 
 VI version
-n = 2^uimm;
+n = 2^uimm * ceiling(vl/2^uimm);;
 for (i = 0; i < VLEN/32/n; i++)
 {
   start = i * n;
