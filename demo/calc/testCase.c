@@ -1133,7 +1133,7 @@ void nolinear_recip8_ut()
                           0x00000009,0x0000000a,0x0000000b,0x0000000c,0x0000000d,0x0000000e,0x0000000f,0x00000010,
                           0x00000011,0x00000012,0x00000013,0x00000014,0x00000015,0x00000016,0x00000017,0x00000018,
                           0x00000019,0x0000001a,0x0000001b,0x0000001c,0x0000001d,0x0000001e,0x0000001f,0x00000020
-};
+                        };
     uint32_t mantissa[32];
     uint32_t exponent[32];
     uint32_t mantissaTv[32] = {0x7fb61364,0x7fb61364,0x553e64f0,0x7fb61364,0x663f7e60,0x553e64f0,0x4915ee1c,0x7fb61364,
@@ -1151,7 +1151,7 @@ void nolinear_recip8_ut()
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
     uint32_t vnlcrRecip8 = SEG8|FUNC_RECIP;
 
-    asm volatile("vcsrw vnlcr, %[vnlcrRecip8];": : [vnlcrRecip8] "r" (vnlcrRecip8));
+    asm volatile("vcsrw zero, vnlcr, %[vnlcrRecip8];": : [vnlcrRecip8] "r" (vnlcrRecip8));
 
     asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
@@ -1208,7 +1208,7 @@ void nolinear_sqrt8_ut()
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
     uint32_t vnlcrSqrt8 = SEG8|FUNC_SQRT;
 
-    asm volatile("vcsrw vnlcr, %[vnlcrSqrt8];": : [vnlcrSqrt8] "r" (vnlcrSqrt8));
+    asm volatile("vcsrw zero, vnlcr, %[vnlcrSqrt8];": : [vnlcrSqrt8] "r" (vnlcrSqrt8));
 
     asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
@@ -1266,7 +1266,7 @@ void nolinear_recipSqrt8_ut()
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
     uint32_t vnlcrRecipSqrt8 = SEG8|FUNC_RECIP_SQRT;
 
-    asm volatile("vcsrw vnlcr, %[vnlcrRecipSqrt8];": : [vnlcrRecipSqrt8] "r" (vnlcrRecipSqrt8));
+    asm volatile("vcsrw zero, vnlcr, %[vnlcrRecipSqrt8];": : [vnlcrRecipSqrt8] "r" (vnlcrRecipSqrt8));
 
     asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
@@ -1332,7 +1332,7 @@ void nolinear_arctan8_ut()
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
     uint32_t vnlcrArctan8 = SEG8|FUNC_ARCTAN;
 
-    asm volatile("vcsrw vnlcr, %[vnlcrArctan8];": : [vnlcrArctan8] "r" (vnlcrArctan8));
+    asm volatile("vcsrw zero, vnlcr, %[vnlcrArctan8];": : [vnlcrArctan8] "r" (vnlcrArctan8));
 
     asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
@@ -1365,6 +1365,7 @@ void nolinear_arctan8_ut()
     }
     printf("arctan_seg08_ut passed!\n");
 }
+#endif
 
 void nolinear_log2seg8_ut()
 {
@@ -1379,10 +1380,10 @@ void nolinear_log2seg8_ut()
     uint32_t exponent[32];
     uint32_t mantissaTv[32] =
     {
-        0xc801bf2f, 0xcc01bf2f, 0xce57cd6f, 0xd001bf2f, 0xd14acb13, 0xd257cd6f, 0xd33b533f, 0xd401bf2f,
-        0xd4af65cc, 0xd54acb13, 0xd5d767d9, 0xd657cd6f, 0xd6cdef9d, 0xd73b533f, 0xd7a12cd1, 0xd801bf2f,
-        0xd858b550, 0xd8af65cc, 0xd8fd31ca, 0xd94acb13, 0xd9912c7d, 0xd9d767d9, 0xda17a949, 0xda57cd6f,
-        0xda92ea09, 0xdacdef9d, 0xdb04aaa5, 0xdb3b533f, 0xdb6e4785, 0xdba12cd1, 0xdbd0d729, 0xdc01bf2f
+        0xcc01bf2f, 0xd001bf2f, 0xd257cd6f, 0xd401bf2f, 0xd54acb13, 0xd657cd6f, 0xd73b533f, 0xd801bf2f,
+        0xd8af65cc, 0xd94acb13, 0xd9d767d9, 0xda57cd6f, 0xdacdef9d, 0xdb3b533f, 0xdba12cd1, 0xdc01bf2f,
+        0xdc58b550, 0xdcaf65cc, 0xdcfd31ca, 0xdd4acab3, 0xdd912c7d, 0xddd767d9, 0xde17a949, 0xde57cd6f,
+        0xde92ea09, 0xdecdef9d, 0xdf04aaa5, 0xdf3b533f, 0xdf6e4785, 0xdfa12cd1, 0xdfd0d729, 0xe001bf2f
     };
     uint32_t exponentTv[32] =
     {
@@ -1393,12 +1394,12 @@ void nolinear_log2seg8_ut()
     };
     uint32_t i;
     size_t vl;
-    uint32_t point = 14;
+    uint32_t point = 13;
     uint32_t len = 32;
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
     uint32_t vnlcrLog2Seg8 = SEG8|FUNC_LOG2;
 
-    asm volatile("vcsrw vnlcr, %[vnlcrLog2Seg8];": : [vnlcrLog2Seg8] "r" (vnlcrLog2Seg8));
+    asm volatile("vcsrw zero, vnlcr, %[vnlcrLog2Seg8];": : [vnlcrLog2Seg8] "r" (vnlcrLog2Seg8));
 
     asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
@@ -1464,7 +1465,7 @@ void nolinear_log10seg8_ut()
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
     uint32_t vnlcrLog10Seg8 = SEG8|FUNC_LOG10;
 
-    asm volatile("vcsrw vnlcr, %[vnlcrLog10Seg8];": : [vnlcrLog10Seg8] "r" (vnlcrLog10Seg8));
+    asm volatile("vcsrw zero, vnlcr, %[vnlcrLog10Seg8];": : [vnlcrLog10Seg8] "r" (vnlcrLog10Seg8));
 
     asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
@@ -1497,7 +1498,139 @@ void nolinear_log10seg8_ut()
     }
     printf("log10_seg08_ut passed!\n");
 }
-#endif
+
+void nolinear_sinSeg12_ut()
+{
+    uint32_t vsrc1[32] =
+    {
+        0x00000000, 0x00108000, 0x00210000, 0x00310000, 0x00418000, 0x00520000, 0x00628000, 0x00728000,
+        0x00830000, 0x00938000, 0x00a40000, 0x00b40000, 0x00c48000, 0x00d50000, 0x00e58000, 0x00f60000,
+        0x01060000, 0x01168000, 0x01270000, 0x01378000, 0x01478000, 0x01580000, 0x01688000, 0x01790000,
+        0x01890000, 0x01998000, 0x01aa0000, 0x01ba8000, 0x01cb0000, 0x01db0000, 0x01eb8000, 0x01fc0000
+    };
+    uint32_t mantissa[32];
+    uint32_t exponent[32];
+    uint32_t mantissaTv[32] =
+    {
+        0x000271f8, 0x0069da00, 0x00d14208, 0x013587d8, 0x019cefe0, 0x020457e8, 0x026bbff0, 0x02d005c8,
+        0x03376dc8, 0x039ed5d0, 0x04063dd8, 0x046a83b8, 0x04d1ebb8, 0x053953b8, 0x05a0bbc0, 0x060823c8,
+        0x066c69a0, 0x06d3d1a8, 0x073b39a8, 0x07a2a1b0, 0x0806e788, 0x086e4f90, 0x08d5b798, 0x093d1f98,
+        0x09a16570, 0x0a08cd78, 0x0a703580, 0x0ad79d88, 0x0b3f0588, 0x0ba34b60, 0x0c0ab368, 0x0c0ab368
+    };
+    uint32_t exponentTv[32] =
+    {
+        0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f,
+        0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f,
+        0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f,
+        0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f
+    };
+    uint32_t i;
+    size_t vl;
+    uint32_t point = 0x1e;
+    uint32_t len = 32;
+    uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+    uint32_t vnlcrSinSeg12 = SEG12|FUNC_SIN;
+
+    asm volatile("vcsrw zero, vnlcr, %[vnlcrSinSeg12];": : [vnlcrSinSeg12] "r" (vnlcrSinSeg12));
+
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+             : [vl] "=r" (vl)
+             : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
+
+    asm volatile("vle32.v v0,(%[vsrc1]);": : [vsrc1] "r" (vsrc1));
+
+    asm volatile(
+    "vlnlp.s %[sin_seg12_cfg_table];\
+    vnlm.vs v1, v0, %[point];\
+    vnlm.vs v1, v0, %[point];\
+    vnle.vs v2, v0, %[point];\
+    vse32.v v1,(%[mantissa]);\
+    vse32.v v2,(%[exponent]);"
+    :
+    : [sin_seg12_cfg_table ] "r" (sin_seg12_cfg_table ),[point] "r" (point),[mantissa] "r" (mantissa),[exponent] "r" (exponent));
+
+    for (i = 0; i < len; i++)
+    {
+        if (mantissa[i] != mantissaTv[i])
+        {
+            printf("sin_seg12_ut mantissa data comparison failed at index %d mantissa[%d] mantissaTv[%d]!\n",i,mantissa[i],mantissaTv[i]);
+            return;
+        }
+        if (exponent[i] != exponentTv[i])
+        {
+            printf("sin_seg12_ut exponent data comparison failed at index %d exponent[%d] exponentTv[%d]!\n",i,exponent[i],exponentTv[i]);
+            return;
+        }
+    }
+    printf("sin_seg12_ut passed!\n");
+}
+
+void nolinear_cosSeg12_ut()
+{
+    uint32_t vsrc1[32] =
+    {
+        0x00000000, 0x0010624e, 0x0020c49c, 0x003126e9, 0x00418937, 0x0051eb85, 0x00624dd3, 0x0072b021,
+        0x0083126f, 0x009374bc, 0x00a3d70a, 0x00b43958, 0x00c49ba6, 0x00d4fdf4, 0x00e56042, 0x00f5c28f,
+        0x010624dd, 0x0116872b, 0x0126e979, 0x01374bc7, 0x0147ae14, 0x01581062, 0x016872b0, 0x0178d4fe,
+        0x0189374c, 0x0199999a, 0x01a9fbe7, 0x01ba5e35, 0x01cac083, 0x01db22d1, 0x01eb851f, 0x01fbe76d
+    };
+    uint32_t mantissa[32];
+    uint32_t exponent[32];
+    uint32_t mantissaTv[32] =
+    {
+        0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7ff9970,
+        0x7ff8de28, 0x7ff222d8, 0x7feb6790, 0x7fe4ac48, 0x7fddf100, 0x7fd735b8, 0x7fd07a68, 0x7fc9bf20,
+        0x7fc303d8, 0x7fbc4890, 0x7fb58d40, 0x7faed1f8, 0x7fa816b0, 0x7fa15b68, 0x7f9aa020, 0x7f93e4d0,
+        0x7f8d2988, 0x7f866e40, 0x7f7fb2f8, 0x7f78f7a8, 0x7f723c60, 0x7f6b8118, 0x7f64c5d0, 0x7f5e0a88
+    };
+    uint32_t exponentTv[32] =
+    {
+        0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f,
+        0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f,
+        0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f,
+        0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f, 0x0000001f
+    };
+    uint32_t i;
+    size_t vl;
+    uint32_t point = 0x1e;
+    uint32_t len = 32;
+    uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+    uint32_t vnlcrCosSeg12 = SEG12|FUNC_COS;
+
+    asm volatile("vcsrw zero, vnlcr, %[vnlcrCosSeg12];": : [vnlcrCosSeg12] "r" (vnlcrCosSeg12));
+
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]"
+             : [vl] "=r" (vl)
+             : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
+
+    asm volatile("vle32.v v0,(%[vsrc1]);": : [vsrc1] "r" (vsrc1));
+
+    asm volatile(
+    "vlnlp.s %[cos_seg12_cfg_table];\
+    vnlm.vs v1, v0, %[point];\
+    vnlm.vs v1, v0, %[point];\
+    vnle.vs v2, v0, %[point];\
+    vse32.v v1,(%[mantissa]);\
+    vse32.v v2,(%[exponent]);"
+    :
+    : [cos_seg12_cfg_table ] "r" (cos_seg12_cfg_table ),[point] "r" (point),[mantissa] "r" (mantissa),[exponent] "r" (exponent));
+
+    for (i = 0; i < len; i++)
+    {
+        if (mantissa[i] != mantissaTv[i])
+        {
+            printf("cos_seg12_ut mantissa data comparison failed at index %d mantissa[%d] mantissaTv[%d]!\n",i,mantissa[i],mantissaTv[i]);
+            return;
+        }
+        if (exponent[i] != exponentTv[i])
+        {
+            printf("cos_seg12_ut exponent data comparison failed at index %d exponent[%d] exponentTv[%d]!\n",i,exponent[i],exponentTv[i]);
+            return;
+        }
+    }
+    printf("cos_seg12_ut passed!\n");
+}
+
 void vdsredsum_ut1()
 {
 
