@@ -32,7 +32,7 @@ vd[j][i] = clip_low_SEW(tmp); // SEW = 2*SEW
 === vdsmacini(vector dynamic scaling MAC initialization)
 . *Grammar*
 +
-vdsmacini.v vs1, vm +
+vdsmacini.v vs2, vm +
 vdsmacini.s rs1，vm +
 vdsmacini.i uimm, vm +
 
@@ -48,7 +48,7 @@ vs1, rs1 or uimm are stored as the shift value before the accumulator accumulate
 +
 ----
 V version
-MULSFT[j][i] = vs[j][i];
+MULSFT[j][i] = vs2[j][i];
 
 S version
 MULSFT[j][i] = rs1;
