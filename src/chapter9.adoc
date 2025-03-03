@@ -29,7 +29,7 @@ P8: 0123 ... 31 -> 31 .... 3210 +
 . *Operation*
 +
 ----
-vd[i] = vs2[PATTEN[uimm][i]]
+vd[j][i] = vs2[j][PATTEN[uimm][i]]
 ----
 
 === vfsl(vector funnel shift left)
@@ -43,12 +43,12 @@ The elements of two vector registers are funnel shifted left.
 
 . *Description*
 +
-combine vs2 and vs1 to form a new vector vr_temp with twice the length from left to right. All elements in vr_tmp are sequentially shifted left by fsht bits, left most 'fsht' elements are shifted out and discarded. Finally, the left half of vr_tp are output to vd. Only LMUL=1 is supported.
+combine vs2 and vs1 to form a new vector vr_temp with twice the length from left to right. All elements in vr_tmp are sequentially shifted left by fsht bits, left most 'fsht' elements are shifted out and discarded. Finally, the left half of vr_tp are output to vd. not controlled by vl/vstart.LMUL > 1 is supported.
 
 . *Operation*
 +
 ----
-vd = {vs2[(31- fsft) ... 0], vs1[31 ... (31 - fsft + 1)]}
+vd[j] = {vs2[j][(31- fsft) ... 0], vs1[j][31 ... (31 - fsft + 1)]}
 ----
 
 
@@ -63,11 +63,11 @@ The elements of two vector registers are funnel shifted right.
 
 . *Description*
 +
-combine vs2 and vs1 to form a new vector vr_temp with twice the length from left to right. All elements in vr_tmp are sequentially shifted right by 'fsht' elements, right most 'fsht' elements are shifted out and discarded. Finally, the right half of vr_tmp are output to vd. Only LMUL=1 is supported.
+combine vs2 and vs1 to form a new vector vr_temp with twice the length from left to right. All elements in vr_tmp are sequentially shifted right by 'fsht' elements, right most 'fsht' elements are shifted out and discarded. Finally, the right half of vr_tmp are output to vd. not controlled by vl/vstart.LMUL > 1 is supported.
 
 . *Operation*
 +
 ----
-vd = {vs2[(fsft - 1) ... 0], vs1[31 ... fsft]}
+vd[j] = {vs2[j][(fsft - 1) ... 0], vs1[j][31 ... fsft]}
 ----
 
