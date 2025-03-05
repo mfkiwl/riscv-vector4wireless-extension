@@ -13,14 +13,14 @@ vs2 is 32bit fixpoint real number, vs1 is the fix point position, e.g. for a Q32
 ----
 x, E = norm(R_NL_TYPE, vs2, vs1)
 
-if R_NL_TYPE == 4 || R_NL_TYPE == 6 || R_NL_TYPE == 7   % arctan/sin/cos: norm should be skipped
-    x = vs2;
-    E = 0;
-else
+if R_NL_TYPE == 0 ||R_NL_TYPE == 1 || R_NL_TYPE == 2 || R_NL_TYPE == 3 || R_NL_TYPE == 5   % 0：reciprocal; 1: square root; 2: reciprocal of square root; 3: log2; 5: log10;
     eNorm =  lsb(vs2); // take 32 bit-width data for example
     x = vs2 << eNorm;
     E = 31 - eNorm - vs1；
-
+else
+    x = vs2;
+    E = 0;
+    
 ----
 
 === preProc
@@ -33,6 +33,10 @@ preprocess for non-linear instruction.
 +
 ----
 x, s, E = preproc(R_NL_TYPE, x, E)
+
+s = 1;                  % default operation
+x = x;
+E = E;
 
 if R_NL_TYPE == 0       % reciprocal
     s = sign(x);        % if x>0 s=1; elsif x<0 s=-1; elsif x==0 s=0;
@@ -47,8 +51,6 @@ elsif R_NL_TYPE == 2    % reciprocal of square root
     isOddE = alg_round_shift_right(E,1) - alg_shift_right(E,1);
     E   = E + isOddE;
     x   = x >> isOddE;
-
-elsif R_NL_TYPE == 3 || R_NL_TYPE == 5   % log2/log10 should be skipped
 
 elsif R_NL_TYPE == 4    % arctan
     s = sign(x);        % if x>0 s=1; elsif x<0 s=-1; elsif x==0 s=0;
@@ -69,6 +71,7 @@ elsif R_NL_TYPE == 7    % cos (x∈Q(32.30))
     x    = x & 0x1fffffff;   % mod(x,2^29)
     if msb2==0 
         x = 2^29 - x;
+
 ----
 
 === findSeg
@@ -98,7 +101,10 @@ adjust the exponent for the output.
 . *Operation*
 +
 ----
-e, E = ExpAdjust(R_NL_TYPE, E)
+e, E = ExpAdjust(R_NL_TYPE, E, e)
+
+E = E                   % default operation
+e = e
 
 if R_NL_TYPE == 0       % reciprocal
     E =  -E + 1;
@@ -146,10 +152,11 @@ if R_NL_TYPE == 0       % reciprocal
     if (E < 0) y = y >> -E;
     
 elsif R_NL_TYPE == 1    % square root
+    y = s * tmp;
     if (E < 0) y = y >> -E;
 
 elsif R_NL_TYPE == 2    % reciprocal of square root 
-    y = tmp;
+    y = s * tmp;
     if (E < 0) y = y >> -E;
 
 elsif R_NL_TYPE == 3    % log2
@@ -165,10 +172,12 @@ elsif R_NL_TYPE == 5    % log10
     if tmp>0 tmp=0;
     if tmp<1-2^31 tmp = 1-2^31          % tmp belong to range (-1,0)
     y0 = tmp>>5 + E<<26;                % log2 output Q(32.26)
-    y1 = y0*1292913986;                 % Q(32.32) for const log10(2)
-    y =  alg_round_shift_right(y1, 32); % log10 final output
+    y1 = y0<<24 + y0<<26 + y0<<27 + y0<<30 ; % 64bit int
+    y =  y1>>32;                        % log10 final output with 32bit
 
-elsif R_NL_TYPE == 6 || R_NL_TYPE == 7  % sin/cos
+else                     % sin/cos 
     y = s * tmp;
 
 ----
+
+*Note*: the "alg_round_shift_right" is defaulted with vxrm mode "vxrm=rnu".
