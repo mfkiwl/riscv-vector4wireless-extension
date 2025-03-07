@@ -22,8 +22,8 @@ Moving configuration from vector register vs2 to vnlpr0 and vnlpr1, 2048bits in 
 . *Operation*
 +
 ----
-vnlpr.l = VR[n]       // .l means low 1024bits in vnlpr
-vnlpr.h = VR[n+1];    // .h means high 1024bits in vnlpr
+vnlpr0 = vs2[n]
+vnlpr1 = vs2[n+1] 
 ----
 
 ==== vnle(vector non-linear exponent calculation instruction)
