@@ -12,7 +12,7 @@ According to the element sorting mode predefined by the customer, some elements 
 
 . *Description*
 +
-The original data is stored in vs2. uimm selects a predefined permutation mode PATTEN[uimm] defined below form P0~P8 and mapping the i'th elements in vs2[j] to the new element index saved in PATTEN[uimm][i] to vd. The numbers in original pattern is the index of element in VR, the numbers in the destination pattern represents that the corresponding elements are filled by the ones of the index at the original VR. The values ​​represented by 'X' are useless elements of the instruction. The pattern index starts counting from 0.
+The original data is stored in vs2. uimm selects a predefined permutation mode PATTEN[uimm] defined below form P0~P8 and mapping the i'th elements in vs2[j][i] to the new element indexed by PATTEN[uimm][i] in vd. The numbers in original pattern is the element index in VR, the numbers in the destination pattern represents the corresponding elements indexed by it at the original VR. The values ​​represented by 'X' are useless elements of the instruction. The pattern index starts counting from 0.
 +
 Patterns e.g.
 +
