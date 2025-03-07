@@ -11,7 +11,7 @@
 
 == Basic definition
 
-. *Basic data type*
+. *Data types*
 +
 - int8: 8 bit signed char 
 - int16: 16 bit signed half word
@@ -19,7 +19,7 @@
 - sc16: signed complex with 16bits image and 16bits real part, real part in low 16bit. e.g. 0xFFFD0005, image = -3, real = 5
 - get_e: Get the exponent part in the Complex Packed Float-point format(CPF), 4bit exponent at highest bits, following 6bits image part, and real part at the lowest 6bits. e.g 0x3F45 = 0b 0011 1111 0100 0101, the exponent part is at highest bits, get_e(0x3F45) = 0b'0011' 
 
-. *Basic operations*
+. *Operations*
 +
 - * : multiplication operator here is defined as fix point widen multiply with algorithm left shift by 1 bit. e.g. 0x7D00 * 0x3E80 = 0x3D09 0000
 - get_i: Get the imaginary part in the Complex Packed Float-point format(CPF), 4bit exponent at highest bits, following 6bits image part, and real part at the lowest 6bits. e.g 0x3F45 = 0b 0011 1111 0100 0101, the image part is the 6 bits after exponent bits, get_i(0x3F45) = 0b'111101'
@@ -45,7 +45,7 @@
 - round_clip_high_x: Saturate clip the high SEW width bit number with vxrm mode rounding. e.g. SEW=32bit, round_clip_high_SEW(0x0050000381) = 0x00500004, round_clip_high_SEW(0x7fffffff80) = 0x7fffffff
 - vmem: vmem(vr, addr) store the numbers of VR into vector memory indicated by "addr"
 
-. *Register ndex expression*
+. *Register index*
 +
 - i: the element index within a vector register. value range [0, 31].
 - j: the consecutive VR index when LMUL set to a value bigger than 1. value range [0, 7], support max LMUL = 8;
