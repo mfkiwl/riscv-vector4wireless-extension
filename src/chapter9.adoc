@@ -12,7 +12,8 @@ According to the element sorting mode predefined by the customer, some elements 
 
 . *Description*
 +
-The original data is stored in vs2. uimm selects a predefined sorting mode and takes out elements from vs2 according to the new element sorting mode and places them in new positions in vd. The values ​​at the X index position are filled with 0. The pattern index starts counting from 0.
+The original data is stored in vs2. uimm selects a predefined permutation mode PATTEN[uimm] defined below form P0~P8 and mapping the i'th elements in vs2[j] to the new element index saved in PATTEN[uimm][i] to vd. The values ​​represented by 'X' are filled with 0. 
+The pattern index starts counting from 0.
 +
 Patterns e.g.
 +
