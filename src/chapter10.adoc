@@ -44,14 +44,14 @@ vs2 stores the fixed-point value, vs1 or vs1[0] stores the fixed-point value n. 
 +
 ----
 VV version
-x[i], E[i] = norm(R_NL_TYPE, vs2[j][i], vs1[j][i])
-x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
-(vd[j][i], E[i]) = expAdjust(R_NL_TYPE, E[i], R_NL_SEG_EXP[1])
+x[i], E[i] = norm(funcId, vs2[j][i], vs1[j][i])
+x[i], s[i], E[i] = preProc(funcId, x[i], E[i])
+(vd[j][i], E[i]) = expAdjust(funcId, E[i], R_NL_SEG_EXP[1])
 
 VS version
-x[i], E[i] = norm(R_NL_TYPE, vs2[j][i], vs1[0][0])
-x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
-(vd[j][i], E[i]) = expAdjust(R_NL_TYPE, E[i], R_NL_SEG_EXP[1])
+x[i], E[i] = norm(funcId, vs2[j][i], vs1[0][0])
+x[i], s[i], E[i] = preProc(funcId, x[i], E[i])
+(vd[j][i], E[i]) = expAdjust(funcId, E[i], R_NL_SEG_EXP[1])
 ----
 
 ==== vnlm(vector non-linear mantissa calculation instruction)
@@ -72,8 +72,8 @@ vs2 stores the fixed-point value, vs1 or vs1[0] stores the fixed-point value n. 
 +
 ----
 VV version
-x[i], E[i] = norm(R_NL_TYPE, vs2[j][i], vs1[j][i])
-x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
+x[i], E[i] = norm(funcId, vs2[j][i], vs1[j][i])
+x[i], s[i], E[i] = preProc(funcId, x[i], E[i])
 segIdx[i] = findSeg(x[i], R_NL_SEG)
 If (segIdx[i] is valid)
 { 
@@ -83,13 +83,13 @@ If (segIdx[i] is valid)
     tmp <<= R_NL_SEG_EXP[1] - R_NL_SEG_EXP[0]
   else
     tmp >>= R_NL_SEG_EXP[0] - R_NL_SEG_EXP[1]
-  e[i], E[i] = expAdjust(R_NL_TYPE, E[i], R_NL_SEG_EXP[1]);
-  vd[j][i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
+  e[i], E[i] = expAdjust(funcId, E[i], R_NL_SEG_EXP[1]);
+  vd[j][i] = postProc(funcId, tmp, s[i], E[i]);
 }
 
 VS version
-x[i], E[i] = norm(R_NL_TYPE, vs2[j][i], vs1[0][0])
-x[i], s[i], E[i] = preProc(R_NL_TYPE, x[i], E[i])
+x[i], E[i] = norm(funcId, vs2[j][i], vs1[0][0])
+x[i], s[i], E[i] = preProc(funcId, x[i], E[i])
 segIdx[i] = findSeg(x[i], R_NL_SEG)
 If (segIdx[i] is valid)
 { 
@@ -99,8 +99,8 @@ If (segIdx[i] is valid)
     tmp <<= R_NL_SEG_EXP[1] - R_NL_SEG_EXP[0]
   else
     tmp >>= R_NL_SEG_EXP[0] - R_NL_SEG_EXP[1]
-  e[i], E[i] = expAdjust(R_NL_TYPE, E[i], R_NL_SEG_EXP[1]);
-  vd[j][i] = postProc(R_NL_TYPE, tmp, s[i], E[i]);
+  e[i], E[i] = expAdjust(funcId, E[i], R_NL_SEG_EXP[1]);
+  vd[j][i] = postProc(funcId, tmp, s[i], E[i]);
 }
 ----
 
