@@ -1,5 +1,5 @@
 [[chapter2]]
-== Registers
+== Scalar registers
 
 . *VCSR* (Vector Control and Status Register)
 +
@@ -40,3 +40,24 @@ This register is used to configure the function type and segmentation informatio
 | 15:0  | funcId    | non-linear function ID. 0：reciprocal; 1: square root; 2: reciprocal of square root; 3: log2; 4: arctan; 5: log10; 6: sin; 7: cos;
 |==============================
 
+== Vector registers
+The segmentation information of the nonlinear function is stored through the parameter configuration registers vnlcr0 and vnlcr1. The length of vnlcr0 and vnlcr1 is 1024bits. This register is configured through the vlnlp instruction. +
+
+. *vnlpr0* 1024bits (vector non-linear paramter register 0)
++
+[cols="2*", options="header"]
+|================================
+|    R_NL_A[16]   |   R_NL_B[16]
+|================================
+
+. *vnlpr1* 1024bits (vector non-linear paramter register 1)
++
+[cols="2*", options="header"]
+|================================
+| R_NL_SEG_EXP[16] | R_NL_SEG[16]
+|================================
+
+R_NL_SEG[16]: 16 nonlinear function segment fix points registers +
+R_NL_SEG_EXP[16]: R_NL_SEG_EXP(0) stores the fix point position of R_NL_A[16] and R_NL_B[16]; R_NL_SEG_EXP(1) stores the fix point position of fitting result; R_NL_SEG_EXP(2) stores the fix point position of R_NL_SEG[16]; +
+R_NL_A[16]: 16 nonlinear function segement slope registers +
+R_NL_B[16]: 16 nonlinear function segement offset registers +
