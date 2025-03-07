@@ -5,26 +5,6 @@ In the fast nonlinear instructions vs2 store the fixed-point value in Q32.n form
 
 The segmentation of the nonlinear function is represented by five parameters A, B, S, E and T. A represents the slope of the straight line, B represents the bias of the straight line, S represents the mantissa value of the starting position of the straight line on X-axis, E is the exponent values in the nonlinear function calculation procedure, T is the nonlinear function type. The vector nonlinear function needs to perform a segmented search and linear fitting for each element of the vector.+
 
-=== Vector nonlinear parameter register
-The segmentation information of the nonlinear function is stored through the parameter configuration registers vnlcr0 and vnlcr1. The length of vnlcr0 and vnlcr1 is 1024bits. This register is configured through the vlnlp instruction. +
-
-- *vnlpr0 1024bits (vector non-linear paramter register 0)*
-[cols="2*", options="header"]
-|================================
-|    R_NL_A[16]   |   R_NL_B[16]
-|================================
-
-- *vnlpr1 1024bits (vector non-linear paramter register 1)*
-[cols="2*", options="header"]
-|================================
-| R_NL_SEG_EXP[16] | R_NL_SEG[16]
-|================================
-
-R_NL_SEG[16]: 16 nonlinear function segment fix points registers +
-R_NL_SEG_EXP[16]: R_NL_SEG_EXP(0) stores the fix point position of R_NL_A[16] and R_NL_B[16]; R_NL_SEG_EXP(1) stores the fix point position of fitting result; R_NL_SEG_EXP(2) stores the fix point position of R_NL_SEG[16]; +
-R_NL_A[16]: 16 nonlinear function segement slope registers +
-R_NL_B[16]: 16 nonlinear function segement offset registers +
-
 === Instructions
 ==== vlnlp(vector load nonlinear parameter)
 . *Grammar*
