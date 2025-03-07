@@ -1,6 +1,6 @@
 [[chapter2]]
-## Registers
-### Scalar register
+== Registers
+=== Scalar register
 . *VCSR* (Vector Control and Status Register)
 +
 Add new fields to the vector control and status register (vcsr) to control the fixed-point multiplication with shift, fixed-point accumulation with shift, and funnel shift related instructions.
