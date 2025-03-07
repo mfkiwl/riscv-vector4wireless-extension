@@ -1,4 +1,5 @@
 [[chapter3]]
+= Registers
 == Scalar register
 
 . *VCSR* (Vector Control and Status Register)
@@ -61,4 +62,5 @@ The segmentation information of the nonlinear function is stored through the par
 R_NL_SEG[16]: 16 nonlinear function segment fix points registers +
 R_NL_SEG_EXP[16]: R_NL_SEG_EXP(0) stores the fix point position of R_NL_A[16] and R_NL_B[16]; R_NL_SEG_EXP(1) stores the fix point position of fitting result; R_NL_SEG_EXP(2) stores the fix point position of R_NL_SEG[16]; +
 R_NL_A[16]: 16 nonlinear function segement slope registers +
-R_NL_B[16]: 16 nonlinear function segement offset registers
+R_NL_B[16]: 16 nonlinear function segement offset registers +
+
