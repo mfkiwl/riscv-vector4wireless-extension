@@ -1,6 +1,5 @@
 [[chapter3]]
 == Registers
-
 === Scalar register
 . *VCSR* (Vector Control and Status Register)
 +
