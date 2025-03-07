@@ -8,7 +8,7 @@ normalization for the input data to [0.5~1).
 
 . *Operation*
 +
-vs2 is 32bit fixpoint real number, vs1 is the fix point position, e.g. for a Q32.20 fixpoint value, it's fix point position number is 20.
+vs2 is 32bit fixpoint real number, vs1 is the fix point position, e.g. for a Q32.20 fixpoint value, it's fix point position number is 20. E∈[-31,31]
 +
 ----
 x, E = norm(funcId, vs2, vs1)
