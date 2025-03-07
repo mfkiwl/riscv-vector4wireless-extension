@@ -43,7 +43,7 @@
 - alg_shift_right: Arithmetic right shift without rounding. e.g. alg_shift_right(0x0005, 1) = 0x2
 - shift_left: Logical left shift.
 - clip_low_x:  Saturate and clip the lowest SEW width bit number. e.g. SEW=32bit, clip_low_SEW(0x0050000000) = 0x50000000; clip_low_SEW(0x0080000000) = 0x7fffffff;
-- round_clip_high_x: Saturate clip the high SEW width bit number with vxrm mode rounding. e.g. SEW=32bit, round_clip_high_SEW(0x0050000381) = 0x00500004, round_clip_high_SEW(0x7fffffff80) = 0x7fffffff
+- round_clip_high<x>: Saturate clip the high x width bit number with vxrm mode rounding. e.g. SEW=32bit, round_clip_high_SEW(0x0050000381) = 0x00500004, round_clip_high_SEW(0x7fffffff80) = 0x7fffffff
 - vmem: vmem(vr, addr) store the numbers of VR into vector memory indicated by "addr"
 
 . *Register index*
