@@ -36,6 +36,7 @@
 - cpf_pack: Put e, i and r into the compressed complex format according to the complex compressed format. e.g. cpf_pack(e=0x3, i=0xFFFD, r=0x5) = 0x3F45
 - vcpack: extract the high 16 bits of 32-bit real numbers and 32-bit imaginary numbers in rounding mode to form a complex number in SC16 format. e.g i = 0x00058000, r = 0x00038000, vcpack(0x00058000, 0x00038000) = 0x00060004
 - sum: sum(star, end) sum all element from start index to end index, star and end inclusive. the result will sign extend to 2 SEW width.
+- abs: compute the absolute value of input
 - conj: Convert a complex to it's conjugate complex. when min negative S16 value coverted to max positive S16 value it should saturated to 0x7fff. e.g. conj(0x80007fff) = 0x7fff7fff.
 - alg_round_shift_right: Arithmetic right shift with vxrm mode rounding, e.g. vxrm=rnu, alg_round_shift_right(0x0005, 1) = 0x3
 - alg_shift_left: Arithmetic left shift with Saturate. 
@@ -49,9 +50,10 @@
 +
 - i: the element index within a vector register. value range [0, 31].
 - j: the consecutive VR index when LMUL set to a value bigger than 1. value range [0, 7], support max LMUL = 8;
+- .i: get the image part of sc16 data
+- .r: get the real part of sc16 data
 
 . *Internal registers*
 +
 - ACCREG[i]: The i-th accumulation register inside the MAC ALU, 80 bits signed integer or 40bit signed image and real for complex value, 32 elements in total.
 - MULSFTREG[j][i]: The j-th multiply shift register i-the element inside the MAC ALU, 5bits unsigned value per element, 8*32 elements in total.
-
