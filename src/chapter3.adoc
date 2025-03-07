@@ -41,7 +41,7 @@ vd[j][i] = loadFormatConvert(void *rs1, A2B) {
       e = get_e(cfl rs1[j][i])
       I = zp32( img )
       R = zp32( real )
-      return vcpack(sra(I, e), sra(R, e))
+      return vcpack(alg_round_shift_right(I, e), alg_round_shift_right(R, e))
     case 'pb2c'
       // support in future
 }
