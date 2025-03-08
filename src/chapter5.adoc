@@ -106,13 +106,13 @@ VV version
 Tmp = vs1[j][i] * vs2[j][i]  // 2*SEW = SEW * SEW
 Tmp = alg_round_shift_right(tmp, MULSFT[j][i]);
 ACCREG[i] += tmp;
-vd[0][i] = clip_low_SEW(alg_round_shift_right(ACCREG[i], accsft)) // SEW
+vd[0][i] = clip_low_SEW(alg_round_shift_right(ACCREG[i], accsft)) // SEW = ACCREG_LEN
 
 VS version
 Tmp = vs1[0][0] * vs2[j][i]  // 2*SEW = SEW * SEW
 Tmp = alg_round_shift_right(tmp, MULSFT[j][i]);
 ACCREG[i] += tmp;
-vd[0][i] = clip_low_SEW(alg_round_shift_right(ACCREG[i], accsft)) // SEW
+vd[0][i] = clip_low_SEW(alg_round_shift_right(ACCREG[i], accsft)) // SEW = ACCREG_LEN
 
 ----
 
