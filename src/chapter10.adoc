@@ -104,8 +104,8 @@ If (segIdx[i] is valid)
 }
 ----
 
-== Implementation
-=== norm
+=== Implementation
+==== norm
 
 . *Description*
 +
@@ -128,7 +128,7 @@ else
     
 ----
 
-=== preProc
+==== preProc
 
 . *Description*
 +
@@ -179,7 +179,7 @@ elsif funcId == 7    % cos (x∈Q(32.30))
 
 ----
 
-=== findSeg
+==== findSeg
 
 . *Description*
 +
@@ -197,7 +197,7 @@ segIdx = sum(lutIndex);          // find which segment belong to
 ----
 
 
-=== expAdjust
+==== expAdjust
 
 . *Description*
 +
@@ -241,7 +241,7 @@ elseif funcId == 6 || funcId == 7 % sin/cos
 ----
 
 
-=== postProc
+==== postProc
 
 . *Description*
 +
