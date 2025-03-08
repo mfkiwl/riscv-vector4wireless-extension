@@ -104,4 +104,186 @@ If (segIdx[i] is valid)
 }
 ----
 
-*Note*: the definition of the basic operations for norm/preProc/findSeg/postProc/expAdjust are defined at chapter 12.
+== Implementation
+=== norm
+
+. *Description*
++
+normalization for the input data to [0.5~1).
+
+. *Operation*
++
+vs2 is 32bit fixpoint real number, vs1 is the fix point position, e.g. for a Q32.20 fixpoint value, it's fix point position number is 20. E∈[-31,31]
++
+----
+x, E = norm(funcId, vs2, vs1)
+
+if funcId == 0 ||funcId == 1 || funcId == 2 || funcId == 3 || funcId == 5   % 0：reciprocal; 1: square root; 2: reciprocal of square root; 3: log2; 5: log10;
+    eNorm =  lsb(vs2); // take 32 bit-width data for example
+    x = vs2 << eNorm;
+    E = 31 - eNorm - vs1；
+else
+    x = vs2;
+    E = 0;
+    
+----
+
+=== preProc
+
+. *Description*
++
+preprocess for non-linear instruction.
+
+. *Operation*
++
+----
+x, s, E = preproc(funcId, x, E)
+
+s = 1;                  % default operation
+x = x;
+E = E;
+
+if funcId == 0       % reciprocal
+    s = sign(x);        % if x>0 s=1; elsif x<0 s=-1; elsif x==0 s=0;
+    x = abs(x);
+
+elsif funcId == 1    % square root
+    isOddE = alg_round_shift_right(E,1) - alg_shift_right(E,1);
+    E   = E + isOddE;
+    x   = x >> isOddE;
+
+elsif funcId == 2    % reciprocal of square root
+    isOddE = alg_round_shift_right(E,1) - alg_shift_right(E,1);
+    E   = E + isOddE;
+    x   = x >> isOddE;
+
+elsif funcId == 4    % arctan
+    s = sign(x);        % if x>0 s=1; elsif x<0 s=-1; elsif x==0 s=0;
+    x = abs(x);
+
+elsif funcId == 6    % sin (x∈Q(32.30))
+    msb1 = x & 0x40000000;   % get 31st bit 
+    msb2 = x & 0x20000000;   % get 30th bit 
+    s    = 1 - 2*msb1;
+    x    = x & 0x1fffffff;   % mod(x,2^29)
+    if msb2==1 
+        x = 2^29 - x;
+    
+elsif funcId == 7    % cos (x∈Q(32.30))
+    msb1 = x & 0x40000000;   % get 31st bit 
+    msb2 = x & 0x20000000;   % get 30th bit 
+    s    = 1 - 2*xor(msb1, msb2);
+    x    = x & 0x1fffffff;   % mod(x,2^29)
+    if msb2==0 
+        x = 2^29 - x;
+
+----
+
+=== findSeg
+
+. *Description*
++
+find which segment the input data belongs to in N-th segment group.
+
+. *Operation*
++
+----
+segIdx = findSeg(x, R_SEG[N])  // N is segment group ID
+
+for iSeg = R_SEG[N].nSegments        // segment number in one group
+    lutIndex(iSeg) = x >=R_SEG[N].xStart(iSeg);
+end
+segIdx = sum(lutIndex);          // find which segment belong to
+----
+
+
+=== expAdjust
+
+. *Description*
++
+adjust the exponent for the output.
+
+. *Operation*
++
+----
+e, E = ExpAdjust(funcId, E, e)
+
+E = E                   % default operation
+e = e
+
+if funcId == 0       % reciprocal
+    E =  -E + 1;
+    if (E >= 0) e = 31 - E;
+    else e = 31;
+
+elsif funcId == 1    % square root
+    E = (E>>1);
+    if (E >= 0) e = 31 - E;
+    else e = 31;   
+   
+elsif funcId == 2    % reciprocal of square root
+    E = -(E>>1)+1;
+    if (E >=  0) e = 31 - E;
+    else e = 31;
+
+elsif funcId == 3    % log2
+    e = 26;
+
+elsif funcId == 4    % arctan
+    e = 28;
+
+elsif funcId == 5    % log10
+    e = 26;
+
+elseif funcId == 6 || funcId == 7 % sin/cos
+    e = 31;
+
+----
+
+
+=== postProc
+
+. *Description*
++
+postprocess for non-linear instruction.
+
+. *Operation*
++
+----
+y = postproc(funcId, tmp, s, E)
+
+if funcId == 0       % reciprocal
+    y = s * tmp;
+    if (E < 0) y = y >> -E;
+    
+elsif funcId == 1    % square root
+    y = s * tmp;
+    if (E < 0) y = y >> -E;
+
+elsif funcId == 2    % reciprocal of square root 
+    y = s * tmp;
+    if (E < 0) y = y >> -E;
+
+elsif funcId == 3    % log2
+    if tmp>0 tmp=0;
+    if tmp<1-2^31 tmp = 1-2^31  % tmp belong to range (-1,0)
+    y = tmp>>5 + E<<26;         % final output Q(32.26)
+
+elsif funcId == 4    % arctan
+    y = s*tmp + 843314857;          % Q(32.30) const for pi/4
+    y = alg_round_shift_right(y,2)  % Q(32.28)
+
+elsif funcId == 5    % log10
+    if tmp>0 tmp=0;
+    if tmp<1-2^31 tmp = 1-2^31          % tmp belong to range (-1,0)
+    y0 = tmp>>5 + E<<26;                % log2 output Q(32.26)
+    y1 = y0<<24 + y0<<26 + y0<<27 + y0<<30 ; % 64bit int
+    y =  y1>>32;                        % log10 final output with 32bit
+
+else                     % sin/cos 
+    y = s * tmp;
+
+----
+
+*Note*: the "alg_round_shift_right" is defaulted with vxrm mode "vxrm=rnu".
+
