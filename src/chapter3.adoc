@@ -76,18 +76,18 @@ rs1 stores the base address, and vs3 is the source register. The total number of
 void storeFormatConvert(void *rs1, vs3[j][i], B2A) {
   switch(B2A)
     case ‘h2b’
-      vmem(clip_low_8(int16 vs3[j][i]), (int8*)rs1[j][i])
+      vmem(clip_low_16_8(int16 vs3[j][i]), (int8*)rs1[j][i])
     case ‘w2b’
-      vmem(clip_low_8(int32 vs3[j][i]), (int8*)rs1[j][i])
+      vmem(clip_low_32_8(int32 vs3[j][i]), (int8*)rs1[j][i])
     case ‘w2h’
-      vmem(clip_low_16(int32 vs3[j][i]), (int16*)rs1[j][i])
+      vmem(clip_low_32_16(int32 vs3[j][i]), (int16*)rs1[j][i])
     case ‘c2pa’
       I = vs3[j][i].i
       R = vs3[j][i].r
       num = abs(I) > abs(R) ? abs(I) : abs(R)
       exp = lsb(num)
-      img = round_clip_high_6bit(I << exp)
-      real = round_clip_high_6bit(R << exp)
+      img = round_clip_high_16_6(I << exp)
+      real = round_clip_high_16_6(R << exp)
       vmem(cfp_pack(exp, img, real), (int16*)rs1[j][i])
    case 'c2pb'
       // support in future
