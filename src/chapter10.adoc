@@ -22,8 +22,8 @@ Moving configuration from vector register vs2 to vnlpr0 and vnlpr1, 2048bits in 
 . *Operation*
 +
 ----
-vnlpr0 = vs2[n]
-vnlpr1 = vs2[n+1] 
+vnlpr0 = vs2[j]
+vnlpr1 = vs2[j+1] 
 ----
 
 ==== vnle(vector non-linear exponent calculation instruction)
