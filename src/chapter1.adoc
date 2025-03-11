@@ -5,7 +5,7 @@
 
 * *It only supports RV32 and SEW=32bits, when SEW=32 SC16 is supported.*
 * *SC32 is not supported, 32 real and imaginary parts of complex number are stored in neighbor vector registers.*  
-* *The operations defined for each vector element in following instruction behavior follow RVV1.0 rule, inlcudeing LMUL/VL/vm/ta/ma operation rule.* 
+* *The operations defined for each vector element in following instruction behavior follow RVV1.0 rule, inlcudeing but not limited to LMUL/VL/vm/ta/ma operation rules.Any new operation not specified follows RVV 1.0 rules.*
 * *For any '.vs' instruction, the 'v' register increase index while LMUL > 1, but 's' vector register don't increase index when LMUL > 1.* 
 * *All Zvw instruction only supports signed integer operations. except uimm values.*
 
@@ -17,10 +17,10 @@
 - int16: 16 bit signed half word
 - int32: 32 bit word
 - sc16: signed complex with 16bits image and 16bits real part, real part in low 16bit. e.g. 0xFFFD0005, image = -3, real = 5
-- get_e: Get the exponent part in the Complex Packed Float-point format(CPF), 4bit exponent at highest bits, following 6bits image part, and real part at the lowest 6bits. e.g 0x3F45 = 0b 0011 1111 0100 0101, the exponent part is at highest bits, get_e(0x3F45) = 0b'0011' 
 
 . *Operations*
 +
+- get_e: Get the exponent part in the Complex Packed Float-point format(CPF), 4bit exponent at highest bits, following 6bits image part, and real part at the lowest 6bits. e.g 0x3F45 = 0b 0011 1111 0100 0101, the exponent part is at highest bits, get_e(0x3F45) = 0b'0011' 
 - get_i: Get the imaginary part in the Complex Packed Float-point format(CPF), 4bit exponent at highest bits, following 6bits image part, and real part at the lowest 6bits. e.g 0x3F45 = 0b 0011 1111 0100 0101, the image part is the 6 bits after exponent bits, get_i(0x3F45) = 0b'111101'
 - get_r: Get the real part in the complex compressed format(CPF), 4bit exponent at highest bits, following 6bits image part, and real part at the lowest 6bits. e.g 0x3F45 = 0b 0011 1111 0100 0101, the real part is the lowest 6 bits, get_r(0x3F45) = 0b'000101'
 - zp16: Add 0 to 16 bits at lowest bits. e.g.zp16(0b'111101') = 0b'1111010000000000'
@@ -41,9 +41,9 @@
 - alg_shift_left: Arithmetic left shift with Saturate. 
 - alg_shift_right: Arithmetic right shift without rounding. e.g. alg_shift_right(0x0005, 1) = 0x2
 - shift_left: Logical left shift.
-- clip_low_x:  Saturate and clip the lowest SEW width bit number. e.g. SEW=32bit, clip_low_SEW(0x0050000000) = 0x50000000; clip_low_SEW(0x0080000000) = 0x7fffffff;
-- round_clip_high<x>: Saturate clip the high x width bit number with vxrm mode rounding. e.g. SEW=32bit, round_clip_high_SEW(0x0050000381) = 0x00500004, round_clip_high_SEW(0x7fffffff80) = 0x7fffffff
-- vmem: vmem(vr, addr) store the numbers of VR into vector memory indicated by "addr"
+- clip_low_x_y:  Saturate and clip the lowest y width bits from a x bits number. e.g. x=40bits, y=32bits, clip_low_40_32(0x0050000000) = 0x50000000; clip_low_40_32(0x0080000000) = 0x7fffffff.
+- round_clip_high_x_y: Saturate clip the high y width bits number with vxrm mode rounding. e.g. x=40bits, y=32bits,round_clip_high_40_32(0x0050000381) = 0x00500004, round_clip_high_40_32(0x7fffffff80) = 0x7fffffff.
+- vmem: vmem(vr, addr) store the numbers of VR into vector memory indicated by "addr".
 
 . *Register index*
 +
