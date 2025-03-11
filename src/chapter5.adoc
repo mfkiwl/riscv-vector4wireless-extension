@@ -21,12 +21,12 @@ The signed fixed-point number of vs1 or vs1[0] and vs2 is multiplied. The interm
 VV version
 Tmp = vs1[j][i] * vs2[j][i]  // 2*SEW = SEW * SEW
 Tmp = alg_round_shift_right(tmp, mulsft);
-vd[j][i] = clip_low_SEW(tmp); // SEW = 2*SEW
+vd[j][i] = clip_low_2SEW_SEW(tmp); // SEW = 2*SEW
 
 VS version
 Tmp = vs1[0][0] * vs2[j][i] // 2*SEW = SEW * SEW
 Tmp = alg_round_shift_right(tmp, mulsft);
-vd[j][i] = clip_low_SEW(tmp); // SEW = 2*SEW
+vd[j][i] = clip_low_2SEW_SEW(tmp); // SEW = 2*SEW
 ----
 
 === vdsmacini(vector dynamic scaling MAC initialization)
@@ -106,13 +106,13 @@ VV version
 Tmp = vs1[j][i] * vs2[j][i]  // 2*SEW = SEW * SEW
 Tmp = alg_round_shift_right(tmp, MULSFT[j][i]);
 ACCREG[i] += tmp;
-vd[0][i] = clip_low_SEW(alg_round_shift_right(ACCREG[i], accsft)) // SEW = ACCREG_LEN
+vd[0][i] = clip_low_80_SEW(alg_round_shift_right(ACCREG[i], accsft)) // SEW = ACCREG_LEN
 
 VS version
 Tmp = vs1[0][0] * vs2[j][i]  // 2*SEW = SEW * SEW
 Tmp = alg_round_shift_right(tmp, MULSFT[j][i]);
 ACCREG[i] += tmp;
-vd[0][i] = clip_low_SEW(alg_round_shift_right(ACCREG[i], accsft)) // SEW = ACCREG_LEN
+vd[0][i] = clip_low_80_SEW(alg_round_shift_right(ACCREG[i], accsft)) // SEW = ACCREG_LEN
 
 ----
 
