@@ -74,7 +74,7 @@ Find the maximum value in the vector register and its corresponding index value 
 
 . *Description*
 +
-vs2 saves the input value, vs1 saves the index value corresponding to each input value, finds the maximum value in vs2 and writes it into vd[0], and its corresponding index value is written into vd[1]. If the maximum value appears in multiple locations, output The first maximum value searched from low element to high element into vd.
+vs2 saves the input value, vs1 saves the index value corresponding to each input value, finds the maximum value in vs2 and writes it into vd[0], and its corresponding index value is written into vd[1]. If the maximum value appears in multiple locations, output The first maximum value searched from low element to high element into vd. Default max value is the same as RVV 1.0, default index value is 0.
 
 . *Operation*
 +
@@ -95,7 +95,7 @@ Find the minimum value in the vector register and its corresponding index value 
 
 . *Description*
 +
-vs2 saves the input value, vs1 saves the index value corresponding to each input value, finds the minimum value in vs2 and writes it into vd[0], and its corresponding index value is written into vd[1]. If the minimum value appears in multiple locations, output The first minimum value searched from low element to high element into vd.
+vs2 saves the input value, vs1 saves the index value corresponding to each input value, finds the minimum value in vs2 and writes it into vd[0], and its corresponding index value is written into vd[1]. If the minimum value appears in multiple locations, output The first minimum value searched from low element to high element into vd. Default min value is the same as RVV 1.0, default index value is 0.
 
 . *Operation*
 +
