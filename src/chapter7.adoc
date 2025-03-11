@@ -21,7 +21,7 @@ Tmp = 0；
 For each i in vs2 
     Tmp += v0.b[i] == 0 ? 0 : vs2[i]  // 2SEW = SEW
 
-vd[0] = clip_low_2SEW_SEW(alg_round_shift_right(tmp, accsft)) // SEW = 2SEW
+vd[0][0] = clip_low_2SEW_SEW(alg_round_shift_right(tmp, accsft)) // SEW = 2SEW
 ----
 
 === vdsredsumn(vector dynamic scaling reduced sum for each n element)
@@ -48,7 +48,7 @@ for (i = 0; i < VLEN/32/n; i++)
   start = i * n
   end = i * n + n - 1
   temp  = sum(vs2[start ... end])  //2SEW = SEW
-  vd[i] = clip_low_2SEW_SEW(alg_round_shift_right(temp, accsft)) //SEW = 2SEW
+  vd[j][i] = clip_low_2SEW_SEW(alg_round_shift_right(temp, accsft)) //SEW = 2SEW
 }
 
 VI version
@@ -58,7 +58,7 @@ for (i = 0; i < VLEN/32/n; i++)
   start = i * n
   end = i * n + n - 1
   temp  = sum(vs2[start ... end]) //2SEW = SEW
-  vd[i] = clip_low_2SEW_SEW(alg_round_shift_right(temp, accsft)) //SEW = 2SEW
+  vd[j]][i] = clip_low_2SEW_SEW(alg_round_shift_right(temp, accsft)) //SEW = 2SEW
 }
 ----
 
@@ -79,9 +79,9 @@ vs2 saves the input value, vs1 saves the index value corresponding to each input
 . *Operation*
 +
 ----
-vd[0] = max[vs2]; 
+vd[0][0] = max[vs2]; 
 i = max_i[vs2]; // First maximum value searched from lowest element
-vd[1] = vs1[i];
+vd[0][1] = vs1[i];
 ----
 
 === vredmini(vector reduced min with index)
@@ -100,8 +100,8 @@ vs2 saves the input value, vs1 saves the index value corresponding to each input
 . *Operation*
 +
 ----
-vd[0] = min[vs2];
+vd[0][0] = min[vs2];
 i = min_i[vs2]; //First minimum value searched from lowest element
-vd[1] = vs1[i];
+vd[0][1] = vs1[i];
 ----
 
