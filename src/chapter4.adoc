@@ -17,8 +17,8 @@ The elements of vs2 are used as real parts, and the elements of vs1 are used as 
 . *Operation*
 +
 ----
-vd[j][i].r = round_clip_high_16(vs2[j][i]);
-vd[j][i].i = round_clip_high_16(vs1[j][i]); 
+vd[j][i].r = round_clip_high_32_16(vs2[j][i]);
+vd[j][i].i = round_clip_high_32_16(vs1[j][i]); 
 ----
 
 === vcunpackr(vector complex real unpacking instruction)
