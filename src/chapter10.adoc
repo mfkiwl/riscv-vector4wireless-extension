@@ -3,7 +3,9 @@
 === Introduction
 In the fast nonlinear instructions vs2 store the fixed-point value in Q32.n format，vs1 store the point position n of the fix point format, n belongs to [0, 31]. vd stores the fix point position n of nonlinear function's output by exponent calculation instruction and it's mantissa value in Q32.n format by mantissa calculation instruction. +
 
-The segmentation of the nonlinear function is represented by five parameters A, B, S, E and T. A represents the slope of the straight line, B represents the bias of the straight line, S represents the mantissa value of the starting position of the straight line on X-axis, E is the exponent values in the nonlinear function calculation procedure, T is the nonlinear function type. The vector nonlinear function needs to perform a segmented search and linear fitting for each element of the vector.+
+The segmentation of the nonlinear function is represented by five parameters R_NL_A, R_NL_B, R_NL_SEG, R_NL_SEG_EXP and funcId. R_NL_A represents the slope of the straight line, R_NL_B represents the bias of the straight line, R_NL_SEG represents the mantissa value of the starting position of the straight line on X-axis, R_NL_SEG_EXP is the exponent values in the nonlinear function calculation procedure, funcId is the nonlinear function type. The vector nonlinear function needs to perform a segmented search and linear fitting for each element of the vector.+
+
+Note: During all the following operations, the "alg_round_shift_right" is fixed with vxrm mode "vxrm=rnu", "<<" stands for alg_shift_left, and ">>" stands for alg_shift_right .+
 
 === Instructions
 ==== vlnlp(vector load nonlinear parameter)
@@ -77,8 +79,8 @@ x[i], s[i], E[i] = preProc(funcId, x[i], E[i])
 segIdx[i] = findSeg(x[i], R_NL_SEG)
 If (segIdx[i] is valid)
 { 
-  tmp = A[segIdx[i]] * x[i]; //2SEW = SEW * SEW
-  tmp = clip_low_SEW(alg_round_shift_right(tmp, R_NL_SEG_EXP[2])) + B[segIdx[i]]; //SEW = SEW + SEW
+  tmp = R_NL_A[segIdx[i]] * x[i]; //2SEW = SEW * SEW
+  tmp = clip_low_SEW(alg_round_shift_right(tmp, R_NL_SEG_EXP[2])) + R_NL_B[segIdx[i]]; //SEW = SEW + SEW
   if R_NL_SEG_EXP[1] >= R_NL_SEG_EXP[0]
     tmp <<= R_NL_SEG_EXP[1] - R_NL_SEG_EXP[0]
   else
@@ -93,8 +95,8 @@ x[i], s[i], E[i] = preProc(funcId, x[i], E[i])
 segIdx[i] = findSeg(x[i], R_NL_SEG)
 If (segIdx[i] is valid)
 { 
-  tmp = A[segIdx[i]] * x[i]; //2SEW = SEW * SEW
-  tmp = clip_low_SEW(alg_round_shift_right(tmp, R_NL_SEG_EXP[2])) + B[segIdx[i]]; //SEW = SEW + SEW
+  tmp = R_NL_A[segIdx[i]] * x[i]; //2SEW = SEW * SEW
+  tmp = clip_low_SEW(alg_round_shift_right(tmp, R_NL_SEG_EXP[2])) + R_NL_B[segIdx[i]]; //SEW = SEW + SEW
   if R_NL_SEG_EXP[1] >= R_NL_SEG_EXP[0]
     tmp <<= R_NL_SEG_EXP[1] - R_NL_SEG_EXP[0]
   else
@@ -113,7 +115,7 @@ normalization for the input data to [0.5~1).
 
 . *Operation*
 +
-vs2 is 32bit fixpoint real number, vs1 is the fix point position, e.g. for a Q32.20 fixpoint value, it's fix point position number is 20. E∈[-31,31]
+vs2 is 32bit fixpoint real number, vs1 is the fix point position and only low 5bits are valid, e.g. for a Q32.20 fixpoint value, it's fix point position number is 20. E∈[-31,31]
 +
 ----
 x, E = norm(funcId, vs2, vs1)
@@ -183,17 +185,20 @@ elsif funcId == 7    % cos (x∈Q(32.30))
 
 . *Description*
 +
-find which segment the input data belongs to in N-th segment group.
+find which segment the input data belongs to in N-th segment group. 
+the fix points in R_NL_SEG are in ascending order. input x should not smaller than the R_NL_SEG[0].
+Input x should compare with each fix point in R_NL_SEG and find the max fix point which smaller than x, the index of that max fix point is the target segIdx. If x is bigger than the R_NL_SEG[N-1], the segIdx is N-1.
 
 . *Operation*
 +
 ----
-segIdx = findSeg(x, R_SEG[N])  // N is segment group ID
+segIdx = findSeg(x, R_NL_SEG[N])  % N is segment number. 
 
-for iSeg = R_SEG[N].nSegments        // segment number in one group
-    lutIndex(iSeg) = x >=R_SEG[N].xStart(iSeg);
+for iSeg = 1:N        % input x compare with each fix point in R_NL_SEG and logic value 0 stands for "smaller".
+    lutIndex(iSeg) = x >=R_NL_SEG[iSeg];    
 end
-segIdx = sum(lutIndex);          // find which segment belong to
+segIdx = sum(lutIndex)-1;          % accumulate logic value of all segments and the sum value minus 1 stands for target segment idx.
+
 ----
 
 
@@ -284,6 +289,3 @@ else                     % sin/cos
     y = s * tmp;
 
 ----
-
-*Note*: the "alg_round_shift_right" is defaulted with vxrm mode "vxrm=rnu".
-
