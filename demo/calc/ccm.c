@@ -64,7 +64,7 @@ int32_t op_testrvvCcm()
        
     avl = 64;
 
-    
+    uint32_t num0 = 0;
     vbool8_t   vMask;
     vint16m1_t vZero;
     vint16m1_t vA,vB,vR;
@@ -78,11 +78,11 @@ int32_t op_testrvvCcm()
     
     vtypeE = TA | MA | M1 | E16;              
     asm volatile("vsetvl %[vl], %[avl], %[vtype];\
-                  vmv.v.i %[vZero], 0;\
+                  vsub.vv %[vZero], %[vZero],%[vZero];\
                   vle16.v %[vA], (%[aAddr]);\
                   vle16.v %[vB], (%[bAddr]);"
                   :[vl] "=&r" (vl),[vA]"=vd"(vA),[vB]"=vd"(vB),[vZero]"=vd"(vZero)
-                  :[avl] "r" (avl), [vtype] "r" (vtypeE),[aAddr]"r"(aAddr),[bAddr]"r"(bAddr));               
+                  :[avl] "r" (avl), [vtype] "r" (vtypeE),[aAddr]"r"(aAddr),[bAddr]"r"(bAddr),[num0]"r"(num0));               
                   
     
     vtypeE = TA | MA | M1 | E16;
@@ -107,12 +107,13 @@ int32_t op_testrvvCcm()
                   vmul.vv %[vImage2], %[vAimage], %[vBreal];"
                   :[vReal1]"=&vd"(vReal1),[vReal2]"=&vd"(vReal2),[vImage1]"=&vd"(vImage1),[vImage2]"=&vd"(vImage2)
                   :[vAimage]"vd"(vAimage),[vAreal]"vd"(vAreal),[vBimage]"vd"(vBimage),[vBreal]"vd"(vBreal));                     
-                  
+    
+    uint32_t num1 = 1;    
     asm volatile("vadd.vv %[vReal], %[vReal1], %[vReal2];\
                   vsub.vv %[vImage],%[vImage2], %[vImage1];\
-                  vslideup.vi %[vImageUp], %[vImage], 1;"
+                  vslideup.vx %[vImageUp], %[vImage], %[num1];"
                   :[vReal]"+&vd"(vReal),[vImage]"+&vd"(vImage),[vImageUp]"=&vd"(vImageUp)
-                  :[vReal1]"vd"(vReal1),[vReal2]"vd"(vReal2),[vImage1]"vd"(vImage1),[vImage2]"vd"(vImage2));
+                  :[vReal1]"vd"(vReal1),[vReal2]"vd"(vReal2),[vImage1]"vd"(vImage1),[vImage2]"vd"(vImage2),[num1]"r"(num1));
                   
     
     vtypeE = TA | MA | M1 | E16;              
