@@ -4,7 +4,7 @@ include::../docs-resources/global-config.adoc[]
 :docgroup: RISC-V Task Group
 :description: RISC-V Zvw Specification Document (Zvw)
 :revdate: 11/2024
-:revnumber: 1.0
+:revnumber: v1.0.1
 :revremark: This document is under development. Expect potential changes. Visit http://riscv.org/spec-state for further details.
 :revinfo:
 :preface-title: Preamble
