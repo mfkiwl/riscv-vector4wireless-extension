@@ -81,6 +81,7 @@ int32_t op_testrvvWap()
     size_t vl, avl;
     uint32_t vtypeE;
 
+    uint32_t num0 = 0;
     int32_t *a0Addr = aWapAddr[0];
     int32_t *a1Addr = aWapAddr[1];    
     vint16m1_t vA,vB;
@@ -93,12 +94,11 @@ int32_t op_testrvvWap()
     avl = 64;
     vtypeE = TA | MA | M2 | E32;
     asm volatile("vsetvl %[vl], %[avl], %[vtype]": [vl] "=r" (vl) : [avl] "r" (avl), [vtype] "r" (vtypeE));
-    asm volatile("vmv.v.i %[vAcc], 0;"
+    asm volatile("vsub.vv %[vAcc], %[vAcc],%[vAcc];"
                  :[vAcc]"=vr"(vAcc)
-                 :);    
+                 :[num0]"r"(num0));    
 
-    asm volatile("vle32.v %[vShift], (%[gainShiftAddr]);\
-                  vdsmacini.v %[vShift];" 
+    asm volatile("vle32.v %[vShift], (%[gainShiftAddr]);" 
                   :[vShift]"+vr"(vShift)
                   :[gainShiftAddr]"r"(gainShiftAdrrRvv)); 
                      
