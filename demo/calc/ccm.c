@@ -36,7 +36,6 @@ int32_t op_testzvwCcm()
     uint32_t vtypeE32;
     avl = VLEN / SEW32;
     vtypeE32 = TA | MA | M1 | E32;
-    uint32_t gainShift = 0;       
     vint32m1_t volatile vA0;
     vint32m1_t volatile vA1;
     vint32m1_t volatile vR;
@@ -53,7 +52,7 @@ int32_t op_testzvwCcm()
                   vdscmulj.vv v4, %[vA0], %[vA1];\
                   vse32.v  v4, (%[rZvmAddr]);" 
                   :[vl] "=r" (vl),[vA0]"+vr"(vA0),[vA1]"+vr"(vA1)
-                  :[avl] "r" (avl), [vtype] "r" (vtypeE32),[gainShift]"r"(gainShift),[aAddr]"r"(aAddr),[bAddr]"r"(bAddr),[rZvmAddr]"r"(rZvmAddr));    
+                  :[avl] "r" (avl), [vtype] "r" (vtypeE32),[aAddr]"r"(aAddr),[bAddr]"r"(bAddr),[rZvmAddr]"r"(rZvmAddr));    
     return 0;
 }
 
