@@ -122,6 +122,6 @@ int32_t op_testrvvCcm()
                   :[vl] "=&r" (vl),[vResult]"=vr"(vResult)
                   :[avl] "r" (avl), [vtype] "r" (vtypeE),[vReal]"vd"(vReal),[vImageUp]"vd"(vImageUp),[vMask]"vm"(vMask),[rRvvAddr]"r"(rRvvAddr));
  
-                                                
+                                               
     return 0;
 }
