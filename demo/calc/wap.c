@@ -82,17 +82,20 @@ int32_t op_testrvvWap()
     uint32_t vtypeE;
 
     uint32_t num0 = 0;
+    uint32_t num16 = 16;
     int32_t *a0Addr = aWapAddr[0];
     int32_t *a1Addr = aWapAddr[1];    
-    vint16m1_t vA,vB;
+    vint32m1_t vA,vB;
+    vint32m1_t vReal,vImag,vRealShfit;
     vint32m1_t vTempShift;
+    vint32m1_t vPowReal,vPowImag;
     vint32m2_t vAcc,vAPow,vBPow;
     vint32m2_t vAPowShif,vBPowShift,vShift,vPowSum,vPowSumShift,vSum;
-                    
+    uint32_t accShfit = 0, mulShfit = 0;                
     
 
-    avl = 64;
-    vtypeE = TA | MA | M2 | E32;
+    avl = 32;
+    vtypeE = TA | MA | M1 | E32;
     asm volatile("vsetvl %[vl], %[avl], %[vtype]": [vl] "=r" (vl) : [avl] "r" (avl), [vtype] "r" (vtypeE));
     asm volatile("vsub.vv %[vAcc], %[vAcc],%[vAcc];"
                  :[vAcc]"=vr"(vAcc)
@@ -102,24 +105,36 @@ int32_t op_testrvvWap()
                   :[vShift]"+vr"(vShift)
                   :[gainShiftAddr]"r"(gainShiftAdrrRvv)); 
                      
-    vtypeE = M1 | E16;
+    vtypeE = M1 | E32;
     asm volatile("vsetvl %[vl], %[avl], %[vtype]": [vl] "=r" (vl) : [avl] "r" (avl), [vtype] "r" (vtypeE));              
-    asm volatile("vle16.v %[vA], (%[a0Addr]);\
-                  vwmul.vv %[vAPow],%[vA],%[vA];\
-                  vle16.v %[vB], (%[a1Addr]);\
-                  vwmul.vv %[vBPow],%[vB],%[vB]"
-                 :[vA]"+vr"(vA),[vB]"+vr"(vB),[vAPow]"=&vr"(vAPow),[vBPow]"=&vr"(vBPow)
-                 :[a0Addr]"r"(a0Addr),[a1Addr]"r"(a1Addr));
+    asm volatile("vle32.v %[vA], (%[a0Addr]);\
+                  vsrl.vx %[vImag], %[vA], %[num16];\
+                  vsll.vx %[vRealShfit], %[vA], %[num16];\
+                  vsrl.vx %[vReal], %[vRealShfit], %[num16];\
+                  vmul.vv %[vPowReal],%[vReal],%[vReal];\
+                  vsra.vx %[vPowReal], %[vPowReal], %[mulShfit];\
+                  vmul.vv %[vPowImag],%[vImag],%[vImag];\
+                  vsra.vx %[vPowImag], %[vPowImag], %[mulShfit];\
+                  vadd.vv %[vAPow], %[vPowImag], %[vPowReal];\
+                  vle32.v %[vB], (%[a1Addr]);\
+                  vsrl.vx %[vImag], %[vB], %[num16];\
+                  vsll.vx %[vRealShfit], %[vB], %[num16];\
+                  vsrl.vx %[vReal], %[vRealShfit], %[num16];\
+                  vmul.vv %[vPowReal],%[vReal],%[vReal];\
+                  vmul.vv %[vPowImag],%[vImag],%[vImag];\
+                  vadd.vv %[vBPow], %[vPowImag], %[vPowReal];"
+                 :[vA]"+vr"(vA),[vB]"+vr"(vB),[vAPow]"=&vr"(vAPow),[vBPow]"=&vr"(vBPow),[vImag]"+vr"(vImag),[vReal]"+vr"(vReal),[vRealShfit]"+vr"(vRealShfit),[vPowImag]"+vr"(vPowImag),[vPowReal]"+vr"(vPowReal)
+                 :[a0Addr]"r"(a0Addr),[a1Addr]"r"(a1Addr),[num16]"r"(num16),[mulShfit]"r"(mulShfit));
 
-    vtypeE = M2 | E32;
+    vtypeE = M1 | E32;
     asm volatile("vsetvl %[vl], %[avl], %[vtype]": [vl] "=r" (vl) : [avl] "r" (avl), [vtype] "r" (vtypeE));                                 
     asm volatile("vsra.vv %[vAPowShif], %[vAPow], %[vShift];\
                   vsra.vv %[vBPowShift], %[vBPow], %[vShift];\
                   vadd.vv %[vPowSum], %[vAPowShif], %[vBPowShift];\
-                  vsra.vi %[vPowSumShift], %[vPowSum], 0;\
+                  vsra.vx %[vPowSumShift], %[vPowSum], %[accShfit];\
                   vredsum.vs %[vSum], %[vPowSumShift], %[vAcc];"
                  :[vSum]"=vr"(vSum),[vAPowShif]"+&vr"(vAPowShif),[vBPowShift]"+&vr"(vBPowShift),[vPowSum]"+&vr"(vPowSum),[vPowSumShift]"+&vr"(vPowSumShift)
-                 :[vShift]"vr"(vShift), [vAcc]"vr"(vAcc),[vAPow]"vr"(vAPow),[vBPow]"vr"(vBPow));   
+                 :[vShift]"vr"(vShift), [vAcc]"vr"(vAcc),[vAPow]"vr"(vAPow),[vBPow]"vr"(vBPow),[accShfit]"r"(accShfit));   
                  
   int32_t  volatile result;
   asm volatile("vmv.x.s  %[result], %[vSum];"
