@@ -20,8 +20,6 @@ extern const int32_t arctan_seg08_cfg_table[64];
 extern const int32_t log10_seg08_cfg_table[64];
 extern const int32_t sin_seg12_cfg_table[64];
 extern const int32_t cos_seg12_cfg_table[64];
-extern const int32_t vlnmTest1_seg16_part1_cfg_table[64];
-extern const int32_t vlnmTest1_seg16_part2_cfg_table[64];
 //---------------------------------------------------
 
 
