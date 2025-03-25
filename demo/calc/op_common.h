@@ -167,7 +167,7 @@
 #define SEG4               (0 << 16)
 #define SEG8               (1 << 16)
 #define SEG12              (2 << 16)
-#define SEG416             (3 << 16)
+#define SEG16              (3 << 16)
 
 //---------------------------------------------------
 #define MAX_RX_NUM              (2)
