@@ -80,7 +80,7 @@ segIdx[i] = findSeg(x[i], R_NL_SEG)
 If (segIdx[i] is valid)
 { 
   tmp = R_NL_A[segIdx[i]] * x[i]; //2SEW = SEW * SEW
-  tmp = clip_low_SEW(alg_round_shift_right(tmp, R_NL_SEG_EXP[2])) + R_NL_B[segIdx[i]]; //SEW = SEW + SEW
+  tmp = clip_low_SEW(alg_round_shift_right(tmp, R_NL_SEG_EXP[2]) + R_NL_B[segIdx[i]]); //SEW = SEW + SEW
   if R_NL_SEG_EXP[1] >= R_NL_SEG_EXP[0]
     tmp <<= R_NL_SEG_EXP[1] - R_NL_SEG_EXP[0]
   else
@@ -96,7 +96,7 @@ segIdx[i] = findSeg(x[i], R_NL_SEG)
 If (segIdx[i] is valid)
 { 
   tmp = R_NL_A[segIdx[i]] * x[i]; //2SEW = SEW * SEW
-  tmp = clip_low_SEW(alg_round_shift_right(tmp, R_NL_SEG_EXP[2])) + R_NL_B[segIdx[i]]; //SEW = SEW + SEW
+  tmp = clip_low_SEW(alg_round_shift_right(tmp, R_NL_SEG_EXP[2]) + R_NL_B[segIdx[i]]); //SEW = SEW + SEW
   if R_NL_SEG_EXP[1] >= R_NL_SEG_EXP[0]
     tmp <<= R_NL_SEG_EXP[1] - R_NL_SEG_EXP[0]
   else
@@ -121,7 +121,7 @@ vs2 is 32bit fixpoint real number, vs1 is the fix point position and only low 5b
 x, E = norm(funcId, vs2, vs1)
 
 if funcId == 0 ||funcId == 1 || funcId == 2 || funcId == 3 || funcId == 5   % 0：reciprocal; 1: square root; 2: reciprocal of square root; 3: log2; 5: log10
-    eNorm =  lsb(vs2); // take 32 bit-width data for example
+    eNorm =  lsb(vs2); // take 32 bit-width data for example,  as for one number, the negative and positive should output the same eNorm. 
     x = vs2 << eNorm
     E = 31 - eNorm - vs1
 else
