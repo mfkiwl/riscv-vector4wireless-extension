@@ -1,7 +1,7 @@
 [[chapter8]]
 == Sequence generation operations
 
-=== vpharot(vector phase rotate) -- implementate TBD
+=== vpharot(vector phase rotate) -- implementate TBD, not in encoding space
 . *Grammar*
 +
 vpharot.s vd, rs1 +
