@@ -91,18 +91,22 @@ The real and imaginary parts of each complex element in the vector register are 
 
 . *Description*
 +
-The real and imaginary parts of the complex elements in vs2 are accumulated separately and the accumulated value is shifted and the low SEW bit is intercepted and output to vd[0]. When SEW is configured as 32bit, SC16 complex addition is performed. not controlled by LMUL, perform operations on a single VR statically.
+The real and imaginary parts of the complex elements in vs2 are accumulated separately and the accumulated value is shifted and the low SEW bit is intercepted and output to vd[0][0]. When SEW is configured as 32bit, SC16 complex addition is performed. 
 
 . *Operation*
 +
 ----
 Tmp.r = 0；
 Tmp.i = 0；
-For each i in vs2 
-   Tmp.r += v0.b[i] == 0 ? 0 : vs2[0][i].r; //2SEW = SEW
-   Tmp.i += v0.b[i] == 0 ? 0 : vs2[0][i].i; //2SEW = SEW
-vd[0][0].r = clip_low_2SEW_SEW(alg_round_shift_right(Tmp.r, accsft)) // SEW = 2SEW
-vd[0][0].i = clip_low_2SEW_SEW(alg_round_shift_right(Tmp.i, accsft)) // SEW = 2SEW
+j = 0;
+nj = (vl + (VLEN/SEW) - 1) / (VLEN/SEW)
+For each j < nj
+   For each i in vs2[j] AND (j * (VLEN/SEW) + i) < vl
+      Tmp.r += v0.b[i] == 0 ? 0 : vs2[j][i].r; //2SEW = SEW
+      Tmp.i += v0.b[i] == 0 ? 0 : vs2[j][i].i; //2SEW = SEW
+
+vd[0][0].r = clip_low_SEW(alg_round_shift_right(Tmp.r, accsft)) // SEW = 2SEW
+vd[0][0].i = clip_low_SEW(alg_round_shift_right(Tmp.i, accsft)) // SEW = 2SEW
 ----
 
 === vdscmac(vector dynamic scaling complex MAC)
