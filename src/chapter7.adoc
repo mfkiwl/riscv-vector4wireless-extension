@@ -12,16 +12,19 @@ Each element in the vector register is accumulated and then shifted to the right
 
 . *Description*
 +
-The elements in vs2 are accumulated and the accumulated value is dynamically shifted to the right by round arithmetic and then the low SEW bit is intercepted and output to vd[0].
+The elements in vs2 are accumulated and the accumulated value is dynamically shifted to the right by round arithmetic and then the low SEW bit is intercepted and output to vd[0][0].
 
 . *Operation*
 +
 ----
 Tmp = 0；
-For each i in vs2 
-    Tmp += v0.b[i] == 0 ? 0 : vs2[i]  // 2SEW = SEW
+j = 0;
+nj = (vl + (VLEN/SEW) - 1) / (VLEN/SEW)
+For each j < nj
+   For each i in vs2[j] AND (j * (VLEN/SEW) + i) < vl
+        Tmp += v0.b[i] == 0 ? 0 : vs2[j][i]  // 2SEW = SEW
 
-vd[0][0] = clip_low_2SEW_SEW(alg_round_shift_right(tmp, accsft)) // SEW = 2SEW
+vd[0][0] = clip_low_SEW(alg_round_shift_right(tmp, accsft)) // SEW = 2SEW
 ----
 
 === vdsredsumn(vector dynamic scaling reduced sum for each n element)
@@ -36,29 +39,55 @@ Every n elements in the vector register are accumulated and then round shifted b
 
 . *Description*
 +
-Every 2^rs1 elements in vs2 are accumulated and then do algorithm round right shift before output to vd. if vl is not the interger multiple of 2^rs1, the real processing length is 2^rs1 * ceiling(vl/2^rs1). The valid value in rs1 is integer between [1, log2(VLEN/SEW)).
+Every 2^rs1 or 2^uimm elements in vs2 are accumulated and then do algorithm round right shift before output to vd. rs1 and uimm valid value are [1, 2, 3, 4].
 
 . *Operation*
 +
 ----
 VS version
-n = 2^rs1 * ceiling(vl/2^rs1)
-for (i = 0; i < VLEN/32/n; i++)
-{
-  start = i * n
-  end = i * n + n - 1
-  temp  = sum(vs2[start ... end])  //2SEW = SEW
-  vd[j][i] = clip_low_2SEW_SEW(alg_round_shift_right(temp, accsft)) //SEW = 2SEW
+
+n = 2^rs1
+j = 0
+i = 0
+l =0 
+VELE = (VLEN/SEW)
+nj = (vl + VELE - 1) / VELE
+nres = vl - (vl/VELE) * VELE
+For each j < nj
+    maxEle = (j == (nj - 1)) ? nres : VELE
+    maxSeg = (maxEle + n - 1)/n
+    For (k = 0; k < maxSeg; k++)
+        start = k * n
+        end = min(k * n + n - 1, maxEle)
+        temp  = sum(vs2[j][start ... end]) //2SEW = SEW
+        vd[l][i] = clip_low_SEW(alg_round_shift_right(temp, accsft)); //SEW = 2SEW
+        i++
+        if i == VELE
+            i = 0
+            l++
 }
 
 VI version
-n = 2^uimm * ceiling(vl/2^uimm)
-for (i = 0; i < VLEN/32/n; i++)
-{
-  start = i * n
-  end = i * n + n - 1
-  temp  = sum(vs2[start ... end]) //2SEW = SEW
-  vd[j]][i] = clip_low_2SEW_SEW(alg_round_shift_right(temp, accsft)) //SEW = 2SEW
+
+n = 2^uimm;
+j = 0
+i = 0
+l =0 
+VELE = (VLEN/SEW)
+nj = (vl + VELE - 1) / VELE
+nres = vl - (vl/VELE) * VELE
+For each j < nj
+    maxEle = (j == (nj - 1)) ? nres : VELE
+    maxSeg = (maxEle + n - 1)/n
+    For (k = 0; k < maxSeg; k++)
+        start = k * n
+        end = min(k * n + n - 1, maxEle)
+        temp  = sum(vs2[j][start ... end]) //2SEW = SEW
+        vd[l][i] = clip_low_SEW(alg_round_shift_right(temp, accsft)); //SEW = 2SEW
+        i++
+        if i == VELE
+            i = 0
+            l++
 }
 ----
 
