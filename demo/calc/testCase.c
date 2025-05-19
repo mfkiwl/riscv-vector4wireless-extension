@@ -1126,7 +1126,7 @@ void vluxei32_ut()
     printf("vluxei32.v_ut passed!\n");
 }
 
-#if 0
+#if 1
 void nolinear_recip8_ut()
 {
     uint32_t vsrc1[32] = {0x00000001,0x00000002,0x00000003,0x00000004,0x00000005,0x00000006,0x00000007,0x00000008,
@@ -1149,25 +1149,31 @@ void nolinear_recip8_ut()
     uint32_t point = 0xd;
     uint32_t len = 32;
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
+    
     uint32_t vnlcrRecip8 = SEG8|FUNC_RECIP;
 
-    asm volatile("vcsrw zero, vnlcr, %[vnlcrRecip8];": : [vnlcrRecip8] "r" (vnlcrRecip8));
+    asm volatile("csrrw zero, vnlcr, %[vnlcrRecip8];": : [vnlcrRecip8] "r" (vnlcrRecip8));
 
+    uint32_t table_len = 64;
+    uint32_t vtypeL2E32 = MA | TA | M2 | E32;
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]": [vl] "=r" (vl): [avl] "r" (table_len),[vtype] "r" (vtypeL2E32));
+    asm volatile("vle32.v v16,(%[recip_seg08_cfg_table]);": : [recip_seg08_cfg_table] "r" (recip_seg08_cfg_table));
+    asm volatile("vlnlp.v v16;"::);
+    
     asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
              : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
 
     asm volatile("vle32.v v0,(%[vsrc1]);": : [vsrc1] "r" (vsrc1));
-
+    
+    asm volatile("vmv.s.x v18,%[point];"::[point] "r" (point));
     asm volatile(
-    "vlnlp.s %[recip_seg08_cfg_table];\
-    vnlm.vs v1, v0, %[point];\
-    vnlm.vs v1, v0, %[point];\
-    vnle.vs v2, v0, %[point];\
+    "vnlm.vs v1, v0, v18;\
+    vnle.vs v2, v0, v18;\
     vse32.v v1,(%[mantissa]);\
     vse32.v v2,(%[exponent]);"
     :
-    : [recip_seg08_cfg_table ] "r" (recip_seg08_cfg_table ),[point] "r" (point),[mantissa] "r" (mantissa),[exponent] "r" (exponent));
+    : [mantissa] "r" (mantissa),[exponent] "r" (exponent));
 
     for (i = 0; i < len; i++)
     {
@@ -1208,23 +1214,28 @@ void nolinear_sqrt8_ut()
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
     uint32_t vnlcrSqrt8 = SEG8|FUNC_SQRT;
 
-    asm volatile("vcsrw zero, vnlcr, %[vnlcrSqrt8];": : [vnlcrSqrt8] "r" (vnlcrSqrt8));
+    asm volatile("csrrw zero, vnlcr, %[vnlcrSqrt8];": : [vnlcrSqrt8] "r" (vnlcrSqrt8));
 
+    uint32_t table_len = 64;
+    uint32_t vtypeL2E32 = MA | TA | M2 | E32;
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]": [vl] "=r" (vl): [avl] "r" (table_len),[vtype] "r" (vtypeL2E32));
+    asm volatile("vle32.v v16,(%[sqrt_seg08_cfg_table]);": : [sqrt_seg08_cfg_table] "r" (sqrt_seg08_cfg_table));
+    asm volatile("vlnlp.v v16;"::);
+    
     asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
              : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
 
     asm volatile("vle32.v v0,(%[vsrc1]);": : [vsrc1] "r" (vsrc1));
 
+     asm volatile("vmv.s.x v18,%[point];"::[point] "r" (point));
     asm volatile(
-    "vlnlp.s %[sqrt_seg08_cfg_table];\
-    vnlm.vs v1, v0, %[point];\
-    vnlm.vs v1, v0, %[point];\
-    vnle.vs v2, v0, %[point];\
+    "vnlm.vs v1, v0, v18;\
+    vnle.vs v2, v0, v18;\
     vse32.v v1,(%[mantissa]);\
     vse32.v v2,(%[exponent]);"
     :
-    : [sqrt_seg08_cfg_table ] "r" (sqrt_seg08_cfg_table ),[point] "r" (point),[mantissa] "r" (mantissa),[exponent] "r" (exponent));
+    :[mantissa] "r" (mantissa),[exponent] "r" (exponent));
 
     for (i = 0; i < len; i++)
     {
@@ -1266,23 +1277,29 @@ void nolinear_recipSqrt8_ut()
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
     uint32_t vnlcrRecipSqrt8 = SEG8|FUNC_RECIP_SQRT;
 
-    asm volatile("vcsrw zero, vnlcr, %[vnlcrRecipSqrt8];": : [vnlcrRecipSqrt8] "r" (vnlcrRecipSqrt8));
+    asm volatile("csrrw zero, vnlcr, %[vnlcrRecipSqrt8];": : [vnlcrRecipSqrt8] "r" (vnlcrRecipSqrt8));
 
+    uint32_t table_len = 64;
+    uint32_t vtypeL2E32 = MA | TA | M2 | E32;
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]": [vl] "=r" (vl): [avl] "r" (table_len),[vtype] "r" (vtypeL2E32));
+    asm volatile("vle32.v v16,(%[recipSqrt_seg08_cfg_table]);": : [recipSqrt_seg08_cfg_table] "r" (recipSqrt_seg08_cfg_table));
+    asm volatile("vlnlp.v v16;"::);
+    
     asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
              : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
 
     asm volatile("vle32.v v0,(%[vsrc1]);": : [vsrc1] "r" (vsrc1));
 
+    
+     asm volatile("vmv.s.x v18,%[point];"::[point] "r" (point));
     asm volatile(
-    "vlnlp.s %[recipSqrt_seg08_cfg_table];\
-    vnlm.vs v1, v0, %[point];\
-    vnlm.vs v1, v0, %[point];\
-    vnle.vs v2, v0, %[point];\
+    "vnlm.vs v1, v0, v18;\
+    vnle.vs v2, v0, v18;\
     vse32.v v1,(%[mantissa]);\
     vse32.v v2,(%[exponent]);"
     :
-    : [recipSqrt_seg08_cfg_table ] "r" (recipSqrt_seg08_cfg_table ),[point] "r" (point),[mantissa] "r" (mantissa),[exponent] "r" (exponent));
+    : [mantissa] "r" (mantissa),[exponent] "r" (exponent));
 
     for (i = 0; i < len; i++)
     {
@@ -1332,23 +1349,29 @@ void nolinear_arctan8_ut()
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
     uint32_t vnlcrArctan8 = SEG8|FUNC_ARCTAN;
 
-    asm volatile("vcsrw zero, vnlcr, %[vnlcrArctan8];": : [vnlcrArctan8] "r" (vnlcrArctan8));
+    asm volatile("csrrw zero, vnlcr, %[vnlcrArctan8];": : [vnlcrArctan8] "r" (vnlcrArctan8));
 
+    uint32_t table_len = 64;
+    uint32_t vtypeL2E32 = MA | TA | M2 | E32;
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]": [vl] "=r" (vl): [avl] "r" (table_len),[vtype] "r" (vtypeL2E32));
+    asm volatile("vle32.v v16,(%[arctan_seg08_cfg_table]);": : [arctan_seg08_cfg_table] "r" (arctan_seg08_cfg_table));
+    asm volatile("vlnlp.v v16;"::);
+    
     asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
              : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
 
     asm volatile("vle32.v v0,(%[vsrc1]);": : [vsrc1] "r" (vsrc1));
 
+    
+    asm volatile("vmv.s.x v18,%[point];"::[point] "r" (point));
     asm volatile(
-    "vlnlp.s %[arctan_seg08_cfg_table];\
-    vnlm.vs v1, v0, %[point];\
-    vnlm.vs v1, v0, %[point];\
-    vnle.vs v2, v0, %[point];\
+    "vnlm.vs v1, v0, v18;\
+    vnle.vs v2, v0, v18;\
     vse32.v v1,(%[mantissa]);\
     vse32.v v2,(%[exponent]);"
     :
-    : [arctan_seg08_cfg_table ] "r" (arctan_seg08_cfg_table ),[point] "r" (point),[mantissa] "r" (mantissa),[exponent] "r" (exponent));
+    : [mantissa] "r" (mantissa),[exponent] "r" (exponent));
 
     for (i = 0; i < len; i++)
     {
@@ -1399,23 +1422,28 @@ void nolinear_log2seg8_ut()
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
     uint32_t vnlcrLog2Seg8 = SEG8|FUNC_LOG2;
 
-    asm volatile("vcsrw zero, vnlcr, %[vnlcrLog2Seg8];": : [vnlcrLog2Seg8] "r" (vnlcrLog2Seg8));
+    asm volatile("csrrw zero, vnlcr, %[vnlcrLog2Seg8];": : [vnlcrLog2Seg8] "r" (vnlcrLog2Seg8));
 
+    uint32_t table_len = 64;
+    uint32_t vtypeL2E32 = MA | TA | M2 | E32;
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]": [vl] "=r" (vl): [avl] "r" (table_len),[vtype] "r" (vtypeL2E32));
+    asm volatile("vle32.v v16,(%[log2_seg08_cfg_table]);": : [log2_seg08_cfg_table] "r" (log2_seg08_cfg_table));
+    asm volatile("vlnlp.v v16;"::);
+    
     asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
              : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
 
     asm volatile("vle32.v v0,(%[vsrc1]);": : [vsrc1] "r" (vsrc1));
-
+    
+    asm volatile("vmv.s.x v18,%[point];"::[point] "r" (point));
     asm volatile(
-    "vlnlp.s %[log2_seg08_cfg_table];\
-    vnle.vs v2, v0, %[point];\
-    vnlm.vs v1, v0, %[point];\
-    vnlm.vs v1, v0, %[point];\
+    "vnle.vs v2, v0, v18;\
+    vnlm.vs v1, v0, v18;\
     vse32.v v1,(%[mantissa]);\
     vse32.v v2,(%[exponent]);"
     :
-    : [log2_seg08_cfg_table ] "r" (log2_seg08_cfg_table ),[point] "r" (point),[mantissa] "r" (mantissa),[exponent] "r" (exponent));
+    : [mantissa] "r" (mantissa),[exponent] "r" (exponent));
 
     for (i = 0; i < len; i++)
     {
@@ -1465,23 +1493,28 @@ void nolinear_log10seg8_ut()
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
     uint32_t vnlcrLog10Seg8 = SEG8|FUNC_LOG10;
 
-    asm volatile("vcsrw zero, vnlcr, %[vnlcrLog10Seg8];": : [vnlcrLog10Seg8] "r" (vnlcrLog10Seg8));
+    asm volatile("csrrw zero, vnlcr, %[vnlcrLog10Seg8];": : [vnlcrLog10Seg8] "r" (vnlcrLog10Seg8));
 
+    uint32_t table_len = 64;
+    uint32_t vtypeL2E32 = MA | TA | M2 | E32;
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]": [vl] "=r" (vl): [avl] "r" (table_len),[vtype] "r" (vtypeL2E32));
+    asm volatile("vle32.v v16,(%[log10_seg08_cfg_table]);": : [log10_seg08_cfg_table] "r" (log10_seg08_cfg_table));
+    asm volatile("vlnlp.v v16;"::);
+    
     asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
              : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
 
     asm volatile("vle32.v v0,(%[vsrc1]);": : [vsrc1] "r" (vsrc1));
 
+    asm volatile("vmv.s.x v18,%[point];"::[point] "r" (point));
     asm volatile(
-    "vlnlp.s %[log10_seg08_cfg_table];\
-    vnle.vs v2, v0, %[point];\
-    vnlm.vs v1, v0, %[point];\
-    vnlm.vs v1, v0, %[point];\
+    "vnle.vs v2, v0, v18;\
+    vnlm.vs v1, v0, v18;\
     vse32.v v1,(%[mantissa]);\
     vse32.v v2,(%[exponent]);"
     :
-    : [log10_seg08_cfg_table ] "r" (log10_seg08_cfg_table ),[point] "r" (point),[mantissa] "r" (mantissa),[exponent] "r" (exponent));
+    : [mantissa] "r" (mantissa),[exponent] "r" (exponent));
 
     for (i = 0; i < len; i++)
     {
@@ -1531,24 +1564,29 @@ void nolinear_sinSeg12_ut()
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
     uint32_t vnlcrSinSeg12 = SEG12|FUNC_SIN;
 
-    asm volatile("vcsrw zero, vnlcr, %[vnlcrSinSeg12];": : [vnlcrSinSeg12] "r" (vnlcrSinSeg12));
+    asm volatile("csrrw zero, vnlcr, %[vnlcrSinSeg12];": : [vnlcrSinSeg12] "r" (vnlcrSinSeg12));
 
+    uint32_t table_len = 64;
+    uint32_t vtypeL2E32 = MA | TA | M2 | E32;
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]": [vl] "=r" (vl): [avl] "r" (table_len),[vtype] "r" (vtypeL2E32));
+    asm volatile("vle32.v v16,(%[sin_seg12_cfg_table]);": : [sin_seg12_cfg_table] "r" (sin_seg12_cfg_table));
+    asm volatile("vlnlp.v v16;"::);
+    
     asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
              : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
 
     asm volatile("vle32.v v0,(%[vsrc1]);": : [vsrc1] "r" (vsrc1));
 
+
+   asm volatile("vmv.s.x v18,%[point];"::[point] "r" (point));
     asm volatile(
-    "vlnlp.s %[sin_seg12_cfg_table];\
-    vnle.vs v2, v0, %[point];\
-    vnlm.vs v1, v0, %[point];\
-    vnlm.vs v1, v0, %[point];\
-    vnlm.vs v1, v0, %[point];\
+    "vnle.vs v2, v0, v18;\
+    vnlm.vs v1, v0, v18;\
     vse32.v v1,(%[mantissa]);\
     vse32.v v2,(%[exponent]);"
     :
-    : [sin_seg12_cfg_table ] "r" (sin_seg12_cfg_table ),[point] "r" (point),[mantissa] "r" (mantissa),[exponent] "r" (exponent));
+    : [mantissa] "r" (mantissa),[exponent] "r" (exponent));
 
     for (i = 0; i < len; i++)
     {
@@ -1598,24 +1636,29 @@ void nolinear_cosSeg12_ut()
     uint32_t vtypeL1E32 = MA | TA | M1 | E32;
     uint32_t vnlcrCosSeg12 = SEG12|FUNC_COS;
 
-    asm volatile("vcsrw zero, vnlcr, %[vnlcrCosSeg12];": : [vnlcrCosSeg12] "r" (vnlcrCosSeg12));
+    asm volatile("csrrw zero, vnlcr, %[vnlcrCosSeg12];": : [vnlcrCosSeg12] "r" (vnlcrCosSeg12));
 
+    uint32_t table_len = 64;
+    uint32_t vtypeL2E32 = MA | TA | M2 | E32;
+    asm volatile("vsetvl %[vl],%[avl],%[vtype]": [vl] "=r" (vl): [avl] "r" (table_len),[vtype] "r" (vtypeL2E32));
+    asm volatile("vle32.v v16,(%[cos_seg12_cfg_table]);": : [cos_seg12_cfg_table] "r" (cos_seg12_cfg_table));
+    asm volatile("vlnlp.v v16;"::);
+    
     asm volatile("vsetvl %[vl],%[avl],%[vtype]"
              : [vl] "=r" (vl)
              : [avl] "r" (len),[vtype] "r" (vtypeL1E32));
 
     asm volatile("vle32.v v0,(%[vsrc1]);": : [vsrc1] "r" (vsrc1));
 
+    
+    asm volatile("vmv.s.x v18,%[point];"::[point] "r" (point));
     asm volatile(
-    "vlnlp.s %[cos_seg12_cfg_table];\
-    vnle.vs v2, v0, %[point];\
-    vnlm.vs v1, v0, %[point];\
-    vnlm.vs v1, v0, %[point];\
-    vnlm.vs v1, v0, %[point];\
+    "vnle.vs v2, v0, v18;\
+    vnlm.vs v1, v0, v18;\
     vse32.v v1,(%[mantissa]);\
     vse32.v v2,(%[exponent]);"
     :
-    : [cos_seg12_cfg_table ] "r" (cos_seg12_cfg_table ),[point] "r" (point),[mantissa] "r" (mantissa),[exponent] "r" (exponent));
+    : [mantissa] "r" (mantissa),[exponent] "r" (exponent));
 
     for (i = 0; i < len; i++)
     {
