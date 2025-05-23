@@ -109,5 +109,5 @@ int32_t op_testrvvWap()
     asm volatile("vmv.x.s  %[result], v15;":[result]"=&r"(*pz):);//VALU2
     asm volatile("vsync %[syncRd],%[rs2];":[syncRd]"=&r"(syncRd):[rs2]"r"(0xFF));
 
-    return result;
+    return *pz;
 }
