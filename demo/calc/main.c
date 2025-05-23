@@ -35,6 +35,9 @@ extern void vdsredsum_ut1();
 extern int32_t op_intrinsicTest1();
 int main()
 {
+    asm volatile("c.lui a0,0x10;"::);
+    asm volatile("csrs mstatus, a0;"::);
+
     int i;
     op_intrinsicTest1();
     // test case
