@@ -7,19 +7,8 @@
 #include <riscv_vector.h>
 #include "op_common.h"
 
-extern int32_t volatile aAddr[32];
-extern int32_t volatile bAddr[32];
 extern int32_t volatile rZvmAddr[32];
 extern int32_t volatile rRvvAddr[32];
-extern uint16_t imageCcmMaskAddr[4];
-
-extern int32_t volatile aCdsmAddr[64];
-extern int32_t volatile bCdsmAddr[64];
-extern uint16_t imageMaskAddr[8];
-
-extern int32_t aWapAddr[2][32];
-extern int32_t gainShiftAdrrZvw[32];
-extern int32_t gainShiftAdrrRvv[64];
 
 extern int32_t op_testzvwCcm();
 extern int32_t op_testrvvCcm();
@@ -44,27 +33,13 @@ extern void nolinear_log2seg8_ut();
 extern void nolinear_log10seg8_ut();
 extern void vdsredsum_ut1();
 extern int32_t op_intrinsicTest1();
-
-void vdsp_test_rtl_cp(uint32_t dmemAddr,uint32_t vmemAddr,uint32_t len)
-{
-	uint32_t *pSrc = (uint32_t*)dmemAddr;
-	uint32_t *pDsc = (uint32_t*)vmemAddr;
-	uint32_t i;
-	for(i = 0; i < len; i++)
-	{
-		*pDsc = *pSrc;
-		pSrc++;
-		pDsc++;
-	}
-	pDsc = (uint32_t *)vmemAddr;
-}
-
 int main()
 {
     asm volatile("c.lui a0,0x10;"::);
     asm volatile("csrs mstatus, a0;"::);
 
     int i;
+    op_intrinsicTest1();
     // test case
     op_testMulj();
     vconj_ut();
@@ -86,64 +61,44 @@ int main()
     vperm_ut();
 
     //ccm
-    //op_goldenCcm();
-	vdsp_test_rtl_cp((uint32_t)(&aAddr[0]),VM_SRC1_ADDR,32);
-	vdsp_test_rtl_cp((uint32_t)(&bAddr[0]),VM_SRC2_ADDR,32);
-	vdsp_test_rtl_cp((uint32_t)(&imageCcmMaskAddr[0]),VM_MASK_ADDR,4);
     op_testzvwCcm();
     op_testrvvCcm();
-    uint32_t flag = 0;
-    uint32_t *pz1 = (uint32_t *)VM_RST1_ZVW_ADDR;
-    uint32_t *pz2 = (uint32_t *)VM_RST2_RVV_ADDR;
     for (i = 0; i < 32 ; i++)
     {
-      if (*pz1 != *pz2)
+      if (rZvmAddr[i] != rRvvAddr[i])
       {
-    	  flag = 1;
-      }
-    	pz1++;
-    	pz2++;
-    }
-	if (flag == 0)
-	{
-		printf("ccm succ\n");
-	}
-    else{
         printf("ccm fail\n");
+        break;
+      }
     }
+	if (i >= 32)
+	{
+        printf("ccm succ\n");
+	}
 	
 	//cdsm
-	vdsp_test_rtl_cp((uint32_t)(&aCdsmAddr[0]),VM_SRC1_ADDR,64);
-	vdsp_test_rtl_cp((uint32_t)(&bCdsmAddr[0]),VM_SRC2_ADDR,64);
-	vdsp_test_rtl_cp((uint32_t)(&imageMaskAddr[0]),VM_MASK_ADDR,8);
-    op_testzvwCdsm();
-    op_testrvvCdsm();
-    pz1 = (uint32_t *)VM_RST1_ZVW_ADDR;
-    pz2 = (uint32_t *)VM_RST2_RVV_ADDR;
-    if (*pz1 != *pz2)
+    int32_t resZvw = op_testzvwCdsm();
+    int32_t resRvv = op_testrvvCdsm();
+    if (resZvw == resRvv)
     {
-        printf("cdsm fail %x,%x\n",*pz1,*pz2);
+      printf("cdsm succ\n");
     }
     else
     {
-    	printf("cdsm succ %x\n",*pz1);
+      printf("cdsm fail\n");
     }	
 	
 	//wap
-	vdsp_test_rtl_cp((uint32_t)(&aWapAddr[0][0]),VM_SRC1_ADDR,64);
-	vdsp_test_rtl_cp((uint32_t)(&gainShiftAdrrZvw[0]),VM_GAIN_ZVW_ADDR,32);
-	vdsp_test_rtl_cp((uint32_t)(&gainShiftAdrrRvv[0]),VM_GAIN_RVV_ADDR,64);
-    op_testzvwWap();
-    op_testrvvWap();
-    pz1 = (uint32_t *)VM_RST1_ZVW_ADDR;
-    pz2 = (uint32_t *)VM_RST2_RVV_ADDR;
-    if (*pz1 != *pz2)
+   resZvw = op_testzvwWap();
+   resRvv = op_testrvvWap();
+
+    if (resZvw == resRvv)
     {
-        printf("wap fail resZvw %x ,resRvv %x\n", *pz1, *pz2);
+      printf("wap succ %x \n",resRvv);
     }
     else
     {
-    	printf("wap succ %x\n",*pz1);
+      printf("wap fail resZvw %x ,resRvv %x\n", resZvw, resRvv);
     }
     return 0;
 }
