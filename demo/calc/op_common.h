@@ -11,6 +11,14 @@
 
 #include <riscv_vector.h>
 
+#define VM_BASE             (0x00000000)
+#define VM_SRC1_ADDR        (VM_BASE + 0x00001000)
+#define VM_SRC2_ADDR        (VM_BASE + 0x00001100)
+#define VM_RST1_ZVW_ADDR    (VM_BASE + 0x00002100)
+#define VM_RST2_RVV_ADDR    (VM_BASE + 0x00002100)
+#define VM_MASK_ADDR        (VM_BASE + 0x00003000)
+#define VM_GAIN_ZVW_ADDR    (VM_BASE + 0x00003100)
+#define VM_GAIN_RVV_ADDR    (VM_BASE + 0x00003200)
 //---------------------------------------------------
 #define VLEN    (1024)
 #define SEW8    (8)
