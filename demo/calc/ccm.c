@@ -30,55 +30,29 @@ int32_t volatile rRvvAddr[32] = {0};
 
 uint16_t imageCcmMaskAddr[4] = {0xAAAA,0xAAAA,0xAAAA,0xAAAA};
 
-int32_t op_goldenCcm()
-{
-	int32_t i;
-	int32_t accReg[32];
-	int32_t shift = 0;
-	for(i = 0; i < 32; i++)
-	{
-		accReg[i] = 0;
-	}
-
-	for(i = 0; i < 32; i++)
-	{
-		int32_t areal,aimag,breal,bimag,tReal,tImag;
-		areal = aAddr[i] & 0x0000FFFF;
-		aimag = (aAddr[i] >> 16)& 0x0000FFFF;
-		breal = bAddr[i] & 0x0000FFFF;
-		bimag = (bAddr[i] >> 16)& 0x0000FFFF;
-		tReal = ((areal*breal) + (aimag*bimag) >> shift);
-		tImag = ((aimag*breal) - (areal*bimag) >> shift);
-		accReg[i] = tReal + (tImag << 16);
-	}
-
-	for(i = 0; i < 32; i++)
-	{
-		printf("res %x\n",accReg[i]);
-	}
-	return 0;
-}
-
 int32_t op_testzvwCcm()
 {
     size_t vl, avl;
     uint32_t vtypeE32;
-
-    uint32_t rs2 = 0xFF,syncRd;
-   uint32_t vcsrA0M0R0Sa = ACCSFT0 | MULSFT0 | VXRM_RNU | VXSAT1;    
-    asm volatile("csrw vcsr,%[vcsrA0M0R0Sa];":: [vcsrA0M0R0Sa] "r" (vcsrA0M0R0Sa));
-    uint32_t pa = (uint32_t )VM_SRC1_ADDR;
-    uint32_t pb = (uint32_t )VM_SRC2_ADDR;
-    uint32_t pz = (uint32_t )VM_RST1_ZVW_ADDR;
-    avl = 32;
+    avl = VLEN / SEW32;
     vtypeE32 = TA | MA | M1 | E32;
-    asm volatile("vsetvli %[vl], %[avl], 208;":[vl] "=&r" (vl):[avl] "r" (avl));
-    asm volatile("vle32.v v2, (%[aAddr]);" ::[aAddr]"r"(pa));
-    asm volatile("vle32.v v1, (%[bAddr]);" ::[bAddr]"r"(pb));
-    asm volatile("vdscmulj.vv v4, v2, v1;"::);
-    asm volatile("vse32.v  v4, (%[rZvmAddr]);" ::[rZvmAddr]"r"(pz));
-    asm volatile("vsync %[syncRd],%[rs2];":[syncRd]"=&r"(syncRd):[rs2]"r"(rs2));
-    syncRd = syncRd * 2;
+    vint32m1_t volatile vA0;
+    vint32m1_t volatile vA1;
+    vint32m1_t volatile vR;
+   
+   uint32_t vcsrA0M0R0Sa = ACCSFT0 | MULSFT0 | VXRM_RNU | VXSAT1;    
+    asm volatile("csrw vcsr,%[vcsrA0M0R0Sa];"
+    :
+    : [vcsrA0M0R0Sa] "r" (vcsrA0M0R0Sa)
+    );   
+    
+    asm volatile("vsetvl %[vl], %[avl], %[vtype];\
+                  vle32.v %[vA0], (%[aAddr]);\
+                  vle32.v %[vA1], (%[bAddr]);\
+                  vdscmulj.vv v4, %[vA0], %[vA1];\
+                  vse32.v  v4, (%[rZvmAddr]);" 
+                  :[vl] "=r" (vl),[vA0]"+vr"(vA0),[vA1]"+vr"(vA1)
+                  :[avl] "r" (avl), [vtype] "r" (vtypeE32),[aAddr]"r"(aAddr),[bAddr]"r"(bAddr),[rZvmAddr]"r"(rZvmAddr));    
     return 0;
 }
 
@@ -87,39 +61,67 @@ int32_t op_testrvvCcm()
     size_t vl, avl;
     uint32_t vtypeE;
        
-
-    uint32_t rs2 = 0xFF,syncRd;
-    uint32_t num0 = 0;
-    uint32_t num1 = 1;
-    uint32_t pa = (uint32_t)VM_SRC1_ADDR;
-    uint32_t pb = (uint32_t)VM_SRC2_ADDR;
-    uint32_t pz = (uint32_t)VM_RST2_RVV_ADDR;
-    uint32_t pm = (uint32_t)VM_MASK_ADDR;
     avl = 64;
+
+    uint32_t num0 = 0;
+    vbool8_t   vMask;
+    vint16m1_t vZero;
+    vint16m1_t vA,vB,vR;
+    vint16m1_t vAimage,vAreal,vBimage,vBreal,vReal1,vReal2,vImage1,vImage2,vReal,vImage,vImageUp,vResult;
+    
     vtypeE = TA | MA | M2 | E32;
-    asm volatile("vsetvli %[vl], %[avl], 209;":[vl] "=&r" (vl):[avl] "r" (avl));
-    asm volatile("vlm.v v0, (%[imageCcmMaskAddr]);"::[imageCcmMaskAddr]"r"(pm));
+    asm volatile("vsetvl %[vl], %[avl], %[vtype];\
+                  vlm.v %[vMask], (%[imageCcmMaskAddr]);"
+                  :[vl] "=r" (vl),[vMask]"=vm"(vMask)
+                  :[avl] "r" (avl), [vtype] "r" (vtypeE),[imageCcmMaskAddr]"r"(imageCcmMaskAddr));
+    
+    vtypeE = TA | MA | M1 | E16;              
+    asm volatile("vsetvl %[vl], %[avl], %[vtype];\
+                  vsub.vv %[vZero], %[vZero],%[vZero];\
+                  vle16.v %[vA], (%[aAddr]);\
+                  vle16.v %[vB], (%[bAddr]);"
+                  :[vl] "=&r" (vl),[vA]"=vd"(vA),[vB]"=vd"(vB),[vZero]"=vd"(vZero)
+                  :[avl] "r" (avl), [vtype] "r" (vtypeE),[aAddr]"r"(aAddr),[bAddr]"r"(bAddr),[num0]"r"(num0));               
+                  
+    
     vtypeE = TA | MA | M1 | E16;
-    asm volatile("vsetvli %[vl], %[avl], 200;":[vl] "=&r" (vl):[avl] "r" (avl));
-    asm volatile("vsub.vv v1, v1,v1;"::);
-    asm volatile("vle16.v v4, (%[aAddr]);"::[aAddr]"r"(pa));
-    asm volatile("vle16.v v5, (%[bAddr]);"::[bAddr]"r"(pb));
-    asm volatile("vmerge.vvm v2,v1,v4,v0;"::);
-    asm volatile("vmerge.vvm v4,v4,v1,v0;"::);
-    asm volatile("vslidedown.vi	v2,v2,1;"::);
-    asm volatile("vmerge.vvm	v3,v1,v5,v0;"::);
-    asm volatile("vmerge.vvm	v1,v5,v1,v0;"::);
-    asm volatile("vslidedown.vi	v3,v3,1;"::);
-    asm volatile("vmul.vv	v5,v4,v1;"::);
-    asm volatile("vmul.vv	v6,v2,v3;"::);
-    asm volatile("vmul.vv	v7,v4,v3;"::);
-    asm volatile("vmul.vv	v8,v2,v1;"::);
-    asm volatile("vadd.vv	v1,v5,v6;"::);
-    asm volatile("vsub.vv	v2,v8,v7;"::);
-    asm volatile("vslideup.vx	v3,v2,%[num1];"::[num1]"r"(num1));
-    asm volatile("vmerge.vvm	v1,v1,v3,v0;"::);
-    asm volatile("vse16.v	v1,(%[rRvvAddr]);"::[rRvvAddr]"r"(pz));
-    asm volatile("vsync %[syncRd],%[rs2];":[syncRd]"=r"(syncRd):[rs2]"r"(rs2));
-    syncRd = syncRd * 2;
+    asm volatile("vsetvl %[vl], %[avl], %[vtype];\
+                  vmerge.vvm %[vAimage], %[vZero], %[vA], %[vMask];\
+                  vmerge.vvm %[vAreal], %[vA], %[vZero], %[vMask];"
+                  :[vl] "=&r" (vl),[vAimage]"=&vd"(vAimage),[vAreal]"=vd"(vAreal)
+                  :[avl] "r" (avl), [vtype] "r" (vtypeE),[vMask]"vm"(vMask),[vZero]"vr"(vZero),[vA]"vr"(vA));
+    
+    vtypeE = TA | MA | M1 | E16;              
+    asm volatile("vsetvl %[vl], %[avl], %[vtype];\
+                  vslidedown.vi %[vAimage], %[vAimage], 1;\
+                  vmerge.vvm %[vBimage], %[vZero], %[vB], %[vMask];\
+                  vmerge.vvm %[vBreal], %[vB], %[vZero], %[vMask];\
+                  vslidedown.vi %[vBimage], %[vBimage], 1;"              
+                  :[vl] "=&r" (vl),[vAimage]"+&vd"(vAimage),[vBimage]"+&vd"(vBimage),[vBreal]"=vd"(vBreal)
+                  :[avl] "r" (avl), [vtype] "r" (vtypeE),[vMask]"vm"(vMask),[vZero]"vd"(vZero),[vB]"vd"(vB));
+                                  
+    asm volatile("vmul.vv %[vReal1], %[vAreal], %[vBreal];\
+                  vmul.vv %[vReal2], %[vAimage], %[vBimage];\
+                  vmul.vv %[vImage1], %[vAreal], %[vBimage];\
+                  vmul.vv %[vImage2], %[vAimage], %[vBreal];"
+                  :[vReal1]"=&vd"(vReal1),[vReal2]"=&vd"(vReal2),[vImage1]"=&vd"(vImage1),[vImage2]"=&vd"(vImage2)
+                  :[vAimage]"vd"(vAimage),[vAreal]"vd"(vAreal),[vBimage]"vd"(vBimage),[vBreal]"vd"(vBreal));                     
+    
+    uint32_t num1 = 1;    
+    asm volatile("vadd.vv %[vReal], %[vReal1], %[vReal2];\
+                  vsub.vv %[vImage],%[vImage2], %[vImage1];\
+                  vslideup.vx %[vImageUp], %[vImage], %[num1];"
+                  :[vReal]"+&vd"(vReal),[vImage]"+&vd"(vImage),[vImageUp]"=&vd"(vImageUp)
+                  :[vReal1]"vd"(vReal1),[vReal2]"vd"(vReal2),[vImage1]"vd"(vImage1),[vImage2]"vd"(vImage2),[num1]"r"(num1));
+                  
+    
+    vtypeE = TA | MA | M1 | E16;              
+    asm volatile("vsetvl %[vl], %[avl], %[vtype];\
+                  vmerge.vvm %[vResult], %[vReal], %[vImageUp], %[vMask];\
+                  vse16.v  %[vResult], (%[rRvvAddr]);"
+                  :[vl] "=&r" (vl),[vResult]"=vr"(vResult)
+                  :[avl] "r" (avl), [vtype] "r" (vtypeE),[vReal]"vd"(vReal),[vImageUp]"vd"(vImageUp),[vMask]"vm"(vMask),[rRvvAddr]"r"(rRvvAddr));
+ 
+                                               
     return 0;
 }
