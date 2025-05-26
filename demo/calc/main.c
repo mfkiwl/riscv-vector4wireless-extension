@@ -45,7 +45,7 @@ extern void nolinear_log10seg8_ut();
 extern void vdsredsum_ut1();
 extern int32_t op_intrinsicTest1();
 
-void vdsp_test_cp(uint32_t dmemAddr,uint32_t vmemAddr,uint32_t len)
+void vdsp_test_rtl_cp(uint32_t dmemAddr,uint32_t vmemAddr,uint32_t len)
 {
 	uint32_t *pSrc = (uint32_t*)dmemAddr;
 	uint32_t *pDsc = (uint32_t*)vmemAddr;
@@ -87,9 +87,9 @@ int main()
 
     //ccm
     //op_goldenCcm();
-	vdsp_test_cp((uint32_t)(&aAddr[0]),VM_SRC1_ADDR,32);
-	vdsp_test_cp((uint32_t)(&bAddr[0]),VM_SRC2_ADDR,32);
-	vdsp_test_cp((uint32_t)(&imageCcmMaskAddr[0]),VM_MASK_ADDR,4);
+	vdsp_test_rtl_cp((uint32_t)(&aAddr[0]),VM_SRC1_ADDR,32);
+	vdsp_test_rtl_cp((uint32_t)(&bAddr[0]),VM_SRC2_ADDR,32);
+	vdsp_test_rtl_cp((uint32_t)(&imageCcmMaskAddr[0]),VM_MASK_ADDR,4);
     op_testzvwCcm();
     op_testrvvCcm();
     uint32_t flag = 0;
@@ -113,9 +113,9 @@ int main()
     }
 	
 	//cdsm
-	vdsp_test_cp((uint32_t)(&aCdsmAddr[0]),VM_SRC1_ADDR,64);
-	vdsp_test_cp((uint32_t)(&bCdsmAddr[0]),VM_SRC2_ADDR,64);
-	vdsp_test_cp((uint32_t)(&imageMaskAddr[0]),VM_MASK_ADDR,8);
+	vdsp_test_rtl_cp((uint32_t)(&aCdsmAddr[0]),VM_SRC1_ADDR,64);
+	vdsp_test_rtl_cp((uint32_t)(&bCdsmAddr[0]),VM_SRC2_ADDR,64);
+	vdsp_test_rtl_cp((uint32_t)(&imageMaskAddr[0]),VM_MASK_ADDR,8);
     op_testzvwCdsm();
     op_testrvvCdsm();
     pz1 = (uint32_t *)VM_RST1_ZVW_ADDR;
@@ -130,9 +130,9 @@ int main()
     }	
 	
 	//wap
-	vdsp_test_cp((uint32_t)(&aWapAddr[0][0]),VM_SRC1_ADDR,64);
-	vdsp_test_cp((uint32_t)(&gainShiftAdrrZvw[0]),VM_GAIN_ZVW_ADDR,32);
-	vdsp_test_cp((uint32_t)(&gainShiftAdrrRvv[0]),VM_GAIN_RVV_ADDR,64);
+	vdsp_test_rtl_cp((uint32_t)(&aWapAddr[0][0]),VM_SRC1_ADDR,64);
+	vdsp_test_rtl_cp((uint32_t)(&gainShiftAdrrZvw[0]),VM_GAIN_ZVW_ADDR,32);
+	vdsp_test_rtl_cp((uint32_t)(&gainShiftAdrrRvv[0]),VM_GAIN_RVV_ADDR,64);
     op_testzvwWap();
     op_testrvvWap();
     pz1 = (uint32_t *)VM_RST1_ZVW_ADDR;
